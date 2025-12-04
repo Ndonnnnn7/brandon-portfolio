@@ -1,284 +1,206 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   FaReact,
   FaJs,
   FaHtml5,
   FaCss3Alt,
-  FaGithub,
+  FaGitAlt,
+  FaFigma,
+  FaAndroid,
 } from "react-icons/fa";
-import { SiTailwindcss, SiVite, SiFigma } from "react-icons/si";
-import { Code2, Zap, Layers, Layout, LucideCircleDot } from "lucide-react";
+import {
+  SiCanva,
+  SiTypescript,
+  SiMaze,
+} from "react-icons/si";
+import { Sparkles } from "lucide-react";
 
 const Skills = () => {
-  const [activeCategory, setActiveCategory] = useState("all");
-
-  const categories = [
-    { id: "all", label: "All Skills", icon: Layers },
-    { id: "frontend", label: "Frontend", icon: Code2 },
-    { id: "uiux", label: "UI/UX", icon: Layout },
-  ];
-
-  const techs = [
-    {
-      id: 1,
-      icon: <FaHtml5 size={50} />,
-      title: "HTML5",
-      category: "frontend",
-      color: "from-orange-500 to-red-500",
-      textColor: "text-orange-500",
-      bgColor: "bg-orange-500/10",
-      borderColor: "border-orange-500/30",
-      hoverBorder: "hover:border-orange-500/60",
-      level: 95,
-    },
-    {
-      id: 2,
-      icon: <FaCss3Alt size={50} />,
-      title: "CSS3",
-      category: "frontend",
-      color: "from-blue-500 to-blue-600",
-      textColor: "text-blue-500",
-      bgColor: "bg-blue-500/10",
-      borderColor: "border-blue-500/30",
-      hoverBorder: "hover:border-blue-500/60",
-      level: 90,
-    },
-    {
-      id: 3,
-      icon: <FaJs size={50} />,
-      title: "JavaScript",
-      category: "frontend",
-      color: "from-yellow-400 to-yellow-500",
-      textColor: "text-yellow-400",
-      bgColor: "bg-yellow-500/10",
-      borderColor: "border-yellow-500/30",
-      hoverBorder: "hover:border-yellow-500/60",
-      level: 88,
-    },
-    {
-      id: 4,
-      icon: <FaReact size={50} />,
-      title: "React",
-      category: "frontend",
-      color: "from-cyan-400 to-blue-500",
-      textColor: "text-cyan-400",
-      bgColor: "bg-cyan-500/10",
-      borderColor: "border-cyan-500/30",
-      hoverBorder: "hover:border-cyan-500/60",
-      level: 92,
-    },
-    {
-      id: 5,
-      icon: <SiTailwindcss size={50} />,
-      title: "Tailwind CSS",
-      category: "frontend",
-      color: "from-sky-400 to-cyan-500",
-      textColor: "text-sky-400",
-      bgColor: "bg-sky-500/10",
-      borderColor: "border-sky-500/30",
-      hoverBorder: "hover:border-sky-500/60",
-      level: 90,
-    },
-    {
-      id: 6,
-      icon: <LucideCircleDot size={50} />,
-      title: "Maze",
-      category: "uiux",
-      color: "from-yellow-400 to-yellow-500",
-      textColor: "text-yellow-300",
-      bgColor: "bg-yellow-500/10",
-      borderColor: "border-yellow-500/30",
-      hoverBorder: "hover:border-yellow-500/60",
-      level: 70,
-    },
-    {
-      id: 7,
-      icon: <SiFigma size={50} />,
-      title: "Figma",
-      category: "uiux",
-      color: "from-pink-400 to-purple-500",
-      textColor: "text-pink-300",
-      bgColor: "bg-pink-500/10",
-      borderColor: "border-pink-500/30",
-      hoverBorder: "hover:border-pink-500/60",
-      level: 90,
-    },
-    {
-      id: 8,
-      icon: <FaGithub size={50} />,
-      title: "GitHub",
-      category: "frontend",
-      color: "from-gray-400 to-gray-600",
-      textColor: "text-gray-400",
-      bgColor: "bg-gray-500/10",
-      borderColor: "border-gray-500/30",
-      hoverBorder: "hover:border-gray-500/60",
-      level: 87,
-    },
-  ];
-
-  const filteredTechs =
-    activeCategory === "all"
-      ? techs
-      : techs.filter((tech) => tech.category === activeCategory);
-
   return (
-    <div
-      name="skills"
-      className="w-full min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white relative overflow-hidden"
+    <section
+      id="skills"
+      className="relative w-full min-h-screen py-24 flex items-center overflow-hidden"
     >
-      {/* Background Decorations */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-40 right-10 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-10 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/3 left-1/2 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl"></div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-6 py-20 relative z-10">
+      {/* Container Utama */}
+      <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
         {/* Header Section */}
-        <div className="mb-16">
+        <div className="mb-16 max-w-2xl">
           <div className="flex items-center gap-3 mb-4">
-            <div className="h-1 w-12 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"></div>
-            <span className="text-cyan-400 font-semibold tracking-wider uppercase text-sm">
-              My Arsenal
+            <span className="h-px w-10 bg-accent"></span>
+            <span className="text-accent font-medium tracking-widest uppercase text-sm">
+              TechStack
             </span>
           </div>
-          <h2 className="text-5xl md:text-6xl font-bold mb-6">
-            Tech{" "}
-            <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-              Stack
-            </span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white">
+            The tools I use to <br />
+            <span className="text-gray-500">craft experiences.</span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl">
-            Teknologi dan tools yang saya gunakan untuk mengembangkan aplikasi
-            web modern, scalable, dan user-friendly
-          </p>
-          <div className="h-1.5 w-24 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full mt-6"></div>
         </div>
 
-        {/* Category Filter */}
-        <div className="flex flex-wrap gap-4 mb-12 justify-center">
-          {categories.map((cat) => {
-            const Icon = cat.icon;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className={`
-                  flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300
-                  ${
-                    activeCategory === cat.id
-                      ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/30 scale-105"
-                      : "bg-slate-800/50 text-gray-400 border border-slate-700/50 hover:border-cyan-500/50 hover:text-cyan-400"
-                  }
-                `}
-              >
-                <Icon className="w-5 h-5" />
-                {cat.label}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Skills Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filteredTechs.map((tech) => (
-            <div
-              key={tech.id}
-              className={`
-                group relative bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm 
-                rounded-2xl border ${tech.borderColor} ${tech.hoverBorder}
-                transition-all duration-500 hover:scale-105 cursor-pointer
-                overflow-hidden
-              `}
-            >
-              {/* Glow Effect */}
-              <div
-                className={`absolute inset-0 bg-gradient-to-br ${tech.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
-              ></div>
-
-              {/* Content */}
-              <div className="relative p-6 flex flex-col items-center">
-                {/* Icon Container */}
-                <div
-                  className={`
-                  w-24 h-24 ${tech.bgColor} rounded-2xl flex items-center justify-center mb-4
-                  group-hover:scale-110 transition-transform duration-500
-                  relative overflow-hidden
-                `}
-                >
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-br ${tech.color} opacity-0 group-hover:opacity-20 transition-opacity duration-500`}
-                  ></div>
-                  <div className={tech.textColor}>{tech.icon}</div>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors duration-300">
-                  {tech.title}
-                </h3>
-
-                {/* Progress Bar */}
-                <div className="w-full bg-slate-700/50 rounded-full h-2 mb-2 overflow-hidden">
-                  <div
-                    className={`h-full bg-gradient-to-r ${tech.color} rounded-full transition-all duration-1000 ease-out group-hover:animate-pulse`}
-                    style={{ width: `${tech.level}%` }}
-                  ></div>
-                </div>
-                <span className="text-sm text-gray-500 group-hover:text-gray-400 transition-colors duration-300">
-                  {tech.level}% Proficiency
-                </span>
-              </div>
-
-              {/* Corner Decoration */}
-              <div
-                className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${tech.color} opacity-5 rounded-bl-3xl`}
-              ></div>
+        {/* --- BENTO GRID LAYOUT --- */}
+        {/* Grid 6 Kolom untuk fleksibilitas layout asimetris */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          {/* 1. HERO TECH (Figma) - Besar (2x2) */}
+          <div className="col-span-2 md:col-span-2 lg:col-span-2 row-span-2 relative group overflow-hidden bg-white/5 border border-white/10 rounded-3xl p-8 hover:border-cyan-400/50 transition-colors duration-500">
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute -right-10 -bottom-10 opacity-20 group-hover:opacity-40 group-hover:rotate-12 transition-all duration-500">
+              <FaFigma className="w-40 h-40 text-cyan-400" />
             </div>
-          ))}
-        </div>
 
-        {/* Bottom Info Card */}
-        <div className="mt-16 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10 backdrop-blur-sm p-8 rounded-2xl border border-cyan-500/20">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div>
-              <h3 className="text-2xl font-bold text-white mb-2">
-                Always Learning, Always Growing
-              </h3>
-              <p className="text-gray-400">
-                Saya terus mengembangkan skill dan mengikuti perkembangan
-                teknologi terbaru
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-xl flex items-center justify-center">
-                <Zap className="w-6 h-6 text-cyan-400" />
+            <div className="relative z-10 h-full flex flex-col justify-between">
+              <div className="w-14 h-14 bg-cyan-500/20 rounded-2xl flex items-center justify-center text-cyan-400 mb-4">
+                <FaFigma className="w-8 h-8 animate-spin-slow" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-white">{techs.length}+</p>
-                <p className="text-sm text-gray-400">Technologies</p>
+                <h3 className="text-2xl font-bold text-white mb-2">Figma</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  My main tool for crafting intuitive interfaces. I specialize
+                  in component systems, auto-layout, and interactive prototyping
+                  in Figma
+                </p>
               </div>
             </div>
+          </div>
+
+          {/* 2. STYLE (React) - Persegi Panjang (2x1) */}
+          <div className="col-span-2 md:col-span-1 lg:col-span-2 relative group bg-white/5 border border-white/10 rounded-3xl p-6 hover:border-sky-400/50 transition-colors duration-500 flex flex-col justify-between overflow-hidden">
+            <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-l from-sky-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="flex justify-between items-start relative z-10">
+              <div className="w-12 h-12 bg-sky-500/20 rounded-xl flex items-center justify-center text-sky-400">
+                <SiMaze className="w-6 h-6" />
+              </div>
+              <ArrowIcon />
+            </div>
+            <div className="mt-4 relative z-10">
+              <h3 className="text-xl font-bold text-white">Maze</h3>
+              <p className="text-gray-400 text-xs mt-1">
+                For testing my prototypes with real users.
+              </p>
+            </div>
+          </div>
+
+          {/* 3. LANGUAGE (HTML) - Kotak (1x1) */}
+          <div className="col-span-1 md:col-span-1 lg:col-span-1 relative group bg-white/5 border border-white/10 rounded-3xl p-6 hover:border-yellow-400/50 transition-colors duration-500 flex flex-col items-center justify-center text-center">
+            <div className="absolute inset-0 bg-yellow-400/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <FaHtml5 className="w-12 h-12 text-yellow-400 mb-4 group-hover:scale-110 transition-transform" />
+            <h3 className="text-lg font-bold text-white">HTML</h3>
+            <span className="text-xs text-gray-500 mt-1">Modern Markup</span>
+          </div>
+
+          {/* 4. DESIGN (CSS) - Kotak (1x1) */}
+          <div className="col-span-1 md:col-span-1 lg:col-span-1 relative group bg-white/5 border border-white/10 rounded-3xl p-6 hover:border-pink-400/50 transition-colors duration-500 flex flex-col items-center justify-center text-center">
+            <div className="absolute inset-0 bg-pink-400/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <FaCss3Alt className="w-12 h-12 text-pink-400 mb-4 group-hover:scale-110 transition-transform" />
+            <h3 className="text-lg font-bold text-white">CSS</h3>
+            <span className="text-xs text-gray-500 mt-1">Utility-First Styling</span>
+          </div>
+
+          {/* 5.Canva - Persegi Panjang (2x1) */}
+          <div className="col-span-2 lg:col-span-2 relative group bg-white/5 border border-white/10 rounded-3xl p-6 hover:border-white/50 transition-colors duration-500 overflow-hidden">
+            <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 transition-opacity">
+              <SiCanva className="w-32 h-32 text-white" />
+            </div>
+            <div className="relative z-10 flex items-center gap-4">
+              <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center text-white">
+                <SiCanva className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-white">Canva</h3>
+                <p className="text-gray-400 text-xs">
+                  Creativity Without Any Limits
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* 6. ESSENTIALS (Grid Kecil) - Span 2 */}
+          <div className="col-span-2 lg:col-span-2 grid grid-cols-2 gap-4">
+            {/* Git */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-3 hover:bg-white/10 transition-colors">
+              <FaGitAlt className="text-orange-500 w-6 h-6" />
+              <span className="text-sm font-medium text-gray-300">
+                Git Control
+              </span>
+            </div>
+            {/* React */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-3 hover:bg-white/10 transition-colors">
+              <FaReact className="text-purple-500 w-6 h-6" />
+              <span className="text-sm font-medium text-gray-300">
+                React.js
+              </span>
+            </div>
+            {/* Js */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-3 hover:bg-white/10 transition-colors">
+              <FaJs className="text-lime-200 w-6 h-6" />
+              <span className="text-sm font-medium text-gray-300">
+                JavaScript
+              </span>
+            </div>
+            {/* TypeScript */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-3 hover:bg-white/10 transition-colors">
+              <FaAndroid className="text-blue-400 w-6 h-6" />
+              <span className="text-sm font-medium text-gray-300">
+                Android Dev
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* --- Marquee Text for Soft Skills / Others --- */}
+        <div className="mt-20 relative w-full overflow-hidden py-4 border-y border-white/5 bg-white/[0.02]">
+          <div className="absolute left-0 top-0 w-20 h-full bg-gradient-to-r from-[#121321] to-transparent z-10"></div>
+          <div className="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-[#121321] to-transparent z-10"></div>
+
+          <div className="flex whitespace-nowrap animate-marquee">
+            {[
+              "Responsive Design",
+              "Accessibility",
+              "SEO Optimization",
+              "Performance Tuning",
+              "Problem Solving",
+              "Clean Architecture",
+              "Responsive Design",
+              "Accessibility",
+              "SEO Optimization",
+            ].map((item, index) => (
+              <div key={index} className="flex items-center mx-8">
+                <Sparkles className="w-4 h-4 text-secondary mr-4" />
+                <span className="text-gray-400 font-mono text-sm tracking-widest uppercase">
+                  {item}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
       <style jsx>{`
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
-        }
-        .group:hover .float-animation {
-          animation: float 2s ease-in-out infinite;
+        .animate-spin-slow {
+          animation: spin 8s linear infinite;
         }
       `}</style>
-    </div>
+    </section>
   );
 };
+
+// Helper component for the little arrow
+const ArrowIcon = () => (
+  <svg
+    width="12"
+    height="12"
+    viewBox="0 0 12 12"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="text-gray-500 group-hover:text-white transition-colors"
+  >
+    <path
+      d="M1 11L11 1M11 1H3M11 1V9"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
 
 export default Skills;

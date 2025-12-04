@@ -1,164 +1,271 @@
-import React from 'react';
-import { Code2, Sparkles, Rocket, Heart, Lightbulb, Coffee, Terminal, Palette } from 'lucide-react';
+import React from "react";
+import { Terminal, Coffee, Globe, Zap, Code2, Palette, Layers, MousePointer2 } from "lucide-react";
 
 const About = () => {
-  const skills = [
-    { icon: Code2, label: "Clean Code", color: "from-cyan-500 to-blue-500" },
-    { icon: Rocket, label: "Performance", color: "from-blue-500 to-purple-500" },
-    { icon: Palette, label: "UI/UX Design", color: "from-purple-500 to-pink-500" },
-    { icon: Heart, label: "User First", color: "from-pink-500 to-rose-500" },
-  ];
-
-  const stats = [
-    { number: "3+", label: "Years Experience" },
-    { number: "50+", label: "Projects Done" },
-    { number: "100%", label: "Dedication" },
-  ];
-
   return (
-    <div name="about" className="w-full min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white relative overflow-hidden">
-      {/* Background Decorations */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-20 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-40 left-20 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl"></div>
+    <section
+      id="about"
+      // UBAH: Menghapus 'bg-dark' agar transparan
+      className="relative w-full min-h-screen py-24 overflow-hidden text-white flex items-center"
+    >
+      {/* Background Elements Local (Optional) */}
+      {/* Kita hapus noise dan grid di sini karena sudah ada di GlobalBackground */}
+      {/* Hanya sisakan ambient glow jika ingin penekanan di section ini */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[128px] -translate-y-1/2 translate-x-1/2"></div>
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2"></div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-20 relative z-10">
-        {/* Header Section */}
-        <div className="mb-16">
+      <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
+        {/* Section Header (Minimalist) */}
+        <div className="mb-16 max-w-2xl">
           <div className="flex items-center gap-3 mb-4">
-            <div className="h-1 w-12 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"></div>
-            <span className="text-cyan-400 font-semibold tracking-wider uppercase text-sm">Get to know me</span>
+            <span className="h-px w-10 bg-accent"></span>
+            <span className="text-accent font-medium tracking-widest uppercase text-sm">
+              About Me
+            </span>
           </div>
-          <h2 className="text-5xl md:text-6xl font-bold mb-6">
-            About <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">Me</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+            More than just code.
+            <br />
+            <span className="text-gray-500">I design digital solutions.</span>
           </h2>
-          <div className="h-1.5 w-24 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"></div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Left Column - Story */}
-          <div className="space-y-8">
-            {/* Intro Card */}
-            <div className="group relative bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm p-8 rounded-2xl border border-slate-700/50 hover:border-cyan-500/50 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-500/10">
-              <div className="absolute -top-4 -left-4 w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl opacity-10 blur-xl group-hover:opacity-20 transition-opacity duration-500"></div>
-              
-              <div className="flex items-start gap-4 mb-6">
-                <div className="w-14 h-14 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <Sparkles className="w-7 h-7 text-cyan-400" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Halo! Nama saya Brandon 👋</h3>
-                  <div className="h-0.5 w-16 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"></div>
-                </div>
-              </div>
+        {/* --- BENTO GRID LAYOUT --- */}
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[minmax(180px,auto)]">
+          {/* CARD 1: Main Intro (Large - Span 2 col, 2 row) */}
+          <div className="md:col-span-2 md:row-span-2 bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-xl hover:bg-white/[0.07] transition-colors duration-500 group flex flex-col justify-between overflow-hidden relative">
+            <div className="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-100 transition-opacity duration-500 group-hover:rotate-12 transform">
+              <Globe className="w-32 h-32 text-primary" strokeWidth={1} />
+            </div>
 
-              <p className="text-gray-300 leading-relaxed text-lg">
-                Saya adalah seorang <span className="text-cyan-400 font-semibold">pengembang perangkat lunak</span> yang memiliki ketertarikan mendalam pada teknologi web modern. Perjalanan saya dimulai dari rasa penasaran tentang bagaimana sebuah website bekerja, yang kemudian berkembang menjadi hasrat untuk menciptakan <span className="text-blue-400 font-semibold">solusi digital yang elegan</span>.
+            <div className="relative z-10">
+              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-6 text-primary">
+                <Terminal className="w-6 h-6" />
+              </div>
+              <h3 className="text-3xl font-bold mb-4">Hi, I'm Brandon.</h3>
+              <p className="text-gray-400 text-lg leading-relaxed mb-6">
+                A software developer based in Indonesia with a passion for
+                building <span className="text-white font-medium">elegant</span>{" "}
+                and <span className="text-white font-medium">functional</span>{" "}
+                web applications.
+              </p>
+              <p className="text-gray-400 text-lg leading-relaxed">
+                I bridge the gap between design and engineering. My goal is to
+                create software that not only works perfectly under the hood but
+                feels intuitive and natural to the user.
               </p>
             </div>
 
-            {/* Passion Card */}
-            <div className="group relative bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm p-8 rounded-2xl border border-slate-700/50 hover:border-blue-500/50 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/10">
-              <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl opacity-10 blur-xl group-hover:opacity-20 transition-opacity duration-500"></div>
-              
-              <div className="flex items-start gap-4 mb-6">
-                <div className="w-14 h-14 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <Lightbulb className="w-7 h-7 text-blue-400" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-white mb-2">My Philosophy</h3>
-                  <div className="h-0.5 w-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
-                </div>
+            <div className="mt-8 flex gap-3">
+              <div className="px-4 py-2 bg-white/5 rounded-full text-sm text-gray-300 border border-white/5">
+                Front End
               </div>
-
-              <p className="text-gray-300 leading-relaxed text-lg">
-                Saat ini, saya fokus mendalami ekosistem <span className="text-blue-400 font-semibold">React dan JavaScript</span>. Saya percaya bahwa kode yang baik haruslah <span className="text-purple-400 font-semibold">bersih, mudah dipelihara, dan efisien</span>. Di waktu luang, saya suka mengeksplorasi desain UI/UX untuk memastikan aplikasi yang saya buat tidak hanya berfungsi dengan baik, tetapi juga terlihat menakjubkan.
-              </p>
-
-              <div className="flex items-center gap-2 mt-6 text-gray-400">
-                <Coffee className="w-5 h-5 text-purple-400" />
-                <span className="text-sm italic">Fueled by coffee and curiosity</span>
+              <div className="px-4 py-2 bg-white/5 rounded-full text-sm text-gray-300 border border-white/5">
+                UI/UX
+              </div>
+              <div className="px-4 py-2 bg-white/5 rounded-full text-sm text-gray-300 border border-white/5">
+                Creative
               </div>
             </div>
           </div>
 
-          {/* Right Column - Skills & Stats */}
-          <div className="space-y-8">
-            {/* Skills Grid */}
-            <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm p-8 rounded-2xl border border-slate-700/50">
-              <div className="flex items-center gap-3 mb-6">
-                <Terminal className="w-6 h-6 text-cyan-400" />
-                <h3 className="text-2xl font-bold text-white">Core Values</h3>
+          {/* CARD 2: Stats (Experience) */}
+          <div className="md:col-span-1 bg-gradient-to-br from-primary/20 to-secondary/5 border border-white/10 rounded-3xl p-8 flex flex-col justify-center items-center text-center backdrop-blur-xl group hover:-translate-y-1 transition-transform duration-300">
+            <h3 className="text-6xl font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">
+              3+
+            </h3>
+            <p className="text-gray-400 uppercase tracking-wider text-sm font-medium">
+              Years Experience
+            </p>
+          </div>
+
+          {/* CARD 3: Stats (Projects) */}
+          <div className="md:col-span-1 bg-white/5 border border-white/10 rounded-3xl p-8 flex flex-col justify-center items-center text-center backdrop-blur-xl group hover:-translate-y-1 transition-transform duration-300 hover:border-accent/30">
+            <h3 className="text-6xl font-bold text-white mb-2 group-hover:text-accent transition-colors duration-300">
+              50+
+            </h3>
+            <p className="text-gray-400 uppercase tracking-wider text-sm font-medium">
+              Projects Done
+            </p>
+          </div>
+
+          {/* CARD 4: Visual Code (Clean Code) - Span 2 Cols */}
+          <div className="md:col-span-2 bg-dark/50 border border-white/10 rounded-3xl p-6 backdrop-blur-xl flex flex-col relative group overflow-hidden">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                <div className="w-3 h-3 rounded-full bg-green-500"></div>
               </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                {skills.map((skill, index) => {
-                  const Icon = skill.icon;
-                  return (
-                    <div 
-                      key={index}
-                      className="group relative bg-slate-900/50 p-6 rounded-xl border border-slate-700/50 hover:border-slate-600/50 transition-all duration-300 hover:scale-105 cursor-pointer"
-                    >
-                      <div className={`w-12 h-12 bg-gradient-to-br ${skill.color} rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                        <Icon className="w-6 h-6 text-white" />
-                      </div>
-                      <p className="text-gray-300 font-medium">{skill.label}</p>
-                      <div className={`absolute inset-0 bg-gradient-to-br ${skill.color} opacity-0 group-hover:opacity-5 rounded-xl transition-opacity duration-300`}></div>
-                    </div>
-                  );
-                })}
+              <span className="text-xs text-gray-500 font-mono">
+                portfolio.jsx
+              </span>
+            </div>
+
+            {/* Mock Code Block */}
+            <div className="font-mono text-sm text-gray-400 overflow-hidden relative z-10">
+              <p>
+                <span className="text-purple-400">const</span>{" "}
+                <span className="text-yellow-400">philosophy</span> ={" "}
+                <span className="text-blue-400">{"{"}</span>
+              </p>
+              <p className="pl-4">
+                quality: <span className="text-green-400">"uncompromised"</span>
+                ,
+              </p>
+              <p className="pl-4">
+                efficiency: <span className="text-orange-400">true</span>,
+              </p>
+              <p className="pl-4">
+                userFirst: <span className="text-orange-400">true</span>,
+              </p>
+              <p>
+                <span className="text-blue-400">{"}"}</span>;
+              </p>
+            </div>
+
+            <div className="absolute right-0 bottom-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+              <Code2 className="w-24 h-24 text-white" />
+            </div>
+          </div>
+
+          {/* CARD 5: Focus/Values */}
+          <div className="md:col-span-1 bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-xl flex flex-col justify-between hover:bg-white/[0.07] transition-colors">
+            <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center mb-4 text-accent">
+              <Zap className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="text-xl font-bold mb-2">Performance</h4>
+              <p className="text-sm text-gray-400">
+                Optimizing every millisecond. Fast load times and smooth
+                interactions.
+              </p>
+            </div>
+          </div>
+
+          {/* CARD 6: Coffee/Fun Fact */}
+          <div className="md:col-span-1 bg-gradient-to-br from-orange-500/10 to-yellow-500/10 border border-orange-500/20 rounded-3xl p-8 backdrop-blur-xl flex flex-col justify-between relative overflow-hidden group">
+            <div className="absolute -right-4 -top-4 bg-orange-500/20 w-24 h-24 rounded-full blur-xl group-hover:bg-orange-500/30 transition-colors"></div>
+
+            <div className="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center mb-4 text-orange-400 z-10">
+              <Coffee className="w-6 h-6" />
+            </div>
+            <div className="z-10">
+              <h4 className="text-xl font-bold mb-2 text-orange-100">
+                Fueled by Coffee
+              </h4>
+              <p className="text-sm text-orange-200/70">
+                Converting caffeine into efficient code since 2021.
+              </p>
+            </div>
+          </div>
+
+          {/* CARD 7: UI/UX Visual (Design System Snippet) - Span 2 Cols */}
+          <div className="md:col-span-2 bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-xl flex flex-col relative group overflow-hidden hover:bg-white/[0.07] transition-colors">
+            {/* Header: Looks like a design layer name instead of code file */}
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-2">
+                <Layers className="w-4 h-4 text-accent" />
+                <span className="text-sm font-medium text-gray-300">
+                  Design System.fig
+                </span>
+              </div>
+              {/* Fake zoom percentage often seen in design tools */}
+              <span className="text-xs text-gray-500 font-mono bg-white/10 px-2 py-1 rounded-md">
+                100%
+              </span>
+            </div>
+            {/* MOCKUP VISUAL DESIGN ELEMENTS */}
+            <div className="relative z-10 flex flex-col gap-5">
+              {/* 1. Color Palette Row */}
+              <div className="flex items-center gap-4">
+                <div className="flex -space-x-2">
+                  <div
+                    className="w-8 h-8 rounded-full bg-primary border-2 border-dark/50 shadow-sm"
+                    title="Primary"
+                  ></div>
+                  <div
+                    className="w-8 h-8 rounded-full bg-secondary border-2 border-dark/50 shadow-sm"
+                    title="Secondary"
+                  ></div>
+                  <div
+                    className="w-8 h-8 rounded-full bg-accent border-2 border-dark/50 shadow-sm"
+                    title="Accent"
+                  ></div>
+                </div>
+                <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">
+                  Color Styles
+                </span>
+              </div>
+
+              {/* 2. Typography Scale Snippet */}
+              <div className="space-y-1 border-l-2 border-white/10 pl-4">
+                <h4 className="text-xl font-bold text-white leading-none">
+                  Aa Heading XL
+                </h4>
+                <p className="text-sm text-gray-400">
+                  Body regular used for main content components.
+                </p>
+              </div>
+
+              {/* 3. Interactive Component Mockup (Button state) */}
+              <div className="relative mt-2 p-3 bg-primary/10 border border-primary/30 rounded-xl w-fit flex items-center gap-3 group/btn">
+                <span className="text-primary font-medium text-sm">
+                  Primary Button
+                </span>
+
+                {/* FAKE CURSOR hovering over the element */}
+                <div className="absolute -bottom-5 -right-5 drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)] animate-pulse hidden md:block">
+                  <MousePointer2 className="w-6 h-6 text-white fill-black/50 transform -rotate-12" />
+                </div>
               </div>
             </div>
 
-            {/* Stats */}
-            <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm p-8 rounded-2xl border border-slate-700/50">
-              <h3 className="text-2xl font-bold text-white mb-6">By the Numbers</h3>
-              
-              <div className="grid grid-cols-3 gap-6">
-                {stats.map((stat, index) => (
-                  <div key={index} className="text-center group cursor-pointer">
-                    <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/80 rounded-xl p-4 border border-slate-700/50 group-hover:border-cyan-500/50 transition-all duration-300 group-hover:scale-105">
-                      <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mb-2">
-                        {stat.number}
-                      </p>
-                      <p className="text-gray-400 text-sm">{stat.label}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Fun Fact */}
-            <div className="relative overflow-hidden bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10 backdrop-blur-sm p-6 rounded-2xl border border-cyan-500/20">
-              <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,.02)_50%,transparent_75%,transparent_100%)] bg-[length:250%_250%] animate-shimmer"></div>
-              <div className="relative flex items-start gap-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-cyan-500/30 to-blue-500/30 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Sparkles className="w-5 h-5 text-cyan-400" />
-                </div>
-                <div>
-                  <p className="text-cyan-400 font-semibold mb-1">Fun Fact</p>
-                  <p className="text-gray-300 text-sm leading-relaxed">
-                    I believe the best code is the code you don't have to write. Simplicity is the ultimate sophistication.
-                  </p>
-                </div>
-              </div>
+            {/* Background Abstract Wireframe Graphic instead of Icon */}
+            <div className="absolute right-0 top-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
+              <svg
+                width="120"
+                height="120"
+                viewBox="0 0 100 100"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="10"
+                  y="10"
+                  width="80"
+                  height="60"
+                  rx="4"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeDasharray="4 4"
+                />
+                <circle
+                  cx="30"
+                  cy="30"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+                <rect x="50" y="25" width="30" height="4" fill="currentColor" />
+                <rect x="50" y="35" width="20" height="4" fill="currentColor" />
+                <rect
+                  x="10"
+                  y="80"
+                  width="80"
+                  height="10"
+                  rx="2"
+                  fill="currentColor"
+                  fillOpacity="0.5"
+                />
+              </svg>
             </div>
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes shimmer {
-          0% { background-position: -250% 0; }
-          100% { background-position: 250% 0; }
-        }
-        .animate-shimmer {
-          animation: shimmer 8s ease-in-out infinite;
-        }
-      `}</style>
-    </div>
+    </section>
   );
 };
 

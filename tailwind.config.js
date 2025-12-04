@@ -7,14 +7,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#6d5dfc",
-        dark: "#121321",
-        secondary: "#885cf7"
+        primary: "#6d5dfc",    // Ungu Kebiruan
+        secondary: "#885cf7",  // Ungu Terang
+        dark: "#121321",       // Hitam kebiruan 
+        accent: "#f42c7c",     // Pink kemerahan 
       },
       fontFamily: {
-        // Ini akan menimpa font default Tailwind menjadi Poppins
         sans: ["Poppins", "sans-serif"],
       },
+      backgroundImage: {
+        'gradient-brand': 'linear-gradient(to right, #6d5dfc, #885cf7, #f42c7c)',
+      }
     },
   },
   plugins: [],

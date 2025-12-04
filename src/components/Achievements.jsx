@@ -1,318 +1,182 @@
-import { motion } from 'framer-motion';
-import { FaTrophy, FaCertificate, FaMedal, FaAward, FaStar } from 'react-icons/fa';
-import { useState } from 'react';
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Award, ExternalLink } from "lucide-react";
 
 const Achievements = () => {
-  const [hoveredId, setHoveredId] = useState(null);
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
 
-  const achievements = [
+  // DATA: Disederhanakan (Hanya Judul + Lokasi)
+  const competitions = [
     {
       id: 1,
-      type: 'competition',
-      title: 'Web Design Competition',
-      position: '1st Place',
-      rank: 1,
-      organizer: 'Universitas Teknologi',
-      year: '2024',
-      description: 'Kompetisi tingkat nasional membuat desain UI/UX aplikasi mobile dengan tema Smart City.',
-      color: 'from-yellow-400 via-yellow-500 to-amber-600',
-      icon: FaTrophy,
-      bgColor: 'bg-yellow-500/10',
-      borderColor: 'border-yellow-500/50',
-      participants: '500+ peserta'
+      title: "1st Place Web Design",
+      location: "Universitas Brawijaya", // Ganti dengan lokasi asli
+      image:
+        "https://images.unsplash.com/photo-1544531586-fde5298cdd40?q=80&w=2070&auto=format&fit=crop",
+      badge: "WINNER",
     },
     {
       id: 2,
-      type: 'competition',
-      title: 'Hackathon Innovation',
-      position: '2nd Place',
-      rank: 2,
-      organizer: 'Tech Festival Indonesia',
-      year: '2024',
-      description: 'Membangun aplikasi inovatif untuk solusi kesehatan mental dalam waktu 48 jam.',
-      color: 'from-gray-300 via-gray-400 to-gray-500',
-      icon: FaMedal,
-      bgColor: 'bg-gray-400/10',
-      borderColor: 'border-gray-400/50',
-      participants: '300+ peserta'
+      title: "2nd Place Hackathon",
+      location: "Institut Teknologi Sepuluh Nopember",
+      image:
+        "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2070&auto=format&fit=crop",
+      badge: "RUNNER UP",
     },
     {
       id: 3,
-      type: 'certification',
-      title: 'React Expert Developer',
-      position: 'Certified',
-      organizer: 'Dicoding Indonesia',
-      year: '2023',
-      description: 'Menyelesaikan kelas Expert React Front-End Developer dengan nilai sempurna.',
-      color: 'from-cyan-400 via-blue-500 to-indigo-600',
-      icon: FaCertificate,
-      bgColor: 'bg-cyan-500/10',
-      borderColor: 'border-cyan-500/50',
-      score: '100/100'
-    },
-    {
-      id: 4,
-      type: 'certification',
-      title: 'Full Stack JavaScript',
-      position: 'Certified',
-      organizer: 'Udemy',
-      year: '2023',
-      description: 'Sertifikasi lengkap pengembangan aplikasi full stack menggunakan MERN stack.',
-      color: 'from-green-400 via-emerald-500 to-teal-600',
-      icon: FaAward,
-      bgColor: 'bg-green-500/10',
-      borderColor: 'border-green-500/50',
-      score: '98/100'
-    },
-    {
-      id: 5,
-      type: 'competition',
-      title: 'UI/UX Design Challenge',
-      position: '3rd Place',
-      rank: 3,
-      organizer: 'Design Week 2024',
-      year: '2024',
-      description: 'Kompetisi desain interface untuk aplikasi e-commerce dengan fokus user experience.',
-      color: 'from-orange-400 via-amber-500 to-yellow-600',
-      icon: FaStar,
-      bgColor: 'bg-orange-500/10',
-      borderColor: 'border-orange-500/50',
-      participants: '200+ peserta'
-    },
-    {
-      id: 6,
-      type: 'certification',
-      title: 'AWS Cloud Practitioner',
-      position: 'Certified',
-      organizer: 'Amazon Web Services',
-      year: '2023',
-      description: 'Sertifikasi fundamental cloud computing dan layanan AWS.',
-      color: 'from-purple-400 via-violet-500 to-purple-600',
-      icon: FaCertificate,
-      bgColor: 'bg-purple-500/10',
-      borderColor: 'border-purple-500/50',
-      score: '95/100'
+      title: "Top 10 Finalist UI/UX",
+      location: "Gemastik - Kemendikbud",
+      image:
+        "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=2070&auto=format&fit=crop",
+      badge: "FINALIST",
     },
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 12
-      }
-    }
-  };
-
-  const getRankBadge = (rank) => {
-    const badges = {
-      1: { icon: '🥇', text: 'JUARA 1', color: 'from-yellow-400 to-amber-600' },
-      2: { icon: '🥈', text: 'JUARA 2', color: 'from-gray-300 to-gray-500' },
-      3: { icon: '🥉', text: 'JUARA 3', color: 'from-orange-400 to-yellow-600' }
-    };
-    return badges[rank] || null;
-  };
+  const certifications = [
+    {
+      name: "AWS Cloud Practitioner",
+      issuer: "Amazon Web Services",
+      date: "2023",
+      id: "AWS-10293",
+    },
+    {
+      name: "React Expert Developer",
+      issuer: "Dicoding Indonesia",
+      date: "2023",
+      id: "DCD-react-x",
+    },
+    {
+      name: "Google UX Design",
+      issuer: "Coursera",
+      date: "2022",
+      id: "G-UX-22",
+    },
+  ];
 
   return (
-    <div name="achievements" className="w-full min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-20 relative overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-10 w-96 h-96 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse"></div>
-        <div className="absolute bottom-20 left-10 w-96 h-96 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse delay-2000"></div>
-      </div>
+    <section
+      id="achievements"
+      ref={containerRef}
+      className="relative w-full min-h-screen py-24 text-white overflow-hidden"
+    >
+      {/* Background Decorative */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
 
-      <div className="max-w-screen-xl p-4 mx-auto flex flex-col justify-center w-full h-full relative z-10">
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Header */}
-        <motion.div 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="pb-12 text-center"
-        >
-          <motion.p className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-cyan-500 to-purple-600 bg-clip-text text-transparent inline-block">
-            Achievements & Certifications
-          </motion.p>
-          <div className="h-1 w-32 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto mb-6 rounded-full"></div>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            Koleksi pencapaian kompetisi dan sertifikasi profesional yang telah diraih
-          </p>
-        </motion.div>
+        <div className="mb-20">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="h-px w-10 bg-accent"></span>
+            <span className="text-accent font-medium tracking-widest uppercase text-sm">
+              Milestones
+            </span>
+          </div>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+            Moments of <span className="text-gray-500 italic">Glory.</span>
+          </h2>
+        </div>
 
-        {/* Achievements Grid */}
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          {achievements.map((item) => {
-            const Icon = item.icon;
-            const rankBadge = getRankBadge(item.rank);
-            
-            return (
-              <motion.div
-                key={item.id}
-                variants={itemVariants}
-                onHoverStart={() => setHoveredId(item.id)}
-                onHoverEnd={() => setHoveredId(null)}
-                className="group relative"
-              >
-                <div className={`relative bg-gray-800/50 backdrop-blur-sm rounded-2xl overflow-hidden border ${item.borderColor} hover:border-opacity-100 border-opacity-50 transition-all duration-300 shadow-xl hover:shadow-2xl h-full flex flex-col`}>
-                  
-                  {/* Image/Header Section */}
-                  <div className="relative h-48 overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800">
-                    {/* Gradient Overlay */}
-                    <motion.div 
-                      className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-20 group-hover:opacity-30 transition-opacity duration-500`}
-                    ></motion.div>
+        {/* --- MAIN SECTION: COMPETITION HIGHLIGHTS (Polaroid Style) --- */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-24">
+          {competitions.map((item) => (
+            <div key={item.id} className="group relative">
+              {/* Polaroid Card Container */}
+              {/* bg-white memastikan teks di dalamnya (yg hitam) selalu kontras */}
+              <div className="relative bg-white p-4 pb-6 rounded-sm shadow-xl transform transition-transform duration-500 hover:-translate-y-2 hover:rotate-1">
+                {/* Tape Effect (Selotip Kuning) */}
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-yellow-200/90 transform -rotate-2 backdrop-blur-sm z-20 shadow-sm"></div>
 
-                    {/* Pattern Background */}
-                    <div className="absolute inset-0 opacity-5">
-                      <div className="h-full w-full" style={{
-                        backgroundImage: `radial-gradient(circle, white 1px, transparent 1px)`,
-                        backgroundSize: '20px 20px'
-                      }}></div>
-                    </div>
+                {/* Image Container */}
+                <div className="relative aspect-[4/3] overflow-hidden bg-gray-200 mb-5">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700"
+                  />
 
-                    {/* Icon Display */}
-                    <div className="relative h-full flex flex-col items-center justify-center">
-                      <motion.div
-                        animate={hoveredId === item.id ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className={`p-6 rounded-full ${item.bgColor} backdrop-blur-sm border ${item.borderColor} mb-3`}
-                      >
-                        <Icon className={`text-5xl bg-gradient-to-r ${item.color} bg-clip-text text-transparent`} />
-                      </motion.div>
-                      
-                      {/* Year Badge */}
-                      <div className="px-4 py-1 bg-black/30 backdrop-blur-sm rounded-full border border-white/10">
-                        <span className="text-sm font-bold text-gray-300">{item.year}</span>
-                      </div>
-                    </div>
-
-                    {/* Rank Badge for Competition */}
-                    {rankBadge && (
-                      <div className="absolute top-3 right-3">
-                        <motion.div
-                          animate={hoveredId === item.id ? { scale: 1.1 } : { scale: 1 }}
-                          className={`px-3 py-1 bg-gradient-to-r ${rankBadge.color} rounded-full shadow-lg flex items-center gap-2`}
-                        >
-                          <span className="text-lg">{rankBadge.icon}</span>
-                          <span className="text-xs font-bold text-white">{rankBadge.text}</span>
-                        </motion.div>
-                      </div>
-                    )}
-
-                    {/* Certified Badge */}
-                    {item.type === 'certification' && (
-                      <div className="absolute top-3 right-3">
-                        <div className={`px-3 py-1 bg-gradient-to-r ${item.color} rounded-full shadow-lg`}>
-                          <span className="text-xs font-bold text-white">✓ CERTIFIED</span>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Shine Effect */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-10"
-                      animate={hoveredId === item.id ? { x: ['-100%', '100%'] } : { x: '-100%' }}
-                      transition={{ duration: 0.8, ease: "easeInOut" }}
-                    ></motion.div>
+                  {/* Badge Overlay (Pojok Kanan Atas Foto) */}
+                  <div className="absolute top-3 right-3 px-2 py-1 bg-black/80 text-white text-[10px] font-bold uppercase tracking-widest backdrop-blur-md">
+                    {item.badge}
                   </div>
-
-                  {/* Content Section */}
-                  <div className="p-6 flex-1 flex flex-col">
-                    {/* Title */}
-                    <h3 className={`text-xl font-bold mb-2 bg-gradient-to-r ${item.color} bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300 inline-block`}>
-                      {item.title}
-                    </h3>
-
-                    {/* Organizer */}
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-2 h-2 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500"></div>
-                      <p className="text-gray-400 text-sm font-medium">{item.organizer}</p>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-gray-400 text-sm leading-relaxed mb-4 flex-1">
-                      {item.description}
-                    </p>
-
-                    {/* Meta Info */}
-                    <div className="space-y-2 pt-4 border-t border-gray-700/50">
-                      {item.participants && (
-                        <div className="flex items-center justify-between text-xs">
-                          <span className="text-gray-500">Peserta</span>
-                          <span className="text-gray-300 font-bold">{item.participants}</span>
-                        </div>
-                      )}
-                      {item.score && (
-                        <div className="flex items-center justify-between text-xs">
-                          <span className="text-gray-500">Skor</span>
-                          <span className={`font-bold bg-gradient-to-r ${item.color} bg-clip-text text-transparent`}>
-                            {item.score}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Bottom Accent Line */}
-                  <div className={`h-1 w-full bg-gradient-to-r ${item.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
                 </div>
 
-                {/* Glow Effect on Hover */}
-                <div className={`absolute -inset-1 bg-gradient-to-r ${item.color} rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500 -z-10`}></div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-
-        {/* Stats Summary */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6"
-        >
-          {[
-            { label: 'Total Pencapaian', value: '6+', icon: '🏆' },
-            { label: 'Kompetisi', value: '3', icon: '🥇' },
-            { label: 'Sertifikasi', value: '3', icon: '📜' },
-            { label: 'Tahun Aktif', value: '2023-2024', icon: '📅' },
-          ].map((stat, idx) => (
-            <motion.div
-              key={idx}
-              whileHover={{ scale: 1.05, y: -5 }}
-              className="text-center p-6 bg-gray-800/30 backdrop-blur-sm rounded-xl border border-gray-700/50 hover:border-cyan-500/50 transition-all duration-300"
-            >
-              <div className="text-4xl mb-2">{stat.icon}</div>
-              <div className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mb-1">
-                {stat.value}
+                {/* Text Content - SIMPLE & CLEAR */}
+                {/* Menggunakan text-center agar rapi seperti caption foto */}
+                <div className="text-center px-2">
+                  <h3 className="font-bold text-xl text-gray-900 font-serif leading-tight mb-1">
+                    {item.title}
+                  </h3>
+                  <div className="flex items-center justify-center gap-2 mt-2">
+                    <span className="h-px w-8 bg-gray-300"></span>
+                    <p className="text-xs text-gray-500 font-sans uppercase tracking-wide font-medium">
+                      {item.location}
+                    </p>
+                    <span className="h-px w-8 bg-gray-300"></span>
+                  </div>
+                </div>
               </div>
-              <div className="text-sm text-gray-400">{stat.label}</div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
+
+        {/* --- SECONDARY SECTION: CERTIFICATIONS (Ticket Style) --- */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          {/* Left Title */}
+          <div className="lg:col-span-4">
+            <h3 className="text-3xl font-bold mb-4">
+              Licenses & <br />
+              Certifications
+            </h3>
+            <p className="text-gray-400 text-sm leading-relaxed mb-6">
+              Continuous learning is key. Here are some professional
+              certifications I've earned to validate my technical skills.
+            </p>
+            <div className="w-12 h-1 bg-accent rounded-full"></div>
+          </div>
+
+          {/* Right List */}
+          <div className="lg:col-span-8 grid gap-4">
+            {certifications.map((cert, i) => (
+              <div
+                key={i}
+                className="group relative bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors flex items-center justify-between overflow-hidden"
+              >
+                {/* Decorative ID Number Watermark */}
+                <span className="absolute -right-4 -bottom-4 text-6xl font-black text-white/5 select-none pointer-events-none font-mono">
+                  {cert.date}
+                </span>
+
+                <div className="flex items-center gap-6 relative z-10">
+                  <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                    <Award className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold text-white group-hover:text-primary transition-colors">
+                      {cert.name}
+                    </h4>
+                    <p className="text-sm text-gray-400">
+                      {cert.issuer} • ID: {cert.id}
+                    </p>
+                  </div>
+                </div>
+
+                <a
+                  href="#"
+                  className="hidden sm:flex items-center gap-2 text-xs font-bold text-gray-500 group-hover:text-white transition-colors uppercase tracking-widest border border-white/10 px-4 py-2 rounded-full hover:border-white/50"
+                >
+                  Verify <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

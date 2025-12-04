@@ -2,15 +2,9 @@ import { useState, useEffect } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { IoChevronForward } from 'react-icons/io5';
 
-// Import all components
-import Hero from './Hero';
-import About from './About';
-import Skills from './Skills';
-import Projects from './Projects';
-import Achievements from './Achievements';
-import Contact from './Contact';
+// Import components
 import BackgroundAnimation from './BackgroundAnimation';
-import Footer from './Footer';
+// ... import komponen lainnya
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
@@ -30,7 +24,8 @@ const Navbar = () => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
       
-      // Auto detect active section based on scroll position
+      // Kita bungkus logika active section ini
+      // Agar tidak bentrok saat user sedang mengklik manual
       const sections = links.map(({ link }) => document.getElementById(link));
       const scrollPosition = window.scrollY + 100;
 
@@ -40,7 +35,9 @@ const Navbar = () => {
           const sectionHeight = section.offsetHeight;
           
           if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-            setActiveSection(links[index].link);
+            // Kita cek agar tidak me-reset state jika user baru saja klik
+            // (Logika sederhana: biarkan scroll listener tetap jalan untuk update natural)
+             setActiveSection(links[index].link);
           }
         }
       });
@@ -48,11 +45,25 @@ const Navbar = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, []); // Hapus dependency links agar tidak re-render berlebih
 
-  const handleNavClick = (link) => {
-    setNav(false);
-    setActiveSection(link);
+  const handleNavClick = (e, link) => {
+    e.preventDefault(); // 1. Mencegah lompatan kasar default browser
+    setNav(false); 
+    setActiveSection(link); // 2. Set state LANGSUNG agar animasi pill instan
+
+    // 3. Manual Smooth Scroll dengan Offset
+    const element = document.getElementById(link);
+    if (element) {
+      const offset = 100; // Sesuaikan offset agar tidak tertutup navbar floating
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
   };
 
   return (
@@ -60,48 +71,49 @@ const Navbar = () => {
       {/* Background Animation */}
       <BackgroundAnimation />
 
-      {/* Navbar */}
-      <nav className={`flex justify-between items-center w-full px-6 lg:px-8 text-white fixed z-50 top-0 transition-all duration-300 ${
-        scrolled 
-          ? 'h-16 bg-black/80 backdrop-blur-xl shadow-2xl border-b border-gray-800/50' 
-          : 'h-20 bg-black/60 backdrop-blur-md'
-      }`}>
+      {/* Navbar Container */}
+      <nav className={`fixed z-50 left-1/2 -translate-x-1/2 transition-all duration-300 flex justify-between items-center px-6 lg:px-8 text-white
+        ${scrolled 
+          ? 'top-4 w-[90%] md:w-[85%] lg:w-[1000px] py-3 bg-dark/80 shadow-lg shadow-primary/10 border border-white/10' 
+          : 'top-6 w-[95%] md:w-[90%] lg:w-[1100px] py-4 bg-dark/40 border border-white/5'
+        } rounded-full backdrop-blur-md`}
+      >
+        
         {/* Logo */}
-        <div className="relative group">
+        <div className="relative group pl-2">
           <h1 
             onClick={() => {
               window.scrollTo({ top: 0, behavior: 'smooth' });
               setActiveSection('home');
             }}
-            className={`font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 tracking-tight cursor-pointer transition-all duration-300 ${
-              scrolled ? 'text-3xl' : 'text-4xl'
+            className={`font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent tracking-tight cursor-pointer transition-all duration-300 ${
+              scrolled ? 'text-2xl' : 'text-3xl'
             }`}
           >
             My Portfolio
           </h1>
-          <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-600 group-hover:w-full transition-all duration-300"></div>
         </div>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex items-center gap-1">
+        <ul className="hidden md:flex items-center gap-1 pr-2">
           {links.map(({ id, link, label }) => (
             <li key={id}>
               <a
                 href={`#${link}`}
-                onClick={() => setActiveSection(link)}
-                className={`relative px-4 py-2 rounded-lg font-medium transition-all duration-300 group ${
+                // Update: Menambahkan 'e' (event) ke handler
+                onClick={(e) => handleNavClick(e, link)}
+                className={`relative px-4 py-2 rounded-full font-medium transition-colors duration-300 group text-sm lg:text-base cursor-pointer ${
                   activeSection === link
                     ? 'text-white'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
                 <span className="relative z-10">{label}</span>
-                <div className={`absolute inset-0 rounded-lg to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-                  activeSection === link ? 'opacity-100' : ''
+                
+                {/* Active Dot */}
+                <div className={`absolute bottom-1.5 left-1/2 -translate-x-1/2 h-1 rounded-full h-1 w-20 bg-secondary shadow-[0_0_10px_#885cf7] transition-all duration-300 ease-out ${
+                    activeSection === link ? 'w-5 opacity-100' : 'w-0 opacity-0'
                 }`}></div>
-                {activeSection === link && (
-                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-600"></div>
-                )}
               </a>
             </li>
           ))}
@@ -110,30 +122,29 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setNav(!nav)}
-          className="md:hidden p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-all duration-200 active:scale-95"
+          className="md:hidden p-2 rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-all duration-200"
           aria-label="Toggle menu"
         >
-          {nav ? <FaTimes size={28} /> : <FaBars size={28} />}
+          {nav ? <FaTimes size={24} /> : <FaBars size={24} />}
         </button>
       </nav>
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-dark/80 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300 ${
           nav ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
         onClick={() => setNav(false)}
       ></div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Drawer */}
       <div
-        className={`fixed top-0 right-0 h-screen w-80 bg-gradient-to-br from-gray-900 via-black to-gray-900 z-50 md:hidden transform transition-transform duration-300 ease-out shadow-2xl ${
+        className={`fixed top-0 right-0 h-screen w-80 bg-dark z-50 md:hidden transform transition-transform duration-300 ease-out shadow-2xl border-l border-white/10 ${
           nav ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        {/* Mobile Menu Header */}
-        <div className="flex justify-between items-center p-6 border-b border-gray-800">
-          <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">
+        <div className="flex justify-between items-center p-6 border-b border-white/10">
+          <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
             Menu
           </h2>
           <button
@@ -144,24 +155,24 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Mobile Menu Items */}
         <ul className="flex flex-col p-4 space-y-2 mt-4">
           {links.map(({ id, link, label }) => (
             <li key={id}>
               <a
                 href={`#${link}`}
-                onClick={() => handleNavClick(link)}
-                className={`flex items-center justify-between px-6 py-4 rounded-xl font-medium transition-all duration-200 group ${
+                // Update: Gunakan handleNavClick yang baru juga di mobile
+                onClick={(e) => handleNavClick(e, link)}
+                className={`flex items-center justify-between px-6 py-4 rounded-xl font-medium transition-all duration-300 group ${
                   activeSection === link
-                    ? 'bg-gradient-to-r from-cyan-500/20 to-purple-600/20 text-white'
+                    ? 'bg-gradient-to-r from-primary/20 to-accent/20 text-white border border-white/5'
                     : 'text-gray-400 hover:text-white hover:bg-white/5'
                 }`}
               >
                 <span className="text-lg">{label}</span>
                 <IoChevronForward 
                   size={20} 
-                  className={`transform transition-transform duration-200 ${
-                    activeSection === link ? 'translate-x-1' : 'group-hover:translate-x-1'
+                  className={`transform transition-transform duration-300 ${
+                    activeSection === link ? 'translate-x-1 text-secondary' : 'group-hover:translate-x-1'
                   }`}
                 />
               </a>
@@ -169,8 +180,7 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {/* Mobile Menu Footer */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-800">
+        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-white/10">
           <p className="text-center text-sm text-gray-500">
             © 2024 My Portfolio
           </p>
