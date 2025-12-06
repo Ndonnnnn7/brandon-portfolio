@@ -2,16 +2,52 @@ import React from "react";
 import { FaFigma, FaReact, FaAndroid } from "react-icons/fa";
 import { Camera, ArrowRight } from "lucide-react";
 import { SiCanva } from "react-icons/si";
+import { motion } from "framer-motion"; // Pastikan sudah install: npm install framer-motion
 
 const Hero = () => {
-  const profileImage = "img/Udayana.jpg";
+  const profileImage = "img/Profile Photo1.jpg";
+
+  // Konfigurasi Animasi "Natural"
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.25, 0.46, 0.45, 0.94], // Custom Bezier untuk gerakan yang elegan (bukan default)
+      },
+    },
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15, // Delay antar elemen (membuat efek mengalir)
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const imageReveal = {
+    hidden: { opacity: 0, x: 40, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      scale: 1,
+      transition: {
+        duration: 1,
+        ease: [0.25, 0.46, 0.45, 0.94],
+        delay: 0.4, // Muncul sedikit setelah teks
+      },
+    },
+  };
 
   return (
-    // UBAH: Menghapus 'bg-dark' dan 'overflow-hidden' agar background global terlihat
     <div className="relative min-h-screen w-full flex items-center pt-20 pb-12">
-      
-      {/* Opsional: Anda bisa tetap menaruh blobs lokal khusus Hero di sini untuk highlight */}
-      {/* Jika dirasa terlalu ramai bertumpuk dengan GlobalBackground, div di bawah ini bisa dihapus */}
+      {/* Background Blobs (No Animation change needed here, keep them subtle) */}
       <div className="absolute inset-0 w-full h-full pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-primary/20 rounded-full blur-[128px] animate-pulse"></div>
         <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-accent/10 rounded-full blur-[128px] animate-pulse delay-1000"></div>
@@ -20,9 +56,17 @@ const Hero = () => {
       <div className="max-w-7xl mx-auto px-6 md:px-8 w-full relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
           {/* --- LEFT CONTENT (TEXT) --- */}
-          <div className="flex flex-col justify-center flex-1 text-center lg:text-left">
+          <motion.div
+            className="flex flex-col justify-center flex-1 text-center lg:text-left"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+          >
             {/* Badge Status */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full w-fit mb-8 mx-auto lg:mx-0 backdrop-blur-md shadow-lg shadow-primary/5 group hover:border-primary/30 transition-all duration-300">
+            <motion.div
+              variants={fadeInUp}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full w-fit mb-8 mx-auto lg:mx-0 backdrop-blur-md shadow-lg shadow-primary/5 group hover:border-primary/30 transition-all duration-300"
+            >
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent"></span>
@@ -30,10 +74,13 @@ const Hero = () => {
               <span className="text-sm text-gray-300 font-medium tracking-wide">
                 Available for freelance
               </span>
-            </div>
+            </motion.div>
 
             {/* Main Heading */}
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-6 tracking-tight">
+            <motion.h1
+              variants={fadeInUp}
+              className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-6 tracking-tight"
+            >
               Building Digital <br className="hidden lg:block" />
               <span className="relative whitespace-nowrap">
                 <span className="absolute -inset-1 bg-gradient-to-r from-primary via-secondary to-accent opacity-20 blur-xl rounded-full"></span>
@@ -41,10 +88,13 @@ const Hero = () => {
                   Experiences
                 </span>
               </span>
-            </h1>
+            </motion.h1>
 
             {/* Description */}
-            <p className="text-gray-400 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-8">
+            <motion.p
+              variants={fadeInUp}
+              className="text-gray-400 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-8"
+            >
               I'm a{" "}
               <span className="text-white font-semibold">
                 Front End Developer
@@ -52,10 +102,13 @@ const Hero = () => {
               & <span className="text-white font-semibold">UI/UX Designer</span>{" "}
               creating modern, responsive, and performance-driven web and
               applications.
-            </p>
+            </motion.p>
 
             {/* Tech Stack Mini Badge */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-10">
+            <motion.div
+              variants={fadeInUp}
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-10"
+            >
               <p className="text-sm text-gray-500 font-medium uppercase tracking-wider mr-2">
                 Tech Stack :
               </p>
@@ -72,10 +125,13 @@ const Hero = () => {
                   <tech.icon className={`w-5 h-5 ${tech.color}`} />
                 </div>
               ))}
-            </div>
+            </motion.div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+            <motion.div
+              variants={fadeInUp}
+              className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start"
+            >
               <a
                 href="#projects"
                 className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded-full shadow-[0_0_20px_-5px_#6d5dfc] hover:shadow-[0_0_25px_-5px_#f42c7c] hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 group"
@@ -90,23 +146,38 @@ const Hero = () => {
               >
                 Let's Talk
               </a>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* --- RIGHT CONTENT (IMAGE) --- */}
-          <div className="flex-1 w-full max-w-md lg:max-w-lg relative mt-12 lg:mt-0 group">
+          <motion.div
+            className="flex-1 w-full max-w-md lg:max-w-lg relative mt-12 lg:mt-0 group"
+            variants={imageReveal}
+            initial="hidden"
+            animate="visible"
+          >
             {/* Animated Backdrop Gradient */}
             <div className="absolute -inset-1 bg-gradient-to-r from-primary via-accent to-primary rounded-[2rem] blur-2xl opacity-30 group-hover:opacity-50 transition-opacity duration-500 animate-gradient-xy"></div>
 
-            {/* Decorative Floating Elements */}
-            <div className="absolute -top-10 -right-10 w-24 h-24 bg-dark border border-white/10 rounded-2xl flex items-center justify-center backdrop-blur-xl shadow-2xl z-20 animate-bounce-slow">
-              <FaFigma className="w-10 h-10 text-cyan-400 animate-spin-slow" />
-            </div>
+            {/* Decorative Floating Elements - Add subtle float animation */}
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.8, duration: 0.8 }}
+              className="absolute -top-10 -right-10 w-24 h-24 bg-dark border border-white/10 rounded-2xl flex items-center justify-center backdrop-blur-xl shadow-2xl z-20 animate-bounce-slow"
+            >
+              <FaFigma className="w-10 h-10 text-cyan-400" />
+            </motion.div>
 
-            <div className="absolute -bottom-6 -left-6 px-6 py-3 bg-dark/90 border border-white/10 rounded-xl backdrop-blur-xl shadow-2xl z-20 animate-bounce-slow delay-700 flex items-center gap-3">
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 1, duration: 0.8 }}
+              className="absolute -bottom-6 -left-6 px-6 py-3 bg-dark/90 border border-white/10 rounded-xl backdrop-blur-xl shadow-2xl z-20 animate-bounce-slow delay-700 flex items-center gap-3"
+            >
               <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
               <span className="text-white font-mono text-sm">Open to Work</span>
-            </div>
+            </motion.div>
 
             {/* Image Container */}
             <div className="relative rounded-[2rem] border border-white/10 bg-dark/50 backdrop-blur-sm overflow-hidden transform rotate-3 group-hover:rotate-0 transition-transform duration-500 ease-out shadow-2xl">
@@ -130,7 +201,7 @@ const Hero = () => {
 
             {/* Background Outline Decoration */}
             <div className="absolute inset-0 border-2 border-primary/20 rounded-[2rem] transform -rotate-3 -z-10 group-hover:rotate-0 transition-transform duration-500"></div>
-          </div>
+          </motion.div>
         </div>
       </div>
 

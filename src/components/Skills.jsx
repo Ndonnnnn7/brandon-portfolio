@@ -14,8 +14,27 @@ import {
   SiMaze,
 } from "react-icons/si";
 import { Sparkles } from "lucide-react";
+import { motion } from "framer-motion"; // Import Framer Motion
 
 const Skills = () => {
+  // Variabel Animasi
+  const fadeIn = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.8, ease: "easeOut" } 
+    }
+  };
+
+  const containerStagger = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+    }
+  };
+
   return (
     <section
       id="skills"
@@ -23,8 +42,15 @@ const Skills = () => {
     >
       {/* Container Utama */}
       <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
+        
         {/* Header Section */}
-        <div className="mb-16 max-w-2xl">
+        <motion.div 
+          className="mb-16 max-w-2xl"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+          variants={fadeIn}
+        >
           <div className="flex items-center gap-3 mb-4">
             <span className="h-px w-10 bg-accent"></span>
             <span className="text-accent font-medium tracking-widest uppercase text-sm">
@@ -35,20 +61,25 @@ const Skills = () => {
             The tools I use to <br />
             <span className="text-gray-500">craft experiences.</span>
           </h2>
-        </div>
+        </motion.div>
 
         {/* --- BENTO GRID LAYOUT --- */}
-        {/* Grid 6 Kolom untuk fleksibilitas layout asimetris */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-          {/* 1. HERO TECH (Figma) - Besar (2x2) */}
-          <div className="col-span-2 md:col-span-2 lg:col-span-2 row-span-2 relative group overflow-hidden bg-white/5 border border-white/10 rounded-3xl p-8 hover:border-cyan-400/50 transition-colors duration-500">
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <motion.div 
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={containerStagger}
+        >
+          {/* 1. HERO TECH (Figma) */}
+          <motion.div variants={fadeIn} className="col-span-2 md:col-span-2 lg:col-span-2 row-span-2 relative group overflow-hidden bg-white/5 border border-white/10 rounded-3xl p-8 hover:border-red-400/50 transition-colors duration-500">
+            <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div className="absolute -right-10 -bottom-10 opacity-20 group-hover:opacity-40 group-hover:rotate-12 transition-all duration-500">
-              <FaFigma className="w-40 h-40 text-cyan-400" />
+              <FaFigma className="w-40 h-40 text-red-400" />
             </div>
 
             <div className="relative z-10 h-full flex flex-col justify-between">
-              <div className="w-14 h-14 bg-cyan-500/20 rounded-2xl flex items-center justify-center text-cyan-400 mb-4">
+              <div className="w-14 h-14 bg-red-500/20 rounded-2xl flex items-center justify-center text-red-400 mb-4">
                 <FaFigma className="w-8 h-8 animate-spin-slow" />
               </div>
               <div>
@@ -60,10 +91,10 @@ const Skills = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* 2. STYLE (React) - Persegi Panjang (2x1) */}
-          <div className="col-span-2 md:col-span-1 lg:col-span-2 relative group bg-white/5 border border-white/10 rounded-3xl p-6 hover:border-sky-400/50 transition-colors duration-500 flex flex-col justify-between overflow-hidden">
+          {/* 2. STYLE (Maze) */}
+          <motion.div variants={fadeIn} className="col-span-2 md:col-span-1 lg:col-span-2 relative group bg-white/5 border border-white/10 rounded-3xl p-6 hover:border-sky-400/50 transition-colors duration-500 flex flex-col justify-between overflow-hidden">
             <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-l from-sky-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div className="flex justify-between items-start relative z-10">
               <div className="w-12 h-12 bg-sky-500/20 rounded-xl flex items-center justify-center text-sky-400">
@@ -77,26 +108,26 @@ const Skills = () => {
                 For testing my prototypes with real users.
               </p>
             </div>
-          </div>
+          </motion.div>
 
-          {/* 3. LANGUAGE (HTML) - Kotak (1x1) */}
-          <div className="col-span-1 md:col-span-1 lg:col-span-1 relative group bg-white/5 border border-white/10 rounded-3xl p-6 hover:border-yellow-400/50 transition-colors duration-500 flex flex-col items-center justify-center text-center">
+          {/* 3. LANGUAGE (HTML) */}
+          <motion.div variants={fadeIn} className="col-span-1 md:col-span-1 lg:col-span-1 relative group bg-white/5 border border-white/10 rounded-3xl p-6 hover:border-yellow-400/50 transition-colors duration-500 flex flex-col items-center justify-center text-center">
             <div className="absolute inset-0 bg-yellow-400/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <FaHtml5 className="w-12 h-12 text-yellow-400 mb-4 group-hover:scale-110 transition-transform" />
             <h3 className="text-lg font-bold text-white">HTML</h3>
             <span className="text-xs text-gray-500 mt-1">Modern Markup</span>
-          </div>
+          </motion.div>
 
-          {/* 4. DESIGN (CSS) - Kotak (1x1) */}
-          <div className="col-span-1 md:col-span-1 lg:col-span-1 relative group bg-white/5 border border-white/10 rounded-3xl p-6 hover:border-pink-400/50 transition-colors duration-500 flex flex-col items-center justify-center text-center">
+          {/* 4. DESIGN (CSS) */}
+          <motion.div variants={fadeIn} className="col-span-1 md:col-span-1 lg:col-span-1 relative group bg-white/5 border border-white/10 rounded-3xl p-6 hover:border-pink-400/50 transition-colors duration-500 flex flex-col items-center justify-center text-center">
             <div className="absolute inset-0 bg-pink-400/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <FaCss3Alt className="w-12 h-12 text-pink-400 mb-4 group-hover:scale-110 transition-transform" />
             <h3 className="text-lg font-bold text-white">CSS</h3>
             <span className="text-xs text-gray-500 mt-1">Utility-First Styling</span>
-          </div>
+          </motion.div>
 
-          {/* 5.Canva - Persegi Panjang (2x1) */}
-          <div className="col-span-2 lg:col-span-2 relative group bg-white/5 border border-white/10 rounded-3xl p-6 hover:border-white/50 transition-colors duration-500 overflow-hidden">
+          {/* 5. Canva */}
+          <motion.div variants={fadeIn} className="col-span-2 lg:col-span-2 relative group bg-white/5 border border-white/10 rounded-3xl p-6 hover:border-white/50 transition-colors duration-500 overflow-hidden">
             <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 transition-opacity">
               <SiCanva className="w-32 h-32 text-white" />
             </div>
@@ -111,10 +142,10 @@ const Skills = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* 6. ESSENTIALS (Grid Kecil) - Span 2 */}
-          <div className="col-span-2 lg:col-span-2 grid grid-cols-2 gap-4">
+          {/* 6. ESSENTIALS (Grid Kecil) */}
+          <motion.div variants={fadeIn} className="col-span-2 lg:col-span-2 grid grid-cols-2 gap-4">
             {/* Git */}
             <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-3 hover:bg-white/10 transition-colors">
               <FaGitAlt className="text-orange-500 w-6 h-6" />
@@ -136,18 +167,24 @@ const Skills = () => {
                 JavaScript
               </span>
             </div>
-            {/* TypeScript */}
+            {/* Android */}
             <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-3 hover:bg-white/10 transition-colors">
               <FaAndroid className="text-blue-400 w-6 h-6" />
               <span className="text-sm font-medium text-gray-300">
                 Android Dev
               </span>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* --- Marquee Text for Soft Skills / Others --- */}
-        <div className="mt-20 relative w-full overflow-hidden py-4 border-y border-white/5 bg-white/[0.02]">
+        <motion.div 
+          className="mt-20 relative w-full overflow-hidden py-4 border-y border-white/5 bg-white/[0.02]"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.5 }}
+          viewport={{ once: true }}
+        >
           <div className="absolute left-0 top-0 w-20 h-full bg-gradient-to-r from-[#121321] to-transparent z-10"></div>
           <div className="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-[#121321] to-transparent z-10"></div>
 
@@ -171,7 +208,7 @@ const Skills = () => {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
 
       <style jsx>{`

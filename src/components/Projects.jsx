@@ -6,152 +6,137 @@ const Projects = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [hoveredProject, setHoveredProject] = useState(null);
 
-
+  // --- DATA PROJECTS (Sama seperti sebelumnya) ---
   const projects = [
-    // --- FRONT END  ---
     {
       id: 1,
-      title: "E-Commerce Dashboard",
+      title: "InterStellar",
       category: "Front End",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
-      description: "Complex dashboard with real-time analytics using React & Recharts.",
-      tech: ["React", "Tailwind", "Recharts"],
-      links: { demo: "#", github: "#" },
-      featured: true // Besar
+      image: "img/Interstellar.png",
+      description: "Website to explore everything from tiny particles to the universe with AI",
+      tech: ["Three.js", "API", "React"],
+      links: { demo: "https://interstellar-phi-beryl.vercel.app/", github: "https://github.com/SakaGintoki/Interstellar" },
+      featured: true
     },
     {
       id: 2,
-      title: "Crypto Tracker",
+      title: "Masakin Application",
       category: "Front End",
-      image: "https://images.unsplash.com/photo-1621761191319-c6fb62004040?q=80&w=1974&auto=format&fit=crop",
-      description: "Live cryptocurrency price tracking app connecting to CoinGecko API.",
-      tech: ["Vue.js", "API", "CSS Modules"],
+      image: "img/Masakin1.png",
+      description: "Aplication with a chatbot to check calories, get recipes, and buy ingredients instantly.",
+      tech: ["Kotlin", "Jetpack Compose", "Firebase", "Figma"],
       links: { demo: "#", github: "#" },
       featured: false
     },
     {
       id: 3,
-      title: "Travel Booking UI",
+      title: "Hack.id",
       category: "Front End",
-      image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop",
-      description: "Responsive booking interface with smooth framer-motion animations.",
-      tech: ["Next.js", "Framer Motion"],
-      links: { demo: "#", github: "#" },
+      image: "img/Hack.id.png",
+      description: "AI-powered website that helps you discover hackathon events from around the world.",
+      tech: ["Figma", "Prototyping", "User Testing"],
+      links: { demo: "#", github: "https://github.com/DarveshAziz/Hack.id" },
       featured: false
     },
-
-    // --- DATA  ---
     {
       id: 4,
-      title: "Sales Prediction Model",
-      category: "Data",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
-      description: "Python-based machine learning model to predict quarterly sales trends.",
-      tech: ["Python", "Pandas", "Scikit-Learn"],
-      links: { demo: "#", github: "#" },
+      title: "DeafSpace",
+      category: "UI/UX",
+      image: "img/DeafSpace.png",
+      description: "App that allows deaf individuals to easily order sign language interpreters",
+      tech: ["Figma", "Prototyping", "User Testing"],
+      links: { demo: "https://www.figma.com/proto/7pEBT3wVsdw42AHuchP96x/Raion-Hackjam-3?page-id=5%3A8&node-id=233-3135&viewport=641%2C-1842%2C0.24&t=sn4PMhe2xBdW7Gdf-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=233%3A3458&show-proto-sidebar=1"},
       featured: false
     },
-
-    // --- UI/UX ---
     {
       id: 5,
-      title: "Banking App Redesign",
+      title: "Kiddora",
       category: "UI/UX",
-      image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1470&auto=format&fit=crop",
-      description: "Complete overhaul of a legacy banking application focusing on accessibility.",
-      tech: ["Figma", "Prototyping"],
-      links: { demo: "#", github: "#" },
-      featured: true // Besar (Highlight UI/UX)
+      image: "img/Kiddora.png",
+      description: "A platform that helps families find dependable babysitters to ensure quality care for their little ones.",
+      tech: ["Figma", "Prototyping", "User Testing"],
+      links: { demo: "https://www.figma.com/proto/nKv20vZ0eMc1lbcaPiIww4/Kiddora?page-id=1%3A3&node-id=249-2724&viewport=-3940%2C-2018%2C0.38&t=tl48gWN5NE12ucF8-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=72%3A427&show-proto-sidebar=1"},
+      featured: true
     },
     {
       id: 6,
-      title: "Food Delivery Mobile",
+      title: "Furever Pet Care",
       category: "UI/UX",
-      image: "https://images.unsplash.com/photo-1526304640152-d4619684e884?q=80&w=2073&auto=format&fit=crop",
-      description: "User-centered design process for a local food delivery startup.",
-      tech: ["Figma", "User Research"],
+      image: "img/Furever.png",
+      description: "App for pet services, providing care and support to ensure the well-being of animals.",
+      tech: ["Figma", "Prototyping", "User Testing"],
       links: { demo: "#", github: "#" },
       featured: false
     },
     {
       id: 7,
-      title: "Smart Home Controller",
+      title: "Infotional",
       category: "UI/UX",
-      image: "https://images.unsplash.com/photo-1558002038-1091a1661116?q=80&w=2071&auto=format&fit=crop",
-      description: "IoT interface design for controlling smart devices.",
-      tech: ["Adobe XD", "Interaction"],
-      links: { demo: "#", github: "#" },
-      featured: false
+      image: "img/Infotional.png",
+      description: "App that helps students access scholarships, mentorship, and various educational.",
+      tech: ["Figma", "Prototyping", "User Testing"],
+      links: { demo: "https://www.figma.com/proto/6GqXh0ZABe9qsb78LuSOSG/Internship-(Infotional)?page-id=6%3A2&node-id=798-17189&p=f&viewport=133%2C342%2C0.05&t=1NdSEsLvWTE6OWkP-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=798%3A1487",},
+      featured: true
     },
     {
       id: 8,
-      title: "Fashion E-commerce",
+      title: "LittleSteps",
       category: "UI/UX",
-      image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop",
+      image: "img/LittleKids.png",
       description: "Minimalist fashion store layout with focus on typography.",
-      tech: ["Figma", "Wireframing"],
-      links: { demo: "#", github: "#" },
+      tech: ["Figma", "Prototyping", "User Testing"],
+      links: { demo: "https://www.figma.com/proto/SEqFf1D4euTttq0SXT3gub/LittleSteps?page-id=20%3A8589&node-id=55-1315&p=f&viewport=607%2C-1930%2C0.23&t=b2cKUrbFM73U9fb8-1&scaling=scale-down&content-scaling=fixed",},
       featured: false
     },
     {
       id: 9,
-      title: "Health Tracker App",
+      title: "WeCare",
       category: "UI/UX",
-      image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2070&auto=format&fit=crop",
-      description: "Daily activity and health monitoring dashboard.",
-      tech: ["Figma", "UI Design"],
-      links: { demo: "#", github: "#" },
+      image: "img/WeCare.png",
+      description: "App that enables victims of sexual harassment to quickly contact the police or authorities.",
+      tech: ["Figma", "Prototyping", "User Testing"],
+      links: { demo: "https://www.figma.com/proto/VZnPxD4CemjN22jSCEJz3n/WeCare?page-id=467%3A726&node-id=467-727&p=f&viewport=1470%2C926%2C0.57&t=7o2mTgRz6Ds7aGhM-1&scaling=scale-down&content-scaling=fixed"},
       featured: false
     },
     {
       id: 10,
-      title: "Learning Management",
+      title: "Bundaku",
       category: "UI/UX",
-      image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=1974&auto=format&fit=crop",
-      description: "Student portal dashboard for online courses.",
-      tech: ["Sketch", "Auto Layout"],
-      links: { demo: "#", github: "#" },
+      image: "img/Bundaku.png",
+      description: "App for moms and babies, for pregnancy monitoring and stunting.",
+      tech: ["Figma", "Prototyping", "User Testing"],
+      links: { demo: "https://www.figma.com/proto/r3FH9ZgbTtkebwyflJlzQH/BundaKu?page-id=601%3A2195&node-id=601-2485&viewport=-1802%2C605%2C0.49&t=u0LlshESnMPJsH9l-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=601%3A2455"},
       featured: false
     },
     {
       id: 11,
-      title: "NFT Marketplace",
+      title: "Legana",
       category: "UI/UX",
-      image: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1974&auto=format&fit=crop",
-      description: "Dark mode interface for digital asset trading.",
-      tech: ["Figma", "Dark Mode"],
-      links: { demo: "#", github: "#" },
-      featured: false
+      image: "img/Legana.png",
+      description: "App that analyzes legal documents or issues from photos or text and suggests relevant laws and actions.",
+      tech: ["Figma", "Prototyping", "User Testing"],
+      links: { demo: "https://www.figma.com/proto/pq9XdoJGny4CdaOK6i1gaT/Legana?page-id=3%3A496&node-id=3-507&p=f&viewport=833%2C475%2C0.16&t=mJnjHmtzCDlPMtTI-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=3%3A507"},
+      featured: true
     },
     {
       id: 12,
-      title: "Travel Guide App",
+      title: "Sehat Mental UB ",
       category: "UI/UX",
-      image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2021&auto=format&fit=crop",
+      image: "img/Sehatmental.png",
       description: "Immersive travel experience design.",
-      tech: ["Figma", "Prototyping"],
-      links: { demo: "#", github: "#" },
+      tech: ["Figma", "Prototyping", "User Testing"],
+      links: { demo: "https://www.figma.com/proto/tvrM7wbl45nRcTfnLGnvQT/Sehat-Mental-UB?page-id=29%3A1902&node-id=29-1903&viewport=224%2C-351%2C0.5&t=9TVqvObvioflH02R-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=29%3A1903&show-proto-sidebar=1"},
       featured: false
     },
     {
       id: 13,
-      title: "Podcast Player",
-      category: "UI/UX",
-      image: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=2070&auto=format&fit=crop",
-      description: "Audio player interface with playlist management.",
-      tech: ["Figma", "Component Set"],
+      title: "Detection License Plate",
+      category: "Data",
+      image: "img/plate.avif",
+      description: "Using a YOLOv8 model to detect vehicle license plates and EasyOCR to read the plate text.",
+      tech: ["Phyton", "Pre-Trained Model", "Visualization"],
       links: { demo: "#", github: "#" },
-      featured: false
-    },
-    {
-      id: 14,
-      title: "Car Dashboard",
-      category: "UI/UX",
-      image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=2070&auto=format&fit=crop",
-      description: "HMI design for modern electric vehicle.",
-      tech: ["Figma", "HMI"],
-      links: { demo: "#", github: "#" },
-      featured: false
+      featured: true
     },
   ];
 
@@ -166,6 +151,39 @@ const Projects = () => {
     ? projects 
     : projects.filter(p => p.category === activeCategory);
 
+  // --- ANIMATION VARIANTS (Natural Feel) ---
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } 
+    }
+  };
+
+  const containerStagger = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, scale: 0.9, y: 20 },
+    visible: { 
+      opacity: 1, 
+      scale: 1, 
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" }
+    },
+    exit: { 
+      opacity: 0, 
+      scale: 0.9, 
+      transition: { duration: 0.3 } 
+    }
+  };
+
   return (
     <section id="projects" className="relative w-full min-h-screen py-24 text-white">
       {/* Background Glow */}
@@ -173,31 +191,31 @@ const Projects = () => {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         
-        {/* Header & Filter */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 gap-8">
+        {/* --- HEADER --- */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 border-b border-white/10 pb-8">
            <div className="max-w-2xl">
               <div className="flex items-center gap-3 mb-4">
                   <span className="h-px w-10 bg-accent"></span>
-                  <span className="text-accent font-medium tracking-widest uppercase text-sm">Project's</span>
+                  <span className="text-accent font-medium tracking-widest uppercase text-sm">Selected Works</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold leading-tight">
-                Recent <span className="text-gray-500">Creations.</span>
+              <h2 className="text-5xl md:text-6xl font-bold leading-[0.9] tracking-tight">
+                Crafting <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">Digital</span> <br/>
+                <span className="italic font-serif font-light text-gray-300">Experiences.</span>
               </h2>
            </div>
 
-           {/* Filter Tabs - Modern Pill Style */}
+           {/* Modern Tabs */}
            <div className="flex flex-wrap gap-2">
              {categories.map((cat) => (
                <button
                  key={cat.name}
                  onClick={() => setActiveCategory(cat.name)}
-                 className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border ${
+                 className={`relative px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 border ${
                    activeCategory === cat.name
                      ? 'bg-white text-black border-white'
-                     : 'bg-white/5 text-gray-400 border-white/10 hover:bg-white/10 hover:text-white'
+                     : 'bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white'
                  }`}
                >
-                 <cat.icon className="w-4 h-4" />
                  {cat.name}
                </button>
              ))}
@@ -205,18 +223,24 @@ const Projects = () => {
         </div>
 
         {/* Project Grid (Masonry/Bento Logic) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={containerStagger}
+        >
            <AnimatePresence mode='popLayout'>
-             {filteredProjects.map((project, index) => (
+             {filteredProjects.map((project) => (
                <motion.div
                  layout
                  key={project.id}
-                 initial={{ opacity: 0, scale: 0.9 }}
-                 animate={{ opacity: 1, scale: 1 }}
-                 exit={{ opacity: 0, scale: 0.9 }}
-                 transition={{ duration: 0.3 }}
+                 // Gunakan variants untuk animasi masuk awal + filter
+                 variants={cardVariants}
+                 initial="hidden"
+                 animate="visible"
+                 exit="exit"
                  className={`group relative rounded-3xl overflow-hidden border border-white/10 bg-white/5 hover:border-white/20 transition-all duration-500 ${
-                   // Logika Bento: Jika project 'featured' DAN kita sedang di tab 'All' atau tab kategori-nya, dia jadi besar
                    project.featured ? 'md:col-span-2 lg:col-span-2 row-span-2 min-h-[400px]' : 'col-span-1 min-h-[300px]'
                  }`}
                  onMouseEnter={() => setHoveredProject(project.id)}
@@ -270,12 +294,18 @@ const Projects = () => {
                </motion.div>
              ))}
            </AnimatePresence>
-        </div>
+        </motion.div>
 
         {/* Show More Hint if too many */}
-        <div className="mt-12 text-center">
+        <motion.div 
+          className="mt-12 text-center"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5 }}
+        >
             <p className="text-gray-500 text-sm">Showing {filteredProjects.length} projects in {activeCategory}</p>
-        </div>
+        </motion.div>
 
       </div>
     </section>

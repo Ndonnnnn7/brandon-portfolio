@@ -2,12 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
 
-body {
-  background-color: #0f172a;
-  color: #ffffff;
-  /* Hapus baris font-family di sini, biarkan Tailwind yang mengurusnya */
+
+  html, body {
+    background-color: #121321; 
+    color: #ffffff;
+    
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+  }
+
+  html::-webkit-scrollbar, 
+  body::-webkit-scrollbar {
+    display: none;
+  }
+  
+  *::-webkit-scrollbar {
+    display: none;
+  }
+  * {
+    scrollbar-width: none;
+  }
 }

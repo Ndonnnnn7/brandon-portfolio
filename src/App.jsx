@@ -6,29 +6,25 @@ import Projects from './components/Projects';
 import Achievements from './components/Achievements';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import GlobalBackground from './components/GlobalBackground'; 
-// Note: BackgroundAnimation tidak perlu dipakai lagi jika sudah ada GlobalBackground yang mencakup semuanya.
+import GlobalBackground from './components/GlobalBackground';
 
 function App() {
   return (
-    // 'min-h-screen text-white overflow-hidden' memastikan layout dasar benar
-    <div className="relative min-h-screen text-white overflow-hidden">
+    // 2. Tambahkan 'overflow-x-hidden' agar marquee miring tidak membuat scroll ke samping
+    <div className="relative min-h-screen text-white overflow-x-hidden">
       
-      {/* 1. Global Background (Fixed Position) */}
-      {/* Ini yang membuat background nyambung terus tanpa garis potong */}
+      {/* Global Background (Fixed Position) */}
       <GlobalBackground />
 
-      {/* 2. Navbar */}
       <Navbar />
       
-      {/* 3. Main Content Wrapper */}
-      {/* gap-0 penting untuk menghapus celah antar section */}
+      {/* Main Content Wrapper */}
       <main className="flex flex-col gap-0 relative z-10">
       
         <section id="home">
            <Hero />
         </section>
-
+        
         <section id="about">
            <About />
         </section>
