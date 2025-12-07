@@ -138,6 +138,16 @@ const Projects = () => {
       links: { demo: "#", github: "#" },
       featured: true
     },
+    {
+      id: 14,
+      title: "Senggreng Tourism Website",
+      category: "Front End",
+      image: "img/desasenggreng.png",
+      description: "A tourism website for Senggreng Village, showcasing tourist attractions and restaurants.",
+      tech: ["Three.js", "API", "React"],
+      links: { demo: "https://desa-senggreng.vercel.app/home", github: "https://github.com/Weedanta/Desa-Senggreng" },
+      featured: false
+    },
   ];
 
   const categories = [
