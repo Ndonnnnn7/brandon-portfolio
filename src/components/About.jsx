@@ -243,7 +243,7 @@ const About = () => {
 
             {/* Content */}
             <div className="relative z-10">
-              <h4 className="text-xl font-medium text-white mb-3 tracking-tight group-hover:text-blue-200 transition-colors">
+              <h4 className="text-xl font-medium text-white mb-3 tracking-tight group-hover:text-blue-300 transition-colors">
                 Frontend
               </h4>
 

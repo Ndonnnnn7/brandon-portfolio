@@ -176,39 +176,6 @@ const Skills = () => {
             </div>
           </motion.div>
         </motion.div>
-
-        {/* --- Marquee Text for Soft Skills / Others --- */}
-        <motion.div 
-          className="mt-20 relative w-full overflow-hidden py-4 border-y border-white/5 bg-white/[0.02]"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          viewport={{ once: true }}
-        >
-          <div className="absolute left-0 top-0 w-20 h-full bg-gradient-to-r from-[#121321] to-transparent z-10"></div>
-          <div className="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-[#121321] to-transparent z-10"></div>
-
-          <div className="flex whitespace-nowrap animate-marquee">
-            {[
-              "Responsive Design",
-              "Accessibility",
-              "SEO Optimization",
-              "Performance Tuning",
-              "Problem Solving",
-              "Clean Architecture",
-              "Responsive Design",
-              "Accessibility",
-              "SEO Optimization",
-            ].map((item, index) => (
-              <div key={index} className="flex items-center mx-8">
-                <Sparkles className="w-4 h-4 text-secondary mr-4" />
-                <span className="text-gray-400 font-mono text-sm tracking-widest uppercase">
-                  {item}
-                </span>
-              </div>
-            ))}
-          </div>
-        </motion.div>
       </div>
 
       <style jsx>{`
