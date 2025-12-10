@@ -81,11 +81,11 @@ const Projects = () => {
     {
       id: 8,
       title: "LittleSteps",
-      category: "UI/UX",
+      category: "Front End",
       image: "img/LittleKids.png",
-      description: "Minimalist fashion store layout with focus on typography.",
+      description: "App that helps parents find trusted babysitters, ensuring quality care.",
       tech: ["Figma", "Prototyping", "User Testing"],
-      links: { demo: "https://www.figma.com/proto/SEqFf1D4euTttq0SXT3gub/LittleSteps?page-id=20%3A8589&node-id=55-1315&p=f&viewport=607%2C-1930%2C0.23&t=b2cKUrbFM73U9fb8-1&scaling=scale-down&content-scaling=fixed",},
+      links: { demo: "https://www.figma.com/proto/SEqFf1D4euTttq0SXT3gub/LittleSteps?page-id=20%3A8589&node-id=55-1315&p=f&viewport=607%2C-1930%2C0.23&t=b2cKUrbFM73U9fb8-1&scaling=scale-down&content-scaling=fixed",github: "https://github.com/SakaGintoki/LittleSteps"},
       featured: false
     },
     {
@@ -123,7 +123,7 @@ const Projects = () => {
       title: "Sehat Mental UB ",
       category: "UI/UX",
       image: "img/Sehatmental.png",
-      description: "Immersive travel experience design.",
+      description: "An platform designed to help students access emotional and psychological support more easily",
       tech: ["Figma", "Prototyping", "User Testing"],
       links: { demo: "https://www.figma.com/proto/tvrM7wbl45nRcTfnLGnvQT/Sehat-Mental-UB?page-id=29%3A1902&node-id=29-1903&viewport=224%2C-351%2C0.5&t=9TVqvObvioflH02R-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=29%3A1903&show-proto-sidebar=1"},
       featured: false
