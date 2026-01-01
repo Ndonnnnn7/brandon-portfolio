@@ -18,7 +18,7 @@ const educationData = [
     school: "Catholic High School St. Albertus",
     period: "2020 - 2023",
     role: "Science Major",
-    desc: "Built a strong foundation in analytical thinking. Active in computer science club and mathematics olympiad.",
+    desc: "Built a strong foundation in analytical thinking.",
     status: "completed",
   },
   {
