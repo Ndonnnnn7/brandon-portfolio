@@ -187,7 +187,7 @@ const projectsData = [
     title: "Bundaku",
     category: "UI/UX",
     image: "/img/Bundaku.png",
-    gallery: ["/img/projects/Bundaku1.png", "/img/projects/Bundaku2.png"],
+    gallery: ["/img/projects/Bundaku1.png"],
     description:
       "App for moms and babies, for pregnancy monitoring and stunting prevention.",
     fullDescription:
