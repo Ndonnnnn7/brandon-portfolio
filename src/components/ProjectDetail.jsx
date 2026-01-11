@@ -289,8 +289,7 @@ const ProjectDetail = () => {
 
   // --- 2. LOGIKA PARALLAX ---
   const { scrollYProgress } = useScroll();
-  // Gambar akan bergerak 20% ke bawah saat discroll
-  const yParallax = useTransform(scrollYProgress, [0, 0.5], ["0%", "20%"]);
+  const yParallax = useTransform(scrollYProgress, [0, 0], ["0%", "0%"]);
 
   if (!project) {
     return (
