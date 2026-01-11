@@ -113,6 +113,7 @@ const projectsData = [
     title: "Furever Pet Care",
     category: "UI/UX",
     image: "/img/Furever.png",
+    gallery: ["/img/projects/Furever1.png"],
     description:
       "App for pet services, providing care and support to ensure the well-being of animals.",
     fullDescription:
@@ -149,6 +150,7 @@ const projectsData = [
     title: "LittleSteps",
     category: "Front End",
     image: "/img/LittleKids.png",
+    gallery: ["/img/projects/LittleSteps1.png", "/img/projects/LittleSteps2.png"],
     description:
       "App that helps parents find trusted babysitters, ensuring quality care.",
     fullDescription:
@@ -185,6 +187,7 @@ const projectsData = [
     title: "Bundaku",
     category: "UI/UX",
     image: "/img/Bundaku.png",
+    gallery: ["/img/projects/Bundaku1.png", "/img/projects/Bundaku2.png"],
     description:
       "App for moms and babies, for pregnancy monitoring and stunting prevention.",
     fullDescription:
@@ -203,6 +206,7 @@ const projectsData = [
     title: "Legana",
     category: "UI/UX",
     image: "/img/Legana.png",
+    gallery: ["/img/projects/Legana1.png", "/img/projects/Legana2.png"],
     description:
       "App that analyzes legal documents or issues from photos or text and suggests relevant laws.",
     fullDescription:
@@ -211,9 +215,9 @@ const projectsData = [
     role: "UI/UX Designer",
     year: "2025",
     links: {
-      demo: "https://www.figma.com/proto/pq9XdoJGny4CdaOK6i1gaT/Legana?page-id=3%3A496&node-id=3-507&p=f&viewport=833%2C475%2C0.16&t=mJnjHmtzCDlPMtTI-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=3%3A507",
+      demo: "#",
       github: "#",
-      figma: "#",
+      figma: "https://www.figma.com/proto/pq9XdoJGny4CdaOK6i1gaT/Legana?page-id=3%3A496&node-id=3-507&p=f&viewport=833%2C475%2C0.16&t=mJnjHmtzCDlPMtTI-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=3%3A507",
     },
   },
   {
