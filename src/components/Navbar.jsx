@@ -1,191 +1,944 @@
-import { useState, useEffect } from 'react';
-import { FaBars, FaTimes } from 'react-icons/fa';
-import { IoChevronForward } from 'react-icons/io5';
-
-// Import components
-import BackgroundAnimation from './BackgroundAnimation';
-// ... import komponen lainnya
+import { useState, useEffect, useRef, useCallback } from "react";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "framer-motion";
+import BackgroundAnimation from "./BackgroundAnimation";
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
+  const [activeSection, setActiveSection] = useState("home");
+  const [hoveredLink, setHoveredLink] = useState(null);
+
+  const cardRef = useRef(null);
 
   const links = [
-    { id: 1, link: 'home', label: 'Home' },
-    { id: 2, link: 'about', label: 'About' },
-    { id: 3, link: 'skills', label: 'Skills' },
-    { id: 4, link: 'projects', label: 'Projects' },
-    { id: 5, link: 'achievements', label: 'Achievements' },
-    { id: 6, link: 'contact', label: 'Contact' },
+    { id: 1, link: "home", label: "Home", index: "01" },
+    { id: 2, link: "about", label: "About", index: "02" },
+    { id: 3, link: "skills", label: "Skills", index: "03" },
+    { id: 4, link: "projects", label: "Projects", index: "04" },
+    { id: 5, link: "achievements", label: "Achievements", index: "05" },
+    // ❌ contact dihapus dari list supaya CTA jadi satu-satunya jalan ke contact
+    // { id: 6, link: "contact", label: "Contact", index: "06" },
   ];
 
+  /* ── 3D micro-tilt ───────────────────────────────────────────────────── */
+  const mx = useMotionValue(0.5);
+  const my = useMotionValue(0.5);
+  const sx = useSpring(mx, { stiffness: 60, damping: 20, mass: 0.7 });
+  const sy = useSpring(my, { stiffness: 60, damping: 20, mass: 0.7 });
+
+  const rX = useTransform(sy, [0, 1], [2.2, -2.2]);
+  const rY = useTransform(sx, [0, 1], [-2.2, 2.2]);
+  const glareX = useTransform(sx, [0, 1], [-10, 110]);
+  const glareY = useTransform(sy, [0, 1], [-10, 110]);
+
+  const onMove = useCallback(
+    (e) => {
+      const rect = cardRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      mx.set((e.clientX - rect.left) / rect.width);
+      my.set((e.clientY - rect.top) / rect.height);
+    },
+    [mx, my]
+  );
+
+  const onLeave = useCallback(() => {
+    mx.set(0.5);
+    my.set(0.5);
+  }, [mx, my]);
+
+  /* ── SCROLL TRACKING ─────────────────────────────────────────────────── */
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-      
-      // Kita bungkus logika active section ini
-      // Agar tidak bentrok saat user sedang mengklik manual
-      const sections = links.map(({ link }) => document.getElementById(link));
-      const scrollPosition = window.scrollY + 100;
+      setScrolled(window.scrollY > 30);
+      const scrollPos = window.scrollY + 120;
 
-      sections.forEach((section, index) => {
-        if (section) {
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.offsetHeight;
-          
-          if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-            // Kita cek agar tidak me-reset state jika user baru saja klik
-            // (Logika sederhana: biarkan scroll listener tetap jalan untuk update natural)
-             setActiveSection(links[index].link);
-          }
+      // tracking untuk sections di links
+      links.forEach(({ link }) => {
+        const el = document.getElementById(link);
+        if (
+          el &&
+          scrollPos >= el.offsetTop &&
+          scrollPos < el.offsetTop + el.offsetHeight
+        ) {
+          setActiveSection(link);
         }
       });
+
+      // tracking juga untuk contact (meskipun tidak ada di menu list)
+      const contactEl = document.getElementById("contact");
+      if (
+        contactEl &&
+        scrollPos >= contactEl.offsetTop &&
+        scrollPos < contactEl.offsetTop + contactEl.offsetHeight
+      ) {
+        setActiveSection("contact");
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []); // Hapus dependency links agar tidak re-render berlebih
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  /* ── NAV CLICK ───────────────────────────────────────────────────────── */
   const handleNavClick = (e, link) => {
-    e.preventDefault(); // 1. Mencegah lompatan kasar default browser
-    setNav(false); 
-    setActiveSection(link); // 2. Set state LANGSUNG agar animasi pill instan
+    e.preventDefault();
+    setNav(false);
+    setActiveSection(link);
 
-    // 3. Manual Smooth Scroll dengan Offset
-    const element = document.getElementById(link);
-    if (element) {
-      const offset = 100; // Sesuaikan offset agar tidak tertutup navbar floating
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.scrollY - offset;
-
+    const el = document.getElementById(link);
+    if (el) {
       window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
+        top: el.getBoundingClientRect().top + window.scrollY - 90,
+        behavior: "smooth",
       });
     }
   };
 
+  /* ── LOCK BODY SCROLL WHEN MOBILE MENU OPEN ──────────────────────────── */
+  useEffect(() => {
+    document.body.style.overflow = nav ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [nav]);
+
   return (
     <>
-      {/* Background Animation */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..800,0..100&family=Sora:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
+
+        :root{
+          --bg:#07070a;
+          --bone:#F4F0E8;
+          --muted:#9A948A;
+
+          --metal:#D6B25E;
+          --metal2:#F2D89A;
+          --rust:#D45D3A;
+          --haze:#14B8A6;
+          --plum:#7C3AED;
+
+          --border: rgba(214,178,94,0.18);
+          --border2: rgba(214,178,94,0.34);
+        }
+
+        .f-display{ font-family:'Fraunces', serif; }
+        .f-sans{ font-family:'Sora', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+        .f-mono{ font-family:'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+        .navArtifact{
+          position: relative;
+          border-radius: 999px;
+          background: rgba(7,7,10,0.58);
+          box-shadow: 0 26px 90px rgba(0,0,0,0.65), 0 0 0 1px rgba(214,178,94,0.14) inset;
+          backdrop-filter: blur(18px);
+          -webkit-backdrop-filter: blur(18px);
+          overflow: hidden;
+          transform: translateZ(0);
+        }
+        .navArtifact::before{
+          content:'';
+          position:absolute; inset:0; padding:1px; border-radius:999px;
+          background: linear-gradient(135deg,
+            rgba(214,178,94,0.70),
+            rgba(20,184,166,0.18),
+            rgba(124,58,237,0.18),
+            rgba(214,178,94,0.25)
+          );
+          -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          -webkit-mask-composite: xor; mask-composite: exclude;
+          opacity:.75; pointer-events:none;
+        }
+        .navArtifact::after{
+          content:'';
+          position:absolute; inset:-2px;
+          background:
+            radial-gradient(circle at 16% 18%, rgba(255,255,255,0.06), transparent 46%),
+            radial-gradient(circle at 84% 18%, rgba(255,255,255,0.04), transparent 52%),
+            linear-gradient(180deg, rgba(255,255,255,0.02), transparent 42%, rgba(0,0,0,0.24));
+          opacity:.75; pointer-events:none;
+        }
+
+        .navTexture{
+          position:absolute; inset:0; pointer-events:none; z-index:0;
+          background-image:
+            linear-gradient(rgba(214,178,94,0.06) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(214,178,94,0.06) 1px, transparent 1px);
+          background-size: 80px 80px;
+          mask-image: radial-gradient(circle at 50% 20%, black 0%, black 55%, transparent 86%);
+          opacity:.65;
+        }
+        .navTopo{
+          position:absolute; inset:0; pointer-events:none; z-index:0;
+          background-image: repeating-radial-gradient(
+            circle at 110% -20%,
+            transparent 0,
+            transparent 46px,
+            rgba(214,178,94,0.018) 46px,
+            rgba(214,178,94,0.018) 47px
+          );
+          opacity:.8;
+        }
+        .navGrain::before{
+          content:'';
+          position:absolute;
+          inset:-200%;
+          width:400%; height:400%;
+          background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 260 260' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+          opacity:0.04;
+          mix-blend-mode:overlay;
+          transform: rotate(4deg);
+          pointer-events:none;
+          z-index:0;
+        }
+
+        @keyframes sheen {
+          from { transform: translateX(-140%) skewX(-18deg); opacity: 0; }
+          18%  { opacity: .28; }
+          to   { transform: translateX(140%) skewX(-18deg); opacity: 0; }
+        }
+        .sheen{
+          position:absolute; inset:0;
+          pointer-events:none; z-index:2;
+          width:55%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10), transparent);
+          transform: translateX(-140%) skewX(-18deg);
+          opacity:0;
+        }
+        .navArtifact:hover .sheen{ animation: sheen 1.05s cubic-bezier(.22,1,.36,1); }
+
+        .uLine{
+          position:absolute;
+          left:0; right:0;
+          bottom:-2px;
+          height:1px;
+          background: linear-gradient(90deg, rgba(214,178,94,0), rgba(214,178,94,0.85), rgba(214,178,94,0));
+          transform: scaleX(0);
+          transform-origin: left;
+          transition: transform .35s cubic-bezier(.22,1,.36,1);
+          opacity:.9;
+        }
+        .navLink:hover .uLine, .navLink.active .uLine{ transform: scaleX(1); }
+
+        .idx{
+          opacity:0;
+          transform: translateY(2px);
+          transition: opacity .25s, transform .25s;
+        }
+        .navLink:hover .idx, .navLink.active .idx{
+          opacity:1;
+          transform: translateY(0);
+        }
+
+        .drawerGrain::before{
+          content:'';
+          position:absolute;
+          inset:-200%;
+          width:400%; height:400%;
+          background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 260 260' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+          opacity:0.045;
+          mix-blend-mode:overlay;
+          transform: rotate(4deg);
+          pointer-events:none;
+          z-index:0;
+        }
+
+        .mRail{
+          position:absolute; left:0; top:0; bottom:0; width:2px;
+          background: linear-gradient(180deg, rgba(214,178,94,0), rgba(214,178,94,0.85), rgba(214,178,94,0));
+          transform: scaleY(0);
+          transform-origin: bottom;
+          transition: transform .35s cubic-bezier(.22,1,.36,1);
+        }
+        .mLink:hover .mRail, .mLink.active .mRail{ transform: scaleY(1); }
+
+        @keyframes pulseGold{
+          0%,100%{ box-shadow: 0 0 0 0 rgba(214,178,94,0); }
+          50%{ box-shadow: 0 0 26px 3px rgba(214,178,94,0.14); }
+        }
+        .ctaPulse{ animation: pulseGold 3.2s ease-in-out infinite; }
+
+        .mdFlex{ display:flex !important; }
+        @media(max-width:767px){ .mdFlex{ display:none !important; } }
+        @media(min-width:768px){ .hamOnly{ display:none !important; } }
+      `}</style>
+
       <BackgroundAnimation />
 
-      {/* Navbar Container */}
-      <nav className={`fixed z-50 left-1/2 -translate-x-1/2 transition-all duration-300 flex justify-between items-center px-6 lg:px-8 text-white
-        ${scrolled 
-          ? 'top-4 w-[90%] md:w-[85%] lg:w-[1000px] py-3 bg-dark/80 shadow-lg shadow-primary/10 border border-white/10' 
-          : 'top-6 w-[95%] md:w-[90%] lg:w-[1100px] py-4 bg-dark/40 border border-white/5'
-        } rounded-full backdrop-blur-md`}
+      <motion.nav
+        initial={{ y: -40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
+        style={{
+          position: "fixed",
+          top: scrolled ? 12 : 20,
+          left: 0,
+          right: 0,
+          margin: "0 auto",
+          zIndex: 50,
+          width: scrolled ? "min(92%, 980px)" : "min(96%, 1080px)",
+          transition:
+            "width .45s cubic-bezier(.22,1,.36,1), top .45s cubic-bezier(.22,1,.36,1)",
+          perspective: 1000,
+        }}
       >
-        
-        {/* Logo */}
-        <div className="relative group pl-2">
-          <h1 
-            onClick={() => {
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-              setActiveSection('home');
-            }}
-            className={`font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent tracking-tight cursor-pointer transition-all duration-300 ${
-              scrolled ? 'text-2xl' : 'text-3xl'
-            }`}
-          >
-            My Portfolio
-          </h1>
-        </div>
-
-        {/* Desktop Menu */}
-        <ul className="hidden md:flex items-center gap-1 pr-2">
-          {links.map(({ id, link, label }) => (
-            <li key={id}>
-              <a
-                href={`#${link}`}
-                // Update: Menambahkan 'e' (event) ke handler
-                onClick={(e) => handleNavClick(e, link)}
-                className={`relative px-4 py-2 rounded-full font-medium transition-colors duration-300 group text-sm lg:text-base cursor-pointer ${
-                  activeSection === link
-                    ? 'text-white'
-                    : 'text-gray-400 hover:text-white'
-                }`}
-              >
-                <span className="relative z-10">{label}</span>
-                
-                {/* Active Dot */}
-                <div className={`absolute bottom-1.5 left-1/2 -translate-x-1/2 h-1 rounded-full h-1 w-20 bg-secondary shadow-[0_0_10px_#885cf7] transition-all duration-300 ease-out ${
-                    activeSection === link ? 'w-5 opacity-100' : 'w-0 opacity-0'
-                }`}></div>
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setNav(!nav)}
-          className="md:hidden p-2 rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-all duration-200"
-          aria-label="Toggle menu"
+        <motion.div
+          ref={cardRef}
+          onMouseMove={onMove}
+          onMouseLeave={onLeave}
+          className="navArtifact navGrain"
+          style={{
+            rotateX: rX,
+            rotateY: rY,
+            transformStyle: "preserve-3d",
+            padding: scrolled ? "10px 24px" : "14px 28px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 18,
+          }}
         >
-          {nav ? <FaTimes size={24} /> : <FaBars size={24} />}
-        </button>
-      </nav>
+          <div className="navTexture" />
+          <div className="navTopo" />
+          <div className="sheen" />
 
-      {/* Mobile Menu Overlay */}
-      <div
-        className={`fixed inset-0 bg-dark/80 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300 ${
-          nav ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        }`}
-        onClick={() => setNav(false)}
-      ></div>
+          <motion.div
+            style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 1,
+              pointerEvents: "none",
+              opacity: scrolled ? 0.28 : 0.22,
+              mixBlendMode: "overlay",
+              background: useTransform(() => {
+                const x = glareX.get();
+                const y = glareY.get();
+                return `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,0.55) 0%, transparent 55%)`;
+              }),
+            }}
+          />
 
-      {/* Mobile Menu Drawer */}
-      <div
-        className={`fixed top-0 right-0 h-screen w-80 bg-dark z-50 md:hidden transform transition-transform duration-300 ease-out shadow-2xl border-l border-white/10 ${
-          nav ? 'translate-x-0' : 'translate-x-full'
-        }`}
-      >
-        <div className="flex justify-between items-center p-6 border-b border-white/10">
-          <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
-            Menu
-          </h2>
-          <button
-            onClick={() => setNav(false)}
-            className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-all duration-200"
+          {/* LOGO */}
+          <motion.button
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              setActiveSection("home");
+            }}
+            whileHover={{ y: -1 }}
+            whileTap={{ scale: 0.98 }}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: 0,
+              display: "flex",
+              alignItems: "baseline",
+              gap: 8,
+              position: "relative",
+              zIndex: 2,
+            }}
+            aria-label="Go to top"
           >
-            <FaTimes size={24} />
-          </button>
-        </div>
+            <span
+              style={{
+                display: "inline-block",
+                width: 8,
+                height: 8,
+                background: "var(--metal)",
+                marginBottom: 2,
+                boxShadow: "0 0 14px rgba(214,178,94,0.25)",
+                flexShrink: 0,
+              }}
+            />
+            <span
+              className="f-display"
+              style={{
+                color: "var(--bone)",
+                fontSize: scrolled ? 20 : 24,
+                fontWeight: 600,
+                fontStyle: "italic",
+                letterSpacing: "-0.01em",
+                lineHeight: 1,
+                transition: "font-size .35s",
+              }}
+            >
+              My
+            </span>
+            <span
+              className="f-display"
+              style={{
+                color: "var(--metal2)",
+                fontSize: scrolled ? 20 : 24,
+                fontWeight: 350,
+                letterSpacing: "-0.01em",
+                lineHeight: 1,
+                transition: "font-size .35s",
+              }}
+            >
+              Portfolio
+            </span>
+          </motion.button>
 
-        <ul className="flex flex-col p-4 space-y-2 mt-4">
-          {links.map(({ id, link, label }) => (
-            <li key={id}>
-              <a
-                href={`#${link}`}
-                // Update: Gunakan handleNavClick yang baru juga di mobile
-                onClick={(e) => handleNavClick(e, link)}
-                className={`flex items-center justify-between px-6 py-4 rounded-xl font-medium transition-all duration-300 group ${
-                  activeSection === link
-                    ? 'bg-gradient-to-r from-primary/20 to-accent/20 text-white border border-white/5'
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span className="text-lg">{label}</span>
-                <IoChevronForward 
-                  size={20} 
-                  className={`transform transition-transform duration-300 ${
-                    activeSection === link ? 'translate-x-1 text-secondary' : 'group-hover:translate-x-1'
-                  }`}
+          {/* LINKS */}
+          <ul
+            className="mdFlex"
+            style={{
+              alignItems: "center",
+              gap: 2,
+              listStyle: "none",
+              margin: 0,
+              padding: 0,
+              position: "relative",
+              zIndex: 2,
+            }}
+          >
+            {links.map(({ id, link, label, index }) => {
+              const isActive = activeSection === link;
+              const isHovered = hoveredLink === link;
+
+              return (
+                <li key={id} style={{ position: "relative" }}>
+                  <a
+                    href={`#${link}`}
+                    onClick={(e) => handleNavClick(e, link)}
+                    onMouseEnter={() => setHoveredLink(link)}
+                    onMouseLeave={() => setHoveredLink(null)}
+                    className={`navLink f-mono ${isActive ? "active" : ""}`}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      padding: "8px 14px",
+                      borderRadius: 999,
+                      textDecoration: "none",
+                      color: isActive
+                        ? "var(--bone)"
+                        : isHovered
+                        ? "rgba(244,240,232,0.88)"
+                        : "rgba(154,148,138,0.92)",
+                      fontSize: "0.66rem",
+                      letterSpacing: "0.22em",
+                      textTransform: "uppercase",
+                      fontWeight: 500,
+                      transition: "color .25s, background .25s, transform .25s",
+                      background: isActive
+                        ? "rgba(255,255,255,0.04)"
+                        : "transparent",
+                      border: isActive
+                        ? "1px solid rgba(214,178,94,0.20)"
+                        : "1px solid transparent",
+                      transform: isHovered
+                        ? "translateY(-1px)"
+                        : "translateY(0)",
+                      position: "relative",
+                    }}
+                  >
+                    <span
+                      className="idx"
+                      style={{
+                        fontSize: "0.55rem",
+                        color: "var(--metal)",
+                        fontStyle: "italic",
+                        lineHeight: 1,
+                      }}
+                    >
+                      {index}
+                    </span>
+
+                    <span style={{ position: "relative" }}>
+                      {label}
+                      <span className="uLine" />
+                    </span>
+
+                    {isActive && (
+                      <motion.span
+                        layoutId="navDot"
+                        style={{
+                          position: "absolute",
+                          bottom: 4,
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          width: 4,
+                          height: 4,
+                          borderRadius: "50%",
+                          background: "var(--metal)",
+                          boxShadow: "0 0 10px rgba(214,178,94,0.55)",
+                        }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 420,
+                          damping: 34,
+                        }}
+                      />
+                    )}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+
+          {/* ✅ SINGLE CTA (Contact + Hire Me jadi satu) */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              position: "relative",
+              zIndex: 2,
+            }}
+          >
+            <a
+              href="#contact"
+              onClick={(e) => handleNavClick(e, "contact")}
+              className="ctaPulse mdFlex f-mono"
+              style={{
+                padding: "9px 18px",
+                borderRadius: 999,
+                background: "linear-gradient(135deg, rgba(214,178,94,0.14), rgba(212,93,58,0.10))",
+                border: "1px solid rgba(214,178,94,0.50)",
+                color: "var(--metal2)",
+                fontSize: "0.62rem",
+                letterSpacing: "0.26em",
+                textTransform: "uppercase",
+                textDecoration: "none",
+                fontWeight: 650,
+                transition: "transform .25s, background .25s, color .25s, border-color .25s",
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-1px)";
+                e.currentTarget.style.background = "linear-gradient(135deg, rgba(214,178,94,0.95), rgba(212,93,58,0.75))";
+                e.currentTarget.style.color = "var(--bg)";
+                e.currentTarget.style.borderColor = "rgba(214,178,94,0.10)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.background =
+                  "linear-gradient(135deg, rgba(214,178,94,0.14), rgba(212,93,58,0.10))";
+                e.currentTarget.style.color = "var(--metal2)";
+                e.currentTarget.style.borderColor = "rgba(214,178,94,0.50)";
+              }}
+            >
+              Contact / Hire
+              <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+                <path
+                  d="M1 5h10M6 1l5 4-5 4"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                  strokeLinecap="square"
                 />
-              </a>
-            </li>
-          ))}
-        </ul>
+              </svg>
+            </a>
 
-        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-white/10">
-          <p className="text-center text-sm text-gray-500">
-            © 2024 My Portfolio
-          </p>
-        </div>
-      </div>
+            {/* Hamburger mobile only */}
+            <button
+              onClick={() => setNav(!nav)}
+              aria-label="Toggle menu"
+              className="hamOnly"
+              style={{
+                background: "rgba(255,255,255,0.02)",
+                border: "1px solid rgba(214,178,94,0.22)",
+                borderRadius: 14,
+                padding: "10px 12px",
+                cursor: "pointer",
+                display: "flex",
+                flexDirection: "column",
+                gap: 5,
+                alignItems: "flex-end",
+                boxShadow: "0 10px 40px rgba(0,0,0,0.45)",
+              }}
+            >
+              <motion.span
+                animate={{ rotate: nav ? 45 : 0, y: nav ? 8 : 0 }}
+                style={{
+                  display: "block",
+                  width: 22,
+                  height: 1,
+                  background: "var(--metal2)",
+                  transformOrigin: "center",
+                }}
+              />
+              <motion.span
+                animate={{ opacity: nav ? 0 : 1, width: nav ? 0 : 14 }}
+                style={{
+                  display: "block",
+                  height: 1,
+                  background: "rgba(154,148,138,0.9)",
+                }}
+              />
+              <motion.span
+                animate={{ rotate: nav ? -45 : 0, y: nav ? -8 : 0 }}
+                style={{
+                  display: "block",
+                  width: 22,
+                  height: 1,
+                  background: "var(--metal2)",
+                  transformOrigin: "center",
+                }}
+              />
+            </button>
+          </div>
+        </motion.div>
+      </motion.nav>
+
+      {/* MOBILE DRAWER */}
+      <AnimatePresence>
+        {nav && (
+          <motion.div
+            key="backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.28 }}
+            onClick={() => setNav(false)}
+            style={{
+              position: "fixed",
+              inset: 0,
+              background: "rgba(7,7,10,0.72)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              zIndex: 48,
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {nav && (
+          <motion.aside
+            key="drawer"
+            className="drawerGrain"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", stiffness: 260, damping: 30 }}
+            style={{
+              position: "fixed",
+              top: 0,
+              right: 0,
+              width: "min(88vw, 360px)",
+              height: "100dvh",
+              background:
+                "linear-gradient(180deg, rgba(7,7,10,0.96), rgba(7,7,10,0.92))",
+              borderLeft: "1px solid rgba(214,178,94,0.22)",
+              zIndex: 49,
+              display: "flex",
+              flexDirection: "column",
+              overflow: "hidden",
+            }}
+          >
+            {/* internal textures */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                pointerEvents: "none",
+                zIndex: 0,
+                backgroundImage:
+                  "linear-gradient(rgba(214,178,94,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(214,178,94,0.03) 1px, transparent 1px)",
+                backgroundSize: "46px 46px",
+                opacity: 0.9,
+                maskImage:
+                  "radial-gradient(circle at 40% 10%, black 0%, black 55%, transparent 82%)",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                top: -90,
+                right: -90,
+                width: 280,
+                height: 280,
+                borderRadius: "50%",
+                background:
+                  "radial-gradient(circle, rgba(214,178,94,0.10), transparent 70%)",
+                pointerEvents: "none",
+                zIndex: 0,
+              }}
+            />
+
+            {/* header */}
+            <div
+              style={{
+                position: "relative",
+                zIndex: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "22px 24px",
+                borderBottom: "1px solid rgba(214,178,94,0.16)",
+              }}
+            >
+              <div>
+                <p
+                  className="f-mono"
+                  style={{
+                    color: "rgba(154,148,138,0.9)",
+                    fontSize: "0.58rem",
+                    letterSpacing: "0.28em",
+                    textTransform: "uppercase",
+                    marginBottom: 6,
+                  }}
+                >
+                  Navigation
+                </p>
+
+                <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+                  <span
+                    style={{
+                      width: 7,
+                      height: 7,
+                      background: "var(--metal)",
+                      display: "inline-block",
+                      flexShrink: 0,
+                      boxShadow: "0 0 12px rgba(214,178,94,0.25)",
+                    }}
+                  />
+                  <span
+                    className="f-display"
+                    style={{
+                      color: "var(--bone)",
+                      fontSize: 22,
+                      fontWeight: 650,
+                      fontStyle: "italic",
+                    }}
+                  >
+                    My
+                  </span>
+                  <span
+                    className="f-display"
+                    style={{
+                      color: "var(--metal2)",
+                      fontSize: 22,
+                      fontWeight: 350,
+                    }}
+                  >
+                    Portfolio
+                  </span>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setNav(false)}
+                style={{
+                  background: "rgba(255,255,255,0.02)",
+                  border: "1px solid rgba(214,178,94,0.18)",
+                  width: 40,
+                  height: 40,
+                  borderRadius: 14,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  color: "rgba(154,148,138,0.95)",
+                  transition: "border-color .2s, color .2s, background .2s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(214,178,94,0.50)";
+                  e.currentTarget.style.color = "var(--metal2)";
+                  e.currentTarget.style.background = "rgba(214,178,94,0.06)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(214,178,94,0.18)";
+                  e.currentTarget.style.color = "rgba(154,148,138,0.95)";
+                  e.currentTarget.style.background = "rgba(255,255,255,0.02)";
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path
+                    d="M1 1l12 12M13 1L1 13"
+                    stroke="currentColor"
+                    strokeWidth="1.2"
+                    strokeLinecap="square"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            {/* links */}
+            <ul
+              style={{
+                listStyle: "none",
+                margin: 0,
+                padding: "12px 0",
+                flex: 1,
+                position: "relative",
+                zIndex: 1,
+              }}
+            >
+              {links.map(({ id, link, label, index }, i) => {
+                const isActive = activeSection === link;
+
+                return (
+                  <motion.li
+                    key={id}
+                    initial={{ x: 30, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{
+                      delay: 0.05 * i + 0.08,
+                      duration: 0.55,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                  >
+                    <a
+                      href={`#${link}`}
+                      onClick={(e) => handleNavClick(e, link)}
+                      className={`mLink ${isActive ? "active" : ""}`}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        padding: "16px 24px",
+                        textDecoration: "none",
+                        borderBottom: "1px solid rgba(214,178,94,0.06)",
+                        background: isActive
+                          ? "rgba(214,178,94,0.05)"
+                          : "transparent",
+                        transition: "background .25s",
+                        position: "relative",
+                      }}
+                    >
+                      <span className="mRail" />
+                      <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
+                        <span
+                          className="f-mono"
+                          style={{
+                            fontSize: "0.58rem",
+                            letterSpacing: "0.18em",
+                            fontStyle: "italic",
+                            color: isActive
+                              ? "var(--metal2)"
+                              : "rgba(154,148,138,0.9)",
+                            minWidth: 22,
+                          }}
+                        >
+                          {index}
+                        </span>
+                        <span
+                          className="f-display"
+                          style={{
+                            fontSize: 28,
+                            fontWeight: isActive ? 650 : 350,
+                            fontStyle: isActive ? "italic" : "normal",
+                            color: isActive
+                              ? "var(--bone)"
+                              : "rgba(154,148,138,0.92)",
+                            letterSpacing: "-0.01em",
+                          }}
+                        >
+                          {label}
+                        </span>
+                      </div>
+
+                      <motion.div
+                        animate={{
+                          x: isActive ? 0 : -4,
+                          opacity: isActive ? 1 : 0.35,
+                        }}
+                        style={{
+                          color: isActive
+                            ? "var(--metal2)"
+                            : "rgba(154,148,138,0.9)",
+                        }}
+                      >
+                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+                          <path
+                            d="M1 6h14M9 1l6 5-6 5"
+                            stroke="currentColor"
+                            strokeWidth="1"
+                            strokeLinecap="square"
+                          />
+                        </svg>
+                      </motion.div>
+                    </a>
+                  </motion.li>
+                );
+              })}
+            </ul>
+
+            {/* ✅ SINGLE CTA di drawer juga */}
+            <div
+              style={{
+                position: "relative",
+                zIndex: 1,
+                borderTop: "1px solid rgba(214,178,94,0.16)",
+                padding: "18px 24px",
+              }}
+            >
+              <a
+                href="#contact"
+                onClick={(e) => handleNavClick(e, "contact")}
+                className="f-mono ctaPulse"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 10,
+                  padding: "14px 0",
+                  borderRadius: 18,
+                  background:
+                    "linear-gradient(135deg, rgba(214,178,94,0.95), rgba(212,93,58,0.75))",
+                  color: "var(--bg)",
+                  fontSize: "0.62rem",
+                  letterSpacing: "0.28em",
+                  textTransform: "uppercase",
+                  fontWeight: 800,
+                  textDecoration: "none",
+                  transition: "opacity .2s, transform .2s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.opacity = "0.92";
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.opacity = "1";
+                  e.currentTarget.style.transform = "translateY(0)";
+                }}
+              >
+                Contact / Hire
+                <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+                  <path
+                    d="M1 5h10M6 1l5 4-5 4"
+                    stroke="currentColor"
+                    strokeWidth="1"
+                    strokeLinecap="square"
+                  />
+                </svg>
+              </a>
+
+              <div style={{ marginTop: 14, opacity: 0.55 }}>
+                <div
+                  className="f-mono"
+                  style={{
+                    fontSize: "0.55rem",
+                    letterSpacing: "0.22em",
+                    textTransform: "uppercase",
+                    color: "rgba(154,148,138,0.92)",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    gap: 12,
+                  }}
+                >
+                  <span>UI/UX</span>
+                  <span style={{ color: "var(--rust)" }}>✦</span>
+                  <span>Front End</span>
+                  <span style={{ color: "var(--rust)" }}>✦</span>
+                  <span>Available</span>
+                </div>
+              </div>
+            </div>
+          </motion.aside>
+        )}
+      </AnimatePresence>
     </>
   );
 };

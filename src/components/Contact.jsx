@@ -1,248 +1,562 @@
-import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Copy, ArrowUpRight, Github, Linkedin, Instagram, Twitter } from 'lucide-react';
-import { useState } from 'react';
+import { motion } from "framer-motion";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Copy,
+  ArrowUpRight,
+  Github,
+  Linkedin,
+  Instagram,
+} from "lucide-react";
+import { useState, useCallback } from "react";
 
 const Contact = () => {
   const [copied, setCopied] = useState(false);
   const [hoveredSocial, setHoveredSocial] = useState(null);
 
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText('brandon.geraldo28@gmail.com');
+    navigator.clipboard.writeText("brandon.geraldo28@gmail.com");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // soft specular follow
+  const onCardMove = useCallback((e) => {
+    const el = e.currentTarget;
+    const r = el.getBoundingClientRect();
+    const mx = ((e.clientX - r.left) / r.width) * 100;
+    const my = ((e.clientY - r.top) / r.height) * 100;
+    el.style.setProperty("--mx", `${mx}%`);
+    el.style.setProperty("--my", `${my}%`);
+  }, []);
+
+  const onCardLeave = useCallback((e) => {
+    const el = e.currentTarget;
+    el.style.setProperty("--mx", `50%`);
+    el.style.setProperty("--my", `50%`);
+  }, []);
+
   return (
-    <section id="contact" className="relative w-full min-h-screen bg-dark py-16 md:py-24 text-white overflow-hidden flex items-center">
-      
-      {/* Background Ambience */}
-      <div className="absolute bottom-0 left-0 w-full h-[300px] md:h-[500px] bg-gradient-to-t from-primary/10 to-transparent pointer-events-none"></div>
-      
-      <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10 w-full">
-        
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
-           
-           {/* LEFT COLUMN: Hero Text & Status */}
-           <div>
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..800,0..100&family=Manrope:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
+
+        :root{
+          --bg:#07070a;
+          --bone:#F4F0E8;
+          --muted:#9A948A;
+
+          --metal:#D6B25E;
+          --metal2:#F2D89A;
+          --rust:#D45D3A;
+          --haze:#14B8A6;
+          --plum:#7C3AED;
+
+          --bdr: rgba(214,178,94,0.18);
+          --bdr2: rgba(214,178,94,0.28);
+        }
+
+        .ct-display{ font-family:'Fraunces', serif; }
+        .ct-sans{ font-family:'Manrope', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+        .ct-mono{ font-family:'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+        /* ───────────── Background (no “grid lines” vibe) ───────────── */
+        .ct-bg{
+          background:
+            radial-gradient(1100px 720px at 18% 18%, rgba(124,58,237,0.14), transparent 60%),
+            radial-gradient(900px 620px at 82% 26%, rgba(20,184,166,0.10), transparent 58%),
+            radial-gradient(980px 680px at 55% 112%, rgba(214,178,94,0.11), transparent 62%),
+            linear-gradient(180deg, #05050a 0%, #090912 55%, #05050a 100%);
+        }
+
+        /* super subtle micro-grid (blurred so it never looks like stripes) */
+        .ct-grid{
+          position:absolute; inset:0; pointer-events:none; z-index:1;
+          background-image:
+            linear-gradient(rgba(214,178,94,0.030) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(214,178,94,0.022) 1px, transparent 1px);
+          background-size: 110px 110px;
+          background-position: center top;
+          opacity:.55;
+          filter: blur(.35px);
+          mask-image: radial-gradient(ellipse at 50% 30%, black 0%, transparent 70%);
+        }
+
+        .ct-fiber{
+          position:absolute; inset:0; pointer-events:none; z-index:2;
+          background:
+            radial-gradient(circle at 18% 22%, rgba(255,255,255,0.05), transparent 45%),
+            radial-gradient(circle at 82% 18%, rgba(255,255,255,0.035), transparent 42%),
+            radial-gradient(circle at 50% 110%, rgba(255,255,255,0.03), transparent 55%);
+          opacity:.55; mix-blend-mode: overlay;
+        }
+
+        .ct-dust{
+          position:absolute; inset:0; pointer-events:none; z-index:2;
+          background:
+            radial-gradient(circle at 22% 38%, rgba(255,255,255,0.07) 0.5px, transparent 1px),
+            radial-gradient(circle at 64% 22%, rgba(255,255,255,0.06) 0.6px, transparent 1px),
+            radial-gradient(circle at 78% 66%, rgba(255,255,255,0.05) 0.6px, transparent 1px);
+          background-size: 260px 260px;
+          opacity:.11; mix-blend-mode: overlay;
+          filter: blur(.15px);
+        }
+
+        .ct-grain::after{
+          content:'';
+          position:absolute;
+          inset:-200%;
+          width:400%;
+          height:400%;
+          pointer-events:none;
+          z-index:4;
+          background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 260 260' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+          opacity:0.045;
+          mix-blend-mode: overlay;
+          transform: rotate(4deg);
+        }
+
+        .ct-vignette{
+          position:absolute; inset:0; pointer-events:none; z-index:3;
+          background:
+            radial-gradient(860px 580px at 50% 8%, rgba(0,0,0,0.0), rgba(0,0,0,0.42) 72%),
+            radial-gradient(900px 720px at 50% 112%, rgba(0,0,0,0.0), rgba(0,0,0,0.62) 74%);
+        }
+
+        /* Watermark */
+        .ct-watermark{
+          -webkit-text-stroke: 1.2px rgba(214,178,94,0.28);
+          color: transparent;
+        }
+
+        /* ───────────── Artifact Card (rounded, premium) ───────────── */
+        .ct-card{
+          position:relative;
+          border-radius: 28px;
+          background: rgba(7,7,10,0.62);
+          border: 1px solid rgba(214,178,94,0.14);
+          backdrop-filter: blur(14px);
+          overflow:hidden;
+          box-shadow:
+            0 26px 70px rgba(0,0,0,0.58),
+            0 0 0 1px rgba(214,178,94,0.08) inset;
+          transform: translateZ(0);
+          transition: transform .45s cubic-bezier(.22,1,.36,1),
+                      box-shadow .45s cubic-bezier(.22,1,.36,1),
+                      border-color .45s cubic-bezier(.22,1,.36,1);
+        }
+        .ct-card:hover{
+          transform: translateY(-6px);
+          border-color: rgba(214,178,94,0.26);
+          box-shadow:
+            0 34px 92px rgba(0,0,0,0.66),
+            0 0 0 1px rgba(214,178,94,0.10) inset;
+        }
+
+        .ct-card::before{
+          content:'';
+          position:absolute; inset:0;
+          padding:1px;
+          border-radius:28px;
+          background: linear-gradient(135deg,
+            rgba(214,178,94,0.62),
+            rgba(20,184,166,0.16),
+            rgba(124,58,237,0.14),
+            rgba(214,178,94,0.16)
+          );
+          -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          opacity:.55;
+          pointer-events:none;
+          z-index:2;
+        }
+
+        .ct-film{
+          position:absolute; inset:0;
+          pointer-events:none;
+          background:
+            radial-gradient(circle at 18% 18%, rgba(255,255,255,0.06), transparent 45%),
+            linear-gradient(180deg, rgba(255,255,255,0.02), transparent 35%, rgba(0,0,0,0.22));
+          opacity:.75;
+          z-index:1;
+        }
+
+        /* Cursor specular */
+        .ct-card::after{
+          content:"";
+          position:absolute; inset:0;
+          pointer-events:none;
+          background:
+            radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(214,178,94,0.12), transparent 55%),
+            radial-gradient(180px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.07), transparent 55%);
+          opacity: 0;
+          transition: opacity .25s ease;
+          mix-blend-mode: screen;
+          z-index:2;
+        }
+        .ct-card:hover::after{ opacity: 1; }
+
+        /* Sheen sweep */
+        @keyframes ct-sheen {
+          from { transform: translateX(-140%) skewX(-18deg); opacity: 0; }
+          22%  { opacity: .34; }
+          to   { transform: translateX(140%) skewX(-18deg); opacity: 0; }
+        }
+        .ct-sheen{
+          position:absolute; inset:0;
+          pointer-events:none;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10), transparent);
+          width:55%;
+          transform: translateX(-140%) skewX(-18deg);
+          opacity:0;
+          z-index:3;
+        }
+        .ct-card:hover .ct-sheen{ animation: ct-sheen 1.2s cubic-bezier(.22,1,.36,1); }
+
+        /* Screws */
+        .ct-screw{
+          position:absolute;
+          width:14px; height:14px;
+          border-radius:999px;
+          background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.26), rgba(255,255,255,0.06) 40%, rgba(0,0,0,0.55) 75%);
+          box-shadow: 0 6px 14px rgba(0,0,0,0.42);
+          border: 1px solid rgba(214,178,94,0.14);
+          z-index:6;
+          opacity:.95;
+        }
+        .ct-screw::after{
+          content:'';
+          position:absolute; left:50%; top:50%;
+          width:9px; height:1px;
+          background: rgba(214,178,94,0.40);
+          transform: translate(-50%,-50%) rotate(18deg);
+          opacity:.75;
+        }
+
+        /* chips */
+        .ct-chip{
+          border: 1px solid rgba(214,178,94,0.18);
+          background: rgba(7,7,10,0.45);
+          backdrop-filter: blur(10px);
+          border-radius: 999px;
+        }
+
+        /* “Available” badge */
+        .ct-status{
+          border: 1px solid rgba(20,184,166,0.22);
+          background: rgba(20,184,166,0.08);
+          border-radius: 999px;
+        }
+
+        .ct-outlineWord{
+          -webkit-text-stroke: 1.25px rgba(214,178,94,0.70);
+          color: transparent;
+        }
+      `}</style>
+
+      <section
+        id="contact"
+        className="relative w-full min-h-screen py-16 md:py-24 overflow-hidden flex items-center text-[var(--bone)] ct-bg ct-grain"
+      >
+        {/* background layers */}
+        <div className="ct-grid" />
+        <div className="ct-fiber" />
+        <div className="ct-dust" />
+        <div className="ct-vignette" />
+
+        {/* watermark */}
+        <motion.div
+          className="absolute top-[6%] left-0 right-0 pointer-events-none flex justify-center select-none z-0"
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <span className="ct-display ct-watermark text-[clamp(6rem,20vw,20rem)] font-bold italic leading-none whitespace-nowrap opacity-[0.50]">
+            CONTACT
+          </span>
+        </motion.div>
+
+        <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10 w-full">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+            {/* LEFT COLUMN */}
+            <div>
+              <motion.div
+                initial={{ opacity: 0, y: 18 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
+                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               >
-                {/* Status Badge */}
-                <motion.div 
+                {/* Status */}
+                <motion.div
                   className="flex items-center gap-3 mb-6"
-                  initial={{ scale: 0.8, opacity: 0 }}
+                  initial={{ scale: 0.9, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                  transition={{ delay: 0.12, type: "spring", stiffness: 200 }}
                 >
-                    <span className="relative flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                    </span>
-                    <motion.span 
-                      className="text-green-500 font-mono text-xs md:text-sm tracking-widest uppercase"
-                      animate={{ opacity: [1, 0.7, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
-                      Available for work
-                    </motion.span>
+                  <span className="relative flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--haze)] opacity-60"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-[var(--haze)]"></span>
+                  </span>
+
+                  <span className="ct-status ct-mono text-[0.62rem] md:text-[0.68rem] tracking-[0.28em] uppercase px-4 py-2 text-[rgba(244,240,232,0.92)]">
+                    Available for work
+                  </span>
                 </motion.div>
 
-                {/* Animated Heading (Responsive Text Size) */}
-                <motion.h2 
-                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-6 md:mb-8"
-                  initial={{ opacity: 0, y: 20 }}
+                {/* Heading */}
+                <motion.h2
+                  className="ct-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold italic leading-[1.02] mb-6 md:mb-8"
+                  initial={{ opacity: 0, y: 18 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.3 }}
+                  transition={{ delay: 0.15, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  Let's start a <br/>
-                  <motion.span 
-                    className="text-gray-500"
-                    whileHover={{ color: "#fff", transition: { duration: 0.3 } }}
-                  >
-                    project together.
-                  </motion.span>
+                  Let’s start a <br />
+                  <span className="ct-outlineWord ct-sans font-extrabold not-italic tracking-[-0.03em]">
+                    project
+                  </span>{" "}
+                  together.
                 </motion.h2>
 
-                <motion.p 
-                  className="text-lg md:text-xl text-gray-400 leading-relaxed max-w-lg mb-8 md:mb-12"
-                  initial={{ opacity: 0, y: 20 }}
+                <motion.p
+                  className="ct-sans text-lg md:text-xl text-[rgba(154,148,138,0.95)] leading-[1.9] max-w-lg mb-8 md:mb-12"
+                  initial={{ opacity: 0, y: 18 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.4 }}
+                  transition={{ delay: 0.22, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                 >
-                   Have an idea? I can help you build it. I'm currently available for freelance projects and open to full-time opportunities.
+                  Have an idea? I can help you build it. I’m currently available
+                  for freelance projects and open to full-time opportunities.
                 </motion.p>
 
-                {/* Main Contact Action (Email) */}
-                <motion.div 
+                {/* Email Artifact CTA */}
+                <motion.div
                   className="group relative w-full sm:w-fit"
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0.98 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.5, type: "spring", stiffness: 150 }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  transition={{ delay: 0.3, type: "spring", stiffness: 160, damping: 18 }}
+                  whileTap={{ scale: 0.99 }}
                 >
-                   <motion.div 
-                     className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl opacity-70 blur hidden sm:block"
-                     animate={{ opacity: [0.7, 1, 0.7] }}
-                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                   />
-                   <motion.button 
-                     onClick={handleCopyEmail}
-                     className="relative flex items-center justify-between sm:justify-start gap-4 px-6 py-4 md:px-8 md:py-4 bg-white/10 sm:bg-black rounded-xl leading-none w-full sm:w-auto border border-white/10 sm:border-none"
-                     whileHover={{ y: -2 }}
-                   >
-                      <div className="flex items-center gap-3 md:gap-4 overflow-hidden">
+                  <div
+                    className="ct-card p-5 md:p-6"
+                    onMouseMove={onCardMove}
+                    onMouseLeave={onCardLeave}
+                  >
+                    <div className="ct-film" />
+                    <div className="ct-sheen" />
+    
+
+                    <button
+                      onClick={handleCopyEmail}
+                      className="relative z-10 w-full flex items-center justify-between gap-4"
+                    >
+                      <div className="flex items-start gap-4 min-w-0">
                         <motion.div
                           whileHover={{ rotate: [0, -10, 10, -10, 0] }}
                           transition={{ duration: 0.5 }}
+                          className="w-12 h-12 rounded-2xl border border-[rgba(214,178,94,0.18)] bg-[rgba(255,255,255,0.02)] flex items-center justify-center flex-shrink-0"
                         >
-                          <Mail className="w-5 h-5 md:w-6 md:h-6 text-white flex-shrink-0" />
+                          <Mail className="w-6 h-6 text-[var(--metal2)]" />
                         </motion.div>
-                        <span className="text-base md:text-xl font-medium text-white truncate">
-                          brandon.geraldo28@gmail.com
-                        </span>
+
+                        <div className="flex-1 min-w-0 text-left">
+                          <p className="ct-mono text-[0.58rem] tracking-[0.26em] uppercase text-[rgba(154,148,138,0.95)]">
+                            Email
+                          </p>
+                          <p className="ct-sans text-base md:text-xl font-semibold text-[rgba(244,240,232,0.96)] truncate">
+                            brandon.geraldo28@gmail.com
+                          </p>
+                        </div>
                       </div>
-                      
-                      <div className="pl-4 border-l border-white/20 ml-2 flex-shrink-0">
-                         {copied ? (
-                           <motion.span 
-                             className="text-green-400 text-xs md:text-sm font-bold"
-                             initial={{ scale: 0 }}
-                             animate={{ scale: 1 }}
-                             transition={{ type: "spring", stiffness: 500, damping: 15 }}
-                           >
-                             COPIED!
-                           </motion.span>
-                         ) : (
-                           <motion.div whileHover={{ y: -2 }}>
-                             <Copy className="w-4 h-4 md:w-5 md:h-5 text-gray-400 group-hover:text-white transition-colors" />
-                           </motion.div>
-                         )}
+
+                      <div className="flex items-center gap-3 flex-shrink-0">
+                        {copied ? (
+                          <motion.span
+                            className="ct-mono text-[0.62rem] tracking-[0.26em] uppercase px-4 py-2 rounded-full"
+                            style={{
+                              border: "1px solid rgba(20,184,166,0.28)",
+                              background: "rgba(20,184,166,0.10)",
+                              color: "rgba(244,240,232,0.95)",
+                            }}
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ type: "spring", stiffness: 420, damping: 18 }}
+                          >
+                            Copied
+                          </motion.span>
+                        ) : (
+                          <span className="ct-chip ct-mono text-[0.6rem] tracking-[0.26em] uppercase px-4 py-2 text-[rgba(154,148,138,0.95)] group-hover:text-[rgba(244,240,232,0.95)] transition-colors">
+                            Copy <Copy className="inline-block w-4 h-4 ml-2 -translate-y-[1px]" />
+                          </span>
+                        )}
                       </div>
-                   </motion.button>
+                    </button>
+                  </div>
                 </motion.div>
               </motion.div>
-           </div>
+            </div>
 
-           {/* RIGHT COLUMN: Contact Details & Socials */}
-           <motion.div 
-             initial={{ opacity: 0, x: 20 }}
-             whileInView={{ opacity: 1, x: 0 }}
-             viewport={{ once: true }}
-             transition={{ delay: 0.2 }}
-             className="flex flex-col gap-8 md:gap-10 mt-8 lg:mt-0"
-           >
-              {/* Info List */}
+            {/* RIGHT COLUMN */}
+            <motion.div
+              initial={{ opacity: 0, x: 18 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.12, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col gap-8 md:gap-10 mt-8 lg:mt-0"
+            >
+              {/* Info list */}
               <div className="space-y-6 md:space-y-8">
-                 {/* Phone */}
-                 <motion.div 
-                   className="group flex items-start gap-4 md:gap-6 p-5 md:p-6 rounded-3xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-all hover:scale-[1.02]"
-                   initial={{ opacity: 0, x: 20 }}
-                   whileInView={{ opacity: 1, x: 0 }}
-                   viewport={{ once: true }}
-                   transition={{ delay: 0.3 }}
-                   whileHover={{ x: 5, transition: { duration: 0.2 } }}
-                 >
-                    <div className="w-12 h-12 md:w-14 md:h-14 bg-white/5 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                       <Phone className="w-5 h-5 md:w-6 md:h-6 text-white" />
-                    </div>
-                    <div>
-                       <h4 className="text-gray-500 text-xs md:text-sm font-medium mb-1 uppercase tracking-wider">Phone / WhatsApp</h4>
-                       <a href="https://wa.me/6285855462022" target="_blank" rel="noreferrer" className="text-lg md:text-2xl font-bold text-white hover:text-primary transition-colors flex items-center gap-2 flex-wrap">
-                          +62 858 5546 2022 
-                          <motion.div
-                            initial={{ opacity: 0, x: -5 }}
-                            whileHover={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            <ArrowUpRight className="w-4 h-4 md:w-5 md:h-5 opacity-50 group-hover:opacity-100" />
-                          </motion.div>
-                       </a>
-                    </div>
-                 </motion.div>
+                {/* Phone */}
+                <motion.div
+                  className="ct-card p-6 md:p-7"
+                  onMouseMove={onCardMove}
+                  onMouseLeave={onCardLeave}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.18, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <div className="ct-film" />
+                  <div className="ct-sheen" />
+    
 
-                 {/* Location */}
-                 <motion.div 
-                   className="group flex items-start gap-4 md:gap-6 p-5 md:p-6 rounded-3xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-all hover:scale-[1.02]"
-                   initial={{ opacity: 0, x: 20 }}
-                   whileInView={{ opacity: 1, x: 0 }}
-                   viewport={{ once: true }}
-                   transition={{ delay: 0.4 }}
-                   whileHover={{ x: 5, transition: { duration: 0.2 } }}
-                 >
-                    <div className="w-12 h-12 md:w-14 md:h-14 bg-white/5 rounded-2xl flex items-center justify-center flex-shrink-0">
-                       <motion.div
-                         animate={{ y: [0, -3, 0] }}
-                         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                       >
-                         <MapPin className="w-5 h-5 md:w-6 md:h-6 text-white" />
-                       </motion.div>
+                  <div className="relative z-10 flex items-start gap-5 md:gap-6">
+                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl border border-[rgba(214,178,94,0.18)] bg-[rgba(255,255,255,0.02)] flex items-center justify-center flex-shrink-0">
+                      <Phone className="w-6 h-6 text-[var(--metal2)]" />
                     </div>
-                    <div>
-                       <h4 className="text-gray-500 text-xs md:text-sm font-medium mb-1 uppercase tracking-wider">Location</h4>
-                       <p className="text-lg md:text-2xl font-bold text-white">Malang, Indonesia</p>
-                       <p className="text-gray-400 text-xs md:text-sm mt-1">Available for Remote Work</p>
+
+                    <div className="min-w-0">
+                      <p className="ct-mono text-[0.58rem] tracking-[0.28em] uppercase text-[rgba(154,148,138,0.95)]">
+                        Phone / WhatsApp
+                      </p>
+                      <a
+                        href="https://wa.me/6285855462022"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="ct-sans text-lg md:text-2xl font-bold text-[rgba(244,240,232,0.96)] hover:text-[var(--metal2)] transition-colors inline-flex items-center gap-2 flex-wrap"
+                      >
+                        +62 858 5546 2022
+                        <ArrowUpRight className="w-5 h-5 opacity-60" />
+                      </a>
+                      <p className="ct-sans text-[0.9rem] text-[rgba(154,148,138,0.92)] mt-2">
+                        Quick response for inquiries & collabs.
+                      </p>
                     </div>
-                 </motion.div>
+                  </div>
+                </motion.div>
+
+                {/* Location */}
+                <motion.div
+                  className="ct-card p-6 md:p-7"
+                  onMouseMove={onCardMove}
+                  onMouseLeave={onCardLeave}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.26, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <div className="ct-film" />
+                  <div className="ct-sheen" />
+              
+
+                  <div className="relative z-10 flex items-start gap-5 md:gap-6">
+                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl border border-[rgba(214,178,94,0.18)] bg-[rgba(255,255,255,0.02)] flex items-center justify-center flex-shrink-0">
+                      <motion.div
+                        animate={{ y: [0, -3, 0] }}
+                        transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+                      >
+                        <MapPin className="w-6 h-6 text-[var(--metal2)]" />
+                      </motion.div>
+                    </div>
+
+                    <div className="min-w-0">
+                      <p className="ct-mono text-[0.58rem] tracking-[0.28em] uppercase text-[rgba(154,148,138,0.95)]">
+                        Location
+                      </p>
+                      <p className="ct-sans text-lg md:text-2xl font-bold text-[rgba(244,240,232,0.96)]">
+                        Malang, Indonesia
+                      </p>
+                      <p className="ct-sans text-[0.9rem] text-[rgba(154,148,138,0.92)] mt-2">
+                        Available for remote work & onsite (by schedule).
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
               </div>
 
               {/* Social Dock */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 14 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.5 }}
+                transition={{ delay: 0.32, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               >
-                 <h4 className="text-white text-base md:text-lg font-medium mb-4 md:mb-6">Connect with me</h4>
-                 <div className="flex flex-wrap gap-3 md:gap-4">
-                    {[
-                      { icon: Github, href: "https://github.com/Ndonnnnn7", color: "hover:bg-gray-800" },
-                      { icon: Linkedin, href: "https://linkedin.com/in/brandongeraldoadji", color: "hover:bg-blue-600" },
-                      { icon: Instagram, href: "https://instagram.com/brandonngeraldo", color: "hover:bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500" },
-                    ].map((social, i) => (
-                       <motion.a 
-                         key={i}
-                         href={social.href}
-                         target="_blank" 
-                         rel="noreferrer"
-                         className={`w-12 h-12 md:w-14 md:h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-gray-400 hover:text-white transition-all duration-300 hover:shadow-lg ${social.color}`}
-                         initial={{ opacity: 0, y: 20 }}
-                         whileInView={{ opacity: 1, y: 0 }}
-                         viewport={{ once: true }}
-                         transition={{ delay: 0.6 + (i * 0.1) }}
-                         whileHover={{ 
-                           y: -8,
-                           scale: 1.1,
-                           rotate: [0, -5, 5, 0],
-                           transition: { duration: 0.3 }
-                         }}
-                         whileTap={{ scale: 0.95 }}
-                         onHoverStart={() => setHoveredSocial(i)}
-                         onHoverEnd={() => setHoveredSocial(null)}
-                       >
-                          <motion.div
-                            animate={hoveredSocial === i ? { 
-                              rotate: [0, 15, -15, 0],
-                              scale: [1, 1.2, 1.2, 1]
-                            } : {}}
-                            transition={{ duration: 0.4 }}
-                          >
-                            <social.icon className="w-5 h-5 md:w-6 md:h-6" />
-                          </motion.div>
-                       </motion.a>
-                    ))}
-                 </div>
+                <div className="flex items-center justify-between mb-5">
+                  <h4 className="ct-display text-xl md:text-2xl font-semibold italic">
+                    Connect with me
+                  </h4>
+                  <span className="ct-mono text-[0.58rem] tracking-[0.26em] uppercase text-[rgba(154,148,138,0.95)]">
+                    social dock
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap gap-3 md:gap-4">
+                  {[
+                    { icon: Github, href: "https://github.com/Ndonnnnn7", tone: "rgba(244,240,232,0.85)" },
+                    { icon: Linkedin, href: "https://linkedin.com/in/brandongeraldoadji", tone: "rgba(53,208,255,0.90)" },
+                    { icon: Instagram, href: "https://instagram.com/brandonngeraldo", tone: "rgba(242,216,154,0.95)" },
+                  ].map((social, i) => (
+                    <motion.a
+                      key={i}
+                      href={social.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="ct-card w-14 h-14 md:w-16 md:h-16 flex items-center justify-center"
+                      onMouseMove={onCardMove}
+                      onMouseLeave={onCardLeave}
+                      initial={{ opacity: 0, y: 16 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.38 + i * 0.08, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                      whileHover={{ y: -8, rotate: [0, -2, 2, 0], transition: { duration: 0.25 } }}
+                      whileTap={{ scale: 0.98 }}
+                      onHoverStart={() => setHoveredSocial(i)}
+                      onHoverEnd={() => setHoveredSocial(null)}
+                      aria-label="social link"
+                    >
+                      <div className="ct-film" />
+                      <div className="ct-sheen" />
+                      
+
+                      <motion.div
+                        className="relative z-10"
+                        animate={
+                          hoveredSocial === i
+                            ? { rotate: [0, 12, -12, 0], scale: [1, 1.1, 1.1, 1] }
+                            : {}
+                        }
+                        transition={{ duration: 0.45 }}
+                      >
+                        <social.icon className="w-6 h-6" style={{ color: social.tone }} />
+                      </motion.div>
+                    </motion.a>
+                  ))}
+                </div>
+
+                <p className="ct-sans text-[0.9rem] text-[rgba(154,148,138,0.92)] mt-5 leading-[1.9]">
+                  Prefer email? Hit the button above, it copies instantly.
+                </p>
               </motion.div>
-           </motion.div>
+            </motion.div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 
