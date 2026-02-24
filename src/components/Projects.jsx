@@ -209,22 +209,6 @@ const Projects = () => {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..800,0..100&family=Sora:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
-
-        :root{
-          --bg:#07070a;
-          --bone:#F4F0E8;
-          --muted:#9A948A;
-          --metal:#D6B25E;
-          --rust:#D45D3A;
-          --haze:#14B8A6;
-          --plum:#7C3AED;
-        }
-
-        .f-display{ font-family:'Fraunces', serif; }
-        .f-sans{ font-family:'Sora', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
-        .f-mono{ font-family:'IBM Plex Mono', ui-monospace, monospace; }
-
         /* ── SEAMLESS BACKGROUND ── */
         .proj-bg {
           background-color: var(--bg);

@@ -44,7 +44,7 @@ const Navbar = () => {
       mx.set((e.clientX - rect.left) / rect.width);
       my.set((e.clientY - rect.top) / rect.height);
     },
-    [mx, my]
+    [mx, my],
   );
 
   const onLeave = useCallback(() => {
@@ -112,27 +112,6 @@ const Navbar = () => {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..800,0..100&family=Sora:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
-
-        :root{
-          --bg:#07070a;
-          --bone:#F4F0E8;
-          --muted:#9A948A;
-
-          --metal:#D6B25E;
-          --metal2:#F2D89A;
-          --rust:#D45D3A;
-          --haze:#14B8A6;
-          --plum:#7C3AED;
-
-          --border: rgba(214,178,94,0.18);
-          --border2: rgba(214,178,94,0.34);
-        }
-
-        .f-display{ font-family:'Fraunces', serif; }
-        .f-sans{ font-family:'Sora', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
-        .f-mono{ font-family:'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
-
         .navArtifact{
           position: relative;
           border-radius: 999px;
@@ -308,6 +287,7 @@ const Navbar = () => {
           <div className="navTexture" />
           <div className="navTopo" />
           <div className="sheen" />
+          
 
           <motion.div
             style={{
@@ -324,7 +304,6 @@ const Navbar = () => {
               }),
             }}
           />
-
           {/* LOGO */}
           <motion.button
             onClick={() => {
@@ -385,7 +364,6 @@ const Navbar = () => {
               Portfolio
             </span>
           </motion.button>
-
           {/* LINKS */}
           <ul
             className="mdFlex"
@@ -421,8 +399,8 @@ const Navbar = () => {
                       color: isActive
                         ? "var(--bone)"
                         : isHovered
-                        ? "rgba(244,240,232,0.88)"
-                        : "rgba(154,148,138,0.92)",
+                          ? "rgba(244,240,232,0.88)"
+                          : "rgba(154,148,138,0.92)",
                       fontSize: "0.66rem",
                       letterSpacing: "0.22em",
                       textTransform: "uppercase",
@@ -483,7 +461,6 @@ const Navbar = () => {
               );
             })}
           </ul>
-
           {/* ✅ SINGLE CTA (Contact + Hire Me jadi satu) */}
           <div
             style={{
@@ -501,7 +478,8 @@ const Navbar = () => {
               style={{
                 padding: "9px 18px",
                 borderRadius: 999,
-                background: "linear-gradient(135deg, rgba(214,178,94,0.14), rgba(212,93,58,0.10))",
+                background:
+                  "linear-gradient(135deg, rgba(214,178,94,0.14), rgba(212,93,58,0.10))",
                 border: "1px solid rgba(214,178,94,0.50)",
                 color: "var(--metal2)",
                 fontSize: "0.62rem",
@@ -509,14 +487,16 @@ const Navbar = () => {
                 textTransform: "uppercase",
                 textDecoration: "none",
                 fontWeight: 650,
-                transition: "transform .25s, background .25s, color .25s, border-color .25s",
+                transition:
+                  "transform .25s, background .25s, color .25s, border-color .25s",
                 display: "flex",
                 alignItems: "center",
                 gap: 10,
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "translateY(-1px)";
-                e.currentTarget.style.background = "linear-gradient(135deg, rgba(214,178,94,0.95), rgba(212,93,58,0.75))";
+                e.currentTarget.style.background =
+                  "linear-gradient(135deg, rgba(214,178,94,0.95), rgba(212,93,58,0.75))";
                 e.currentTarget.style.color = "var(--bg)";
                 e.currentTarget.style.borderColor = "rgba(214,178,94,0.10)";
               }}
@@ -692,7 +672,9 @@ const Navbar = () => {
                   Navigation
                 </p>
 
-                <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+                <div
+                  style={{ display: "flex", alignItems: "baseline", gap: 8 }}
+                >
                   <span
                     style={{
                       width: 7,
@@ -808,7 +790,13 @@ const Navbar = () => {
                       }}
                     >
                       <span className="mRail" />
-                      <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "baseline",
+                          gap: 12,
+                        }}
+                      >
                         <span
                           className="f-mono"
                           style={{
@@ -850,7 +838,12 @@ const Navbar = () => {
                             : "rgba(154,148,138,0.9)",
                         }}
                       >
-                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+                        <svg
+                          width="16"
+                          height="12"
+                          viewBox="0 0 16 12"
+                          fill="none"
+                        >
                           <path
                             d="M1 6h14M9 1l6 5-6 5"
                             stroke="currentColor"

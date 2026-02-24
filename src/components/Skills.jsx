@@ -76,17 +76,6 @@ const Skills = () => {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..800,0..100&family=Sora:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
-
-        :root{
-          --metal:#D6B25E;
-          --bone: #F4F0E8;
-        }
-
-        .f-display{ font-family:'Fraunces', serif; }
-        .f-sans{ font-family:'Sora', sans-serif; }
-        .f-mono{ font-family:'IBM Plex Mono', monospace; }
-
         /* Grid overlay tetap ada namun transparan ke background global */
         .grid-overlay{
           position:absolute; inset:0;

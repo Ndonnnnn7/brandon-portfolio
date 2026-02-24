@@ -34,27 +34,6 @@ const Hero = () => {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..800,0..100&family=Sora:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
-
-        :root {
-          --bg: #07070a;
-          --bone: #F4F0E8;
-          --muted: #9A948A;
-          --metal: #D6B25E;
-          --rust: #D45D3A;
-          --border: rgba(214,178,94,0.18);
-          --border2: rgba(214,178,94,0.32);
-        }
-
-        .f-display { font-family: 'Fraunces', serif; }
-        .f-sans    { font-family: 'Sora', sans-serif; }
-        .f-mono    { font-family: 'IBM Plex Mono', monospace; }
-
-        /* Clean Background - Dihilangkan ambient lighting */
-        .hero-bg {
-          background-color: var(--bg);
-        }
-
         .bg-architect {
           background-image:
             linear-gradient(rgba(214,178,94,0.11) 1px, transparent 1px),

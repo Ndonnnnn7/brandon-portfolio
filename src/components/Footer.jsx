@@ -27,27 +27,6 @@ const Footer = () => {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..800,0..100&family=Sora:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
-
-        :root{
-          --bg:#07070a;
-          --bone:#F4F0E8;
-          --muted:#9A948A;
-
-          --metal:#D6B25E;
-          --metal2:#F2D89A;
-          --rust:#D45D3A;
-          --haze:#14B8A6;
-          --plum:#7C3AED;
-
-          --border: rgba(214,178,94,0.18);
-          --border2: rgba(214,178,94,0.34);
-        }
-
-        .f-display{ font-family:'Fraunces', serif; }
-        .f-sans{ font-family:'Sora', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
-        .f-mono{ font-family:'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
-
         /* footer bg system (match About) */
         .ft-bg{
           background: linear-gradient(180deg, #050507 0%, #07070a 45%, #040406 100%);
