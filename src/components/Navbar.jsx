@@ -5,6 +5,7 @@ import {
   useMotionValue,
   useSpring,
   useTransform,
+  useMotionTemplate, // ✅ DITAMBAHKAN UNTUK MENGATASI ERROR
 } from "framer-motion";
 import BackgroundAnimation from "./BackgroundAnimation";
 
@@ -24,28 +25,29 @@ const Navbar = () => {
     { id: 5, link: "achievements", label: "Achievements", index: "05" },
   ];
 
-  /* ── 3D micro-tilt (Optimized) ───────────────────────────────────────── */
+  /* ── 3D micro-tilt ───────────────────────────────────────── */
   const mx = useMotionValue(0.5);
   const my = useMotionValue(0.5);
-  const sx = useSpring(mx, { stiffness: 60, damping: 20, mass: 0.5 }); // Mass dikurangi agar lebih responsif
+  const sx = useSpring(mx, { stiffness: 60, damping: 20, mass: 0.5 });
   const sy = useSpring(my, { stiffness: 60, damping: 20, mass: 0.5 });
 
-  const rX = useTransform(sy, [0, 1], [1.5, -1.5]); // Rotasi sedikit dikurangi agar lebih subtle
+  const rX = useTransform(sy, [0, 1], [1.5, -1.5]);
   const rY = useTransform(sx, [0, 1], [-1.5, 1.5]);
   const glareX = useTransform(sx, [0, 1], [-10, 110]);
   const glareY = useTransform(sy, [0, 1], [-10, 110]);
 
+  // ✅ PERBAIKAN ERROR #300: Variabel dipindah ke luar JSX dan diganti menggunakan useMotionTemplate agar aman dari teguran React
+  const glareBackground = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.55) 0%, transparent 55%)`;
+
   const onMove = useCallback(
     (e) => {
-      // Hanya jalankan efek 3D jika bukan di perangkat touch/mobile
-      if (window.innerWidth < 768) return;
-
+      if (window.innerWidth < 768) return; 
       const rect = cardRef.current?.getBoundingClientRect();
       if (!rect) return;
       mx.set((e.clientX - rect.left) / rect.width);
       my.set((e.clientY - rect.top) / rect.height);
     },
-    [mx, my],
+    [mx, my]
   );
 
   const onLeave = useCallback(() => {
@@ -100,7 +102,6 @@ const Navbar = () => {
     }
   };
 
-  /* ── LOCK BODY SCROLL WHEN MOBILE MENU OPEN ──────────────────────────── */
   useEffect(() => {
     document.body.style.overflow = nav ? "hidden" : "";
     return () => {
@@ -134,7 +135,7 @@ const Navbar = () => {
           ref={cardRef}
           onMouseMove={onMove}
           onMouseLeave={onLeave}
-          className={`navArtifact navGrain ${scrolled ? "shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] md:shadow-[0_15px_40px_-15px_rgba(214,178,94,0.15)]" : "shadow-none"} transition-shadow duration-500 transform-gpu`}
+          className={`navArtifact navGrain ${scrolled ? 'shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] md:shadow-[0_15px_40px_-15px_rgba(214,178,94,0.15)]' : 'shadow-none'} transition-shadow duration-500 transform-gpu`}
           style={{
             rotateX: rX,
             rotateY: rY,
@@ -150,7 +151,7 @@ const Navbar = () => {
           <div className="navTopo" />
           <div className="sheen" />
 
-          {/* Glare - Hanya terlihat di desktop */}
+          {/* Glare */}
           <motion.div
             className="hidden md:block transform-gpu"
             style={{
@@ -160,15 +161,10 @@ const Navbar = () => {
               pointerEvents: "none",
               opacity: scrolled ? 0.28 : 0.22,
               mixBlendMode: "overlay",
-              background: useTransform(() => {
-                const x = glareX.get();
-                const y = glareY.get();
-                return `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,0.55) 0%, transparent 55%)`;
-              }),
+              background: glareBackground, // ✅ ERROR TERATASI: Memanggil variabel aman
             }}
           />
-
-          {/* LOGO - UI Desktop Enhanced */}
+          
           <motion.button
             onClick={() => {
               window.scrollTo({ top: 0, behavior: "smooth" });
@@ -188,7 +184,6 @@ const Navbar = () => {
               position: "relative",
               zIndex: 2,
             }}
-            aria-label="Go to top"
           >
             <span
               className="md:group-hover:bg-[#ff6b6b] transition-colors duration-300"
@@ -230,8 +225,7 @@ const Navbar = () => {
               Portfolio
             </span>
           </motion.button>
-
-          {/* LINKS - UI Desktop Enhanced */}
+          
           <ul
             className="mdFlex"
             style={{
@@ -244,9 +238,7 @@ const Navbar = () => {
               zIndex: 2,
               background: scrolled ? "rgba(255,255,255,0.02)" : "transparent",
               borderRadius: 999,
-              border: scrolled
-                ? "1px solid rgba(255,255,255,0.05)"
-                : "1px solid transparent",
+              border: scrolled ? "1px solid rgba(255,255,255,0.05)" : "1px solid transparent",
               transition: "all .4s ease",
             }}
           >
@@ -287,10 +279,9 @@ const Navbar = () => {
                       border: isActive
                         ? "1px solid rgba(214,178,94,0.25)"
                         : "1px solid transparent",
-                      transform:
-                        isHovered && !isActive
-                          ? "translateY(-1px)"
-                          : "translateY(0)",
+                      transform: isHovered && !isActive
+                        ? "translateY(-1px)"
+                        : "translateY(0)",
                       position: "relative",
                     }}
                   >
@@ -339,7 +330,6 @@ const Navbar = () => {
             })}
           </ul>
 
-          {/* CTA & HAMBURGER */}
           <div
             style={{
               display: "flex",
@@ -377,8 +367,7 @@ const Navbar = () => {
                   "linear-gradient(135deg, rgba(214,178,94,0.95), rgba(212,93,58,0.75))";
                 e.currentTarget.style.color = "var(--bg)";
                 e.currentTarget.style.borderColor = "rgba(214,178,94,0.10)";
-                e.currentTarget.style.boxShadow =
-                  "0 10px 20px -10px rgba(214,178,94,0.5)";
+                e.currentTarget.style.boxShadow = "0 10px 20px -10px rgba(214,178,94,0.5)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "translateY(0)";
@@ -390,13 +379,7 @@ const Navbar = () => {
               }}
             >
               Contact / Hire
-              <svg
-                width="12"
-                height="10"
-                viewBox="0 0 12 10"
-                fill="none"
-                className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
-              >
+              <svg width="12" height="10" viewBox="0 0 12 10" fill="none" className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">
                 <path
                   d="M1 5h10M6 1l5 4-5 4"
                   stroke="currentColor"
@@ -407,7 +390,6 @@ const Navbar = () => {
               </svg>
             </a>
 
-            {/* Hamburger mobile only - NO BLUR */}
             <button
               onClick={() => setNav(!nav)}
               aria-label="Toggle menu"
@@ -457,7 +439,6 @@ const Navbar = () => {
         </motion.div>
       </motion.nav>
 
-      {/* MOBILE DRAWER - Optimasi backdrop filter agar tidak berat */}
       <AnimatePresence>
         {nav && (
           <motion.div
@@ -471,8 +452,8 @@ const Navbar = () => {
             style={{
               position: "fixed",
               inset: 0,
-              background: "rgba(7,7,10,0.85)", // Fallback gelap
-              backdropFilter: "blur(4px)", // Dikurangi dari 8px ke 4px
+              background: "rgba(7,7,10,0.85)",
+              backdropFilter: "blur(4px)",
               WebkitBackdropFilter: "blur(4px)",
               zIndex: 48,
             }}
@@ -488,7 +469,7 @@ const Navbar = () => {
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "tween", duration: 0.3, ease: "easeInOut" }} // Diganti ke tween untuk HP lebih mulus
+            transition={{ type: "tween", duration: 0.3, ease: "easeInOut" }}
             style={{
               position: "fixed",
               top: 0,
@@ -504,7 +485,6 @@ const Navbar = () => {
               overflow: "hidden",
             }}
           >
-            {/* internal textures */}
             <div
               style={{
                 position: "absolute",
@@ -517,8 +497,7 @@ const Navbar = () => {
                 opacity: 0.9,
                 maskImage:
                   "radial-gradient(circle at 40% 10%, black 0%, black 55%, transparent 82%)",
-                WebkitMaskImage:
-                  "radial-gradient(circle at 40% 10%, black 0%, black 55%, transparent 82%)",
+                WebkitMaskImage: "radial-gradient(circle at 40% 10%, black 0%, black 55%, transparent 82%)"
               }}
             />
             <div
@@ -537,7 +516,6 @@ const Navbar = () => {
               }}
             />
 
-            {/* header */}
             <div
               style={{
                 position: "relative",
@@ -638,7 +616,6 @@ const Navbar = () => {
               </button>
             </div>
 
-            {/* links mobile */}
             <ul
               style={{
                 listStyle: "none",
@@ -752,7 +729,6 @@ const Navbar = () => {
               })}
             </ul>
 
-            {/* CTA Sidebar Mobile */}
             <div
               style={{
                 position: "relative",

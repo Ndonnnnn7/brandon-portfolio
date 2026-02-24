@@ -11,26 +11,28 @@ import Achievements from "./components/Achievements";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import GlobalBackground from "./components/GlobalBackground";
-import ProjectDetail from "./components/ProjectDetail"; // Import halaman detail baru
+import ProjectDetail from "./components/ProjectDetail";
 
 // --- HELPER: Scroll To Top ---
-// Ini penting agar saat klik detail project, halaman mulai dari atas, bukan dari posisi scroll sebelumnya
 const ScrollToTop = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // Memberikan sedikit delay 0ms agar DOM selesai ter-render sebelum scroll
+    // Ini mencegah error blank screen saat pergantian rute di Vercel
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 0);
   }, [pathname]);
 
   return null;
 };
 
 // --- LAYOUT HALAMAN UTAMA (Home) ---
-// Kita bungkus semua section lama menjadi satu komponen "Home"
 const Home = () => {
   return (
     <>
-      <Navbar /> {/* Navbar hanya muncul di Home agar tidak mengganggu tampilan detail project yang immersif */}
+      <Navbar /> 
       <main className="flex flex-col gap-0 relative z-10">
         <section id="home">
           <Hero />
@@ -62,26 +64,25 @@ const Home = () => {
   );
 };
 
+// Wrapper untuk memastikan Router Context berjalan lancar
+const AppContent = () => {
+  return (
+    <>
+      <ScrollToTop />
+      <GlobalBackground />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/project/:id" element={<ProjectDetail />} />
+      </Routes>
+    </>
+  );
+};
+
 function App() {
   return (
     <Router>
       <div className="relative min-h-screen text-white overflow-x-hidden bg-[#0a0a0a]">
-        
-        {/* Helper Scroll ke Atas */}
-        <ScrollToTop />
-
-        {/* Global Background (Tetap ada di semua halaman) */}
-        <GlobalBackground />
-
-        {/* --- ROUTING SYSTEM --- */}
-        <Routes>
-          {/* Rute 1: Halaman Utama Portofolio */}
-          <Route path="/" element={<Home />} />
-
-          {/* Rute 2: Halaman Detail Project (Dynamic ID) */}
-          <Route path="/project/:id" element={<ProjectDetail />} />
-        </Routes>
-
+        <AppContent />
       </div>
     </Router>
   );

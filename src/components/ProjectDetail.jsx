@@ -71,11 +71,7 @@ const projectsData = [
     tech: ["Figma", "Prototyping", "User Testing"],
     role: "UI/UX Designer",
     year: "2024",
-    links: {
-      demo: "https://www.figma.com/proto/7pEBT3wVsdw42AHuchP96x/Raion-Hackjam-3?page-id=5%3A8&node-id=233-3135&viewport=641%2C-1842%2C0.24&t=sn4PMhe2xBdW7Gdf-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=233%3A3458&show-proto-sidebar=1",
-      github: "#",
-      figma: "#",
-    },
+    links: { demo: "#", github: "#", figma: "#" },
   },
   {
     id: 5,
@@ -83,18 +79,13 @@ const projectsData = [
     category: "UI/UX",
     image: "/img/Kiddora.png",
     gallery: ["/img/projects/Kiddora1.png", "/img/projects/Kiddora2.png"],
-    description:
-      "A platform that helps families find dependable babysitters to ensure quality care for their little ones.",
+    description: "A platform that helps families find dependable babysitters to ensure quality care for their little ones.",
     fullDescription:
-      "Kiddora was born from the need to provide parents with a safe, transparent way to find childcare. We focused heavily on the trust factor—implementing rigorous verification badges in the UI and creating a soothing, trustworthy color palette. The UX process involved interviewing 15 parents to understand their anxiety points when hiring sitters.",
+      "Kiddora was born from the need to provide parents with a safe, transparent way to find childcare. We focused heavily on the trust factor—implementing rigorous verification badges in the UI and creating a soothing, trustworthy color palette.",
     tech: ["Figma", "Prototyping", "User Testing"],
     role: "UI/UX Designer",
     year: "2025",
-    links: {
-      demo: "https://www.figma.com/proto/nKv20vZ0eMc1lbcaPiIww4/Kiddora?page-id=1%3A3&node-id=249-2724&viewport=-3940%2C-2018%2C0.38&t=tl48gWN5NE12ucF8-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=72%3A427&show-proto-sidebar=1",
-      github: "#",
-      figma: "#",
-    },
+    links: { demo: "#", github: "#", figma: "#" },
   },
   {
     id: 6,
@@ -117,15 +108,11 @@ const projectsData = [
     image: "/img/Infotional.png",
     description: "App that helps students access scholarships, mentorship, and various educational resources.",
     fullDescription:
-      "Infotional is designed to democratize access to educational opportunities. By aggregating scholarships and mentorship programs, it helps students find the support they need. The UX design prioritizes information architecture to make searching through thousands of listings intuitive.",
+      "Infotional is designed to democratize access to educational opportunities. By aggregating scholarships and mentorship programs, it helps students find the support they need.",
     tech: ["Figma", "Prototyping", "User Testing"],
     role: "UI/UX Designer",
     year: "2024",
-    links: {
-      demo: "https://www.figma.com/proto/6GqXh0ZABe9qsb78LuSOSG/Internship-(Infotional)?page-id=6%3A2&node-id=798-17189&p=f&viewport=133%2C342%2C0.05&t=1NdSEsLvWTE6OWkP-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=798%3A1487",
-      github: "#",
-      figma: "#",
-    },
+    links: { demo: "#", github: "#", figma: "#" },
   },
   {
     id: 8,
@@ -139,29 +126,20 @@ const projectsData = [
     tech: ["Figma", "Prototyping", "User Testing"],
     role: "UI/UX Designer",
     year: "2024",
-    links: {
-      demo: "https://www.figma.com/proto/SEqFf1D4euTttq0SXT3gub/LittleSteps?page-id=20%3A8589&node-id=55-1315&p=f&viewport=607%2C-1930%2C0.23&t=b2cKUrbFM73U9fb8-1&scaling=scale-down&content-scaling=fixed",
-      github: "https://github.com/SakaGintoki/LittleSteps",
-      figma: "#",
-    },
+    links: { demo: "#", github: "https://github.com/SakaGintoki/LittleSteps", figma: "#" },
   },
   {
     id: 9,
     title: "WeCare",
     category: "UI/UX",
     image: "/img/WeCare.png",
-    description:
-      "App that enables victims of sexual harassment to quickly contact the police or authorities.",
+    description: "App that enables victims of sexual harassment to quickly contact the police or authorities.",
     fullDescription:
       "WeCare is a critical safety application designed with a panic button feature. The UI is designed to be accessible under high-stress situations, with large, clear interactions and a stealth mode for user safety.",
     tech: ["Figma", "Prototyping", "User Testing"],
     role: "UI/UX Designer",
     year: "2024",
-    links: {
-      demo: "https://www.figma.com/proto/VZnPxD4CemjN22jSCEJz3n/WeCare?page-id=467%3A726&node-id=467-727&p=f&viewport=1470%2C926%2C0.57&t=7o2mTgRz6Ds7aGhM-1&scaling=scale-down&content-scaling=fixed",
-      github: "#",
-      figma: "#",
-    },
+    links: { demo: "#", github: "#", figma: "#" },
   },
   {
     id: 10,
@@ -171,15 +149,11 @@ const projectsData = [
     gallery: ["/img/projects/Bundaku1.png"],
     description: "App for moms and babies, for pregnancy monitoring and stunting prevention.",
     fullDescription:
-      "Bundaku focuses on maternal and child health in Indonesia. It provides tracking tools for pregnancy and child growth to prevent stunting. The interface is designed to be warm and welcoming, providing easy-to-understand health visualizations.",
+      "Bundaku focuses on maternal and child health in Indonesia. It provides tracking tools for pregnancy and child growth to prevent stunting.",
     tech: ["Figma", "Prototyping", "User Testing"],
     role: "UI/UX Designer",
     year: "2024",
-    links: {
-      demo: "https://www.figma.com/proto/r3FH9ZgbTtkebwyflJlzQH/BundaKu?page-id=601%3A2195&node-id=601-2485&viewport=-1802%2C605%2C0.49&t=u0LlshESnMPJsH9l-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=601%3A2455",
-      github: "#",
-      figma: "#",
-    },
+    links: { demo: "#", github: "#", figma: "#" },
   },
   {
     id: 11,
@@ -187,19 +161,13 @@ const projectsData = [
     category: "UI/UX",
     image: "/img/Legana.png",
     gallery: ["/img/projects/Legana1.png", "/img/projects/Legana2.png"],
-    description:
-      "App that analyzes legal documents or issues from photos or text and suggests relevant laws.",
+    description: "App that analyzes legal documents or issues from photos or text and suggests relevant laws.",
     fullDescription:
-      "Legana simplifies legal literacy. By allowing users to upload documents or describe issues, the app suggests relevant laws and actions. The design challenge was presenting dense legal information in a digestible, user-friendly format.",
+      "Legana simplifies legal literacy. By allowing users to upload documents or describe issues, the app suggests relevant laws and actions.",
     tech: ["Figma", "Prototyping", "User Testing"],
     role: "UI/UX Designer",
     year: "2025",
-    links: {
-      demo: "#",
-      github: "#",
-      figma:
-        "https://www.figma.com/proto/pq9XdoJGny4CdaOK6i1gaT/Legana?page-id=3%3A496&node-id=3-507&p=f&viewport=833%2C475%2C0.16&t=mJnjHmtzCDlPMtTI-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=3%3A507",
-    },
+    links: { demo: "#", github: "#", figma: "#" },
   },
   {
     id: 12,
@@ -212,19 +180,14 @@ const projectsData = [
     tech: ["Figma", "Prototyping", "User Testing"],
     role: "UI/UX Designer",
     year: "2025",
-    links: {
-      demo: "https://www.figma.com/proto/tvrM7wbl45nRcTfnLGnvQT/Sehat-Mental-UB?page-id=29%3A1902&node-id=29-1903&viewport=224%2C-351%2C0.5&t=9TVqvObvioflH02R-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=29%3A1903&show-proto-sidebar=1",
-      github: "#",
-      figma: "#",
-    },
+    links: { demo: "#", github: "#", figma: "#" },
   },
   {
     id: 13,
     title: "Detection License Plate",
     category: "Data",
     image: "/img/plate.avif",
-    description:
-      "Using a YOLOv8 model to detect vehicle license plates and EasyOCR to read the plate text.",
+    description: "Using a YOLOv8 model to detect vehicle license plates and EasyOCR to read the plate text.",
     fullDescription:
       "Automated number plate recognition (ANPR). YOLOv8 detects plates in real-time. EasyOCR extracts alphanumeric characters for parking/traffic monitoring.",
     tech: ["Python", "YOLOv8", "EasyOCR", "Computer Vision"],
@@ -237,27 +200,22 @@ const projectsData = [
     title: "Senggreng Tourism Website",
     category: "Front End",
     image: "/img/desasenggreng.png",
-    description:
-      "A tourism website for Senggreng Village, showcasing tourist attractions and restaurants.",
+    description: "A tourism website for Senggreng Village, showcasing tourist attractions and restaurants.",
     fullDescription:
       "Digital portal for Senggreng Village tourism. Showcases attractions, culinary spots, and homestays. Built with React, responsive layouts, and maps to guide tourists.",
     tech: ["Three.js", "API", "React"],
     role: "Front End Developer",
     year: "2025",
-    links: {
-      demo: "https://desa-senggreng.vercel.app/home",
-      github: "https://github.com/Weedanta/Desa-Senggreng",
-      figma: "#",
-    },
+    links: { demo: "https://desa-senggreng.vercel.app/home", github: "https://github.com/Weedanta/Desa-Senggreng", figma: "#" },
   },
 ];
 
 const ProjectDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const containerRef = useRef(null);
 
+  // Semua HOOKS dideklarasikan di sini sebelum kondisi apapun
   const project = useMemo(
     () => projectsData.find((p) => p.id === parseInt(id, 10)),
     [id]
@@ -273,27 +231,11 @@ const ProjectDetail = () => {
     window.scrollTo(0, 0);
   }, [id]);
 
-  // PARALLAX (hero image)
   const { scrollYProgress } = useScroll();
   const yParallax = useTransform(scrollYProgress, [0, 0.35], ["0%", "10%"]);
   const titleY = useTransform(scrollYProgress, [0, 0.22], ["0px", "22px"]);
   const titleOpacity = useTransform(scrollYProgress, [0, 0.22], [1, 0.72]);
 
-  if (!project) {
-    return (
-      <div className="min-h-screen flex flex-col gap-4 items-center justify-center text-white bg-[#0a0a0a]">
-        <p className="text-xl text-gray-400">Project not found.</p>
-        <button
-          onClick={() => navigate("/")}
-          className="px-6 py-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-        >
-          Go Back Home
-        </button>
-      </div>
-    );
-  }
-
-  // OPTIMASI: Hapus filter blur di seluruh animasi masuk
   const fadeInUp = {
     hidden: { opacity: 0, y: 26 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
@@ -312,378 +254,374 @@ const ProjectDetail = () => {
     visible: { transition: { staggerChildren: 0.12 } },
   };
 
+  // ✅ PERBAIKAN: Tidak ada early return yang mengacaukan siklus Hooks
   return (
     <>
-      <article
-        ref={containerRef}
-        className="min-h-screen w-full text-[var(--bone)] relative overflow-hidden selection:bg-[rgba(124,58,237,0.35)] pd-bg pd-grain"
-      >
-        {/* background layers */}
-        <div className="pd-blueprint" />
-        <div className="pd-topo" />
-        <div className="pd-vignette" />
-
-        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-8 py-12 md:py-20">
-          {/* Back button - UI Desktop Enhanced */}
-          <motion.button
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            onClick={() => navigate(-1)}
-            className="group flex items-center gap-3 text-[rgba(154,148,138,0.95)] md:hover:text-[var(--metal)] transition-colors mb-12"
+      {!project ? (
+        <div className="min-h-screen flex flex-col gap-4 items-center justify-center text-[var(--bone)] bg-[var(--bg)]">
+          <p className="text-xl text-[rgba(244,240,232,0.7)]">Project not found.</p>
+          <button
+            onClick={() => navigate("/")}
+            className="px-6 py-2 rounded-full border border-[rgba(214,178,94,0.3)] bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition-colors"
           >
-            <div className="p-2 rounded-full border border-[rgba(214,178,94,0.20)] bg-[rgba(255,255,255,0.03)] md:group-hover:bg-[rgba(214,178,94,0.15)] md:group-hover:border-[rgba(214,178,94,0.4)] transition-all">
-              <ArrowLeft className="w-5 h-5 md:group-hover:-translate-x-1.5 transition-transform duration-300" />
-            </div>
-            <span className="f-mono text-[0.62rem] font-medium tracking-[0.28em] uppercase">
-              Back to Projects
-            </span>
-          </motion.button>
+            Go Back Home
+          </button>
+        </div>
+      ) : (
+        <article
+          ref={containerRef}
+          className="min-h-screen w-full text-[var(--bone)] relative overflow-hidden selection:bg-[rgba(124,58,237,0.35)] pd-bg pd-grain"
+        >
+          <div className="pd-blueprint" />
+          <div className="pd-topo" />
+          <div className="pd-vignette" />
 
-          {/* HERO */}
-          <motion.div initial="hidden" animate="visible" variants={stagger} className="mb-16 md:mb-24">
-            {/* meta badges - UI Desktop Enhanced */}
-            <motion.div variants={fadeInUp} className="flex flex-wrap items-center gap-3 mb-6">
-              <span className="px-4 py-2 rounded-full border border-[rgba(214,178,94,0.22)] bg-[rgba(255,255,255,0.03)] text-[var(--metal2)] flex items-center gap-2 backdrop-blur-md md:hover:bg-[rgba(214,178,94,0.1)] transition-colors cursor-default">
-                <Layers className="w-4 h-4" />
-                <span className="f-mono text-[0.6rem] tracking-[0.22em] uppercase">{project.category}</span>
-              </span>
-
-              <span className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[rgba(244,240,232,0.8)] flex items-center gap-2 backdrop-blur-md md:hover:bg-white/10 md:hover:text-white transition-colors cursor-default">
-                <Calendar className="w-4 h-4 text-[rgba(154,148,138,0.95)]" />
-                <span className="f-mono text-[0.6rem] tracking-[0.22em] uppercase">{project.year}</span>
-              </span>
-
-              <span className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[rgba(244,240,232,0.8)] flex items-center gap-2 backdrop-blur-md md:hover:bg-white/10 md:hover:border-[var(--haze)] transition-colors cursor-default">
-                <Sparkles className="w-4 h-4 text-[var(--haze)]" />
-                <span className="f-mono text-[0.6rem] tracking-[0.22em] uppercase">Case Study</span>
-              </span>
-            </motion.div>
-
-            <motion.div style={{ y: titleY, opacity: titleOpacity }}>
-              <motion.h1
-                variants={fadeInUp}
-                className="f-display text-[clamp(3.2rem,7.2vw,6.6rem)] leading-[0.92] tracking-tight mb-6"
-              >
-                <span className="italic">{project.title}</span>{" "}
-                <span className="outlineText font-black not-italic drop-shadow-[0_0_15px_rgba(214,178,94,0.3)]">.</span>
-              </motion.h1>
-
-              <motion.p
-                variants={fadeInUp}
-                className="f-sans text-[1.05rem] md:text-[1.25rem] text-[rgba(244,240,232,0.72)] max-w-3xl leading-relaxed mb-10"
-              >
-                {project.description}
-              </motion.p>
-            </motion.div>
-
-            {/* hero image - UI Desktop Enhanced & Optimized */}
-            <motion.div variants={scaleIn} className="artifact heroWrap md:hover:shadow-[0_20px_50px_-15px_rgba(214,178,94,0.2)] md:transition-shadow duration-700">
-              <div className="sheen md:group-hover:opacity-100" />
-              <span className="screw" style={{ top: 14, left: 14 }} />
-              <span className="screw" style={{ top: 14, right: 14 }} />
-              <span className="screw" style={{ bottom: 14, left: 14 }} />
-              <span className="screw" style={{ bottom: 14, right: 14 }} />
-
-              <div className="relative w-full aspect-video md:aspect-[21/9] rounded-[26px] overflow-hidden group transform-gpu">
-                <motion.div style={{ y: yParallax }} className="w-full h-full">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover scale-[1.12] transition-transform duration-[1100ms] ease-[cubic-bezier(.22,1,.36,1)] md:group-hover:scale-[1.05] transform-gpu"
-                  />
-                </motion.div>
-
-                {/* overlays */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#07070a] via-transparent to-transparent opacity-70 pointer-events-none md:group-hover:opacity-40 transition-opacity duration-700" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(214,178,94,0.15),transparent_55%),radial-gradient(circle_at_85%_20%,rgba(124,58,237,0.15),transparent_55%)] opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-                <div className="scanline opacity-30 md:group-hover:opacity-60 transition-opacity" />
-
-                {/* corner chips */}
-                <div className="absolute top-5 left-5 z-10 flex items-center gap-2 px-3 py-2 rounded-full border border-white/15 bg-black/35 backdrop-blur-md md:group-hover:bg-black/60 transition-colors duration-500">
-                  <Code2 className="w-4 h-4 text-[var(--metal2)]" />
-                  <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-white/85">
-                    Featured
-                  </span>
-                </div>
-
-                <div className="absolute top-5 right-5 z-10 px-3 py-2 rounded-full border border-white/15 bg-black/35 backdrop-blur-md md:group-hover:bg-black/60 transition-colors duration-500">
-                  <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-white/75">
-                    ID / {String(project.id).padStart(2, "0")}
-                  </span>
-                </div>
-
-                {/* bottom caption */}
-                <div className="absolute bottom-5 left-5 right-5 z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <span className="w-2 h-2 rounded-full bg-[var(--rust)] opacity-80 md:group-hover:animate-pulse" />
-                    <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-white/80 md:group-hover:text-white transition-colors">
-                      Scroll for details
-                    </span>
-                  </div>
-
-                  {project.links.demo && project.links.demo !== "#" && (
-                    <a
-                      href={project.links.demo}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[rgba(214,178,94,0.26)] bg-[rgba(255,255,255,0.03)] md:hover:bg-[var(--metal)] md:hover:border-[var(--metal)] transition-all duration-500 group/btn"
-                    >
-                      <ExternalLink className="w-4 h-4 text-[var(--metal2)] md:group-hover/btn:text-black transition-colors" />
-                      <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-white/85 md:group-hover/btn:text-black md:group-hover/btn:font-bold transition-all">
-                        Open live
-                      </span>
-                    </a>
-                  )}
-                </div>
+          <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-8 py-12 md:py-20">
+            <motion.button
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              onClick={() => navigate(-1)}
+              className="group flex items-center gap-3 text-[rgba(154,148,138,0.95)] md:hover:text-[var(--metal)] transition-colors mb-12"
+            >
+              <div className="p-2 rounded-full border border-[rgba(214,178,94,0.20)] bg-[rgba(255,255,255,0.03)] md:group-hover:bg-[rgba(214,178,94,0.15)] md:group-hover:border-[rgba(214,178,94,0.4)] transition-all">
+                <ArrowLeft className="w-5 h-5 md:group-hover:-translate-x-1.5 transition-transform duration-300" />
               </div>
-            </motion.div>
-          </motion.div>
+              <span className="f-mono text-[0.62rem] font-medium tracking-[0.28em] uppercase">
+                Back to Projects
+              </span>
+            </motion.button>
 
-          {/* GRID */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-            {/* LEFT */}
-            <div className="lg:col-span-8 flex flex-col gap-18">
-              {/* Overview */}
-              <motion.section
-                initial={{ opacity: 0, y: 26 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.1 }}
-                transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 rounded-xl border border-[rgba(214,178,94,0.25)] bg-[rgba(255,255,255,0.03)] flex items-center justify-center">
-                    <Layers className="w-5 h-5 text-[var(--metal2)]" />
-                  </div>
-                  <h3 className="f-display text-3xl md:text-4xl font-semibold italic">
-                    Overview <span className="meshText not-italic">/</span>
-                  </h3>
-                </div>
+            <motion.div initial="hidden" animate="visible" variants={stagger} className="mb-16 md:mb-24">
+              <motion.div variants={fadeInUp} className="flex flex-wrap items-center gap-3 mb-6">
+                <span className="px-4 py-2 rounded-full border border-[rgba(214,178,94,0.22)] bg-[rgba(255,255,255,0.03)] text-[var(--metal2)] flex items-center gap-2 backdrop-blur-md md:hover:bg-[rgba(214,178,94,0.1)] transition-colors cursor-default">
+                  <Layers className="w-4 h-4" />
+                  <span className="f-mono text-[0.6rem] tracking-[0.22em] uppercase">{project.category}</span>
+                </span>
 
-                <div className="artifact p-7 md:p-9 md:hover:shadow-[0_15px_30px_-10px_rgba(214,178,94,0.05)] md:hover:border-[rgba(214,178,94,0.15)] transition-all duration-500">
-                  <div className="sheen" />
-                  <span className="screw" style={{ top: 14, left: 14 }} />
-                  <span className="screw" style={{ top: 14, right: 14 }} />
-                  <span className="screw" style={{ bottom: 14, left: 14 }} />
-                  <span className="screw" style={{ bottom: 14, right: 14 }} />
+                <span className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[rgba(244,240,232,0.8)] flex items-center gap-2 backdrop-blur-md md:hover:bg-white/10 md:hover:text-white transition-colors cursor-default">
+                  <Calendar className="w-4 h-4 text-[rgba(154,148,138,0.95)]" />
+                  <span className="f-mono text-[0.6rem] tracking-[0.22em] uppercase">{project.year}</span>
+                </span>
 
-                  <div className="flex items-start gap-4 md:gap-6">
-                    <div className="hidden md:block w-1.5 min-h-[120px] rounded-full bg-gradient-to-b from-[rgba(214,178,94,0.55)] via-[rgba(124,58,237,0.22)] to-transparent" />
-                    <p className="f-sans text-[1rem] md:text-[1.05rem] leading-loose text-[rgba(244,240,232,0.75)]">
-                      {project.fullDescription || project.description}
-                    </p>
-                  </div>
+                <span className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[rgba(244,240,232,0.8)] flex items-center gap-2 backdrop-blur-md md:hover:bg-white/10 md:hover:border-[var(--haze)] transition-colors cursor-default">
+                  <Sparkles className="w-4 h-4 text-[var(--haze)]" />
+                  <span className="f-mono text-[0.6rem] tracking-[0.22em] uppercase">Case Study</span>
+                </span>
+              </motion.div>
 
-                  <div className="mt-6 flex items-center gap-2 text-[rgba(154,148,138,0.95)]">
-                    <CornerDownRight className="w-4 h-4" />
-                    <span className="f-mono text-[0.55rem] tracking-[0.24em] uppercase">
-                      role:{" "}
-                      <span className="text-[rgba(244,240,232,0.85)]">{project.role}</span>
+              <motion.div style={{ y: titleY, opacity: titleOpacity }}>
+                <motion.h1
+                  variants={fadeInUp}
+                  className="f-display text-[clamp(3.2rem,7.2vw,6.6rem)] leading-[0.92] tracking-tight mb-6"
+                >
+                  <span className="italic">{project.title}</span>{" "}
+                  <span className="outlineText font-black not-italic drop-shadow-[0_0_15px_rgba(214,178,94,0.3)]">.</span>
+                </motion.h1>
+
+                <motion.p
+                  variants={fadeInUp}
+                  className="f-sans text-[1.05rem] md:text-[1.25rem] text-[rgba(244,240,232,0.72)] max-w-3xl leading-relaxed mb-10"
+                >
+                  {project.description}
+                </motion.p>
+              </motion.div>
+
+              <motion.div variants={scaleIn} className="artifact heroWrap md:hover:shadow-[0_20px_50px_-15px_rgba(214,178,94,0.2)] md:transition-shadow duration-700">
+                <div className="sheen md:group-hover:opacity-100" />
+                <span className="screw" style={{ top: 14, left: 14 }} />
+                <span className="screw" style={{ top: 14, right: 14 }} />
+                <span className="screw" style={{ bottom: 14, left: 14 }} />
+                <span className="screw" style={{ bottom: 14, right: 14 }} />
+
+                <div className="relative w-full aspect-video md:aspect-[21/9] rounded-[26px] overflow-hidden group transform-gpu">
+                  <motion.div style={{ y: yParallax }} className="w-full h-full">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover scale-[1.12] transition-transform duration-[1100ms] ease-[cubic-bezier(.22,1,.36,1)] md:group-hover:scale-[1.05] transform-gpu"
+                    />
+                  </motion.div>
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#07070a] via-transparent to-transparent opacity-70 pointer-events-none md:group-hover:opacity-40 transition-opacity duration-700" />
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(214,178,94,0.15),transparent_55%),radial-gradient(circle_at_85%_20%,rgba(124,58,237,0.15),transparent_55%)] opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                  <div className="scanline opacity-30 md:group-hover:opacity-60 transition-opacity" />
+
+                  <div className="absolute top-5 left-5 z-10 flex items-center gap-2 px-3 py-2 rounded-full border border-white/15 bg-black/35 backdrop-blur-md md:group-hover:bg-black/60 transition-colors duration-500">
+                    <Code2 className="w-4 h-4 text-[var(--metal2)]" />
+                    <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-white/85">
+                      Featured
                     </span>
                   </div>
-                </div>
-              </motion.section>
 
-              {/* Gallery */}
-              <motion.section
-                initial={{ opacity: 0, y: 26 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.1 }}
-                transition={{ duration: 0.85, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-                className="pt-10 border-t border-white/5"
-              >
-                <div className="flex items-center justify-between gap-6 mb-8">
-                  <h3 className="f-display text-2xl md:text-3xl font-semibold italic flex items-center gap-3">
-                    <ImageIcon className="w-6 h-6 text-[var(--haze)]" />
-                    Snapshots
-                  </h3>
-                  <span className="hidden md:inline-flex px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
-                    <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-[rgba(244,240,232,0.75)]">
-                      gallery / {project.gallery?.length ?? 0}
+                  <div className="absolute top-5 right-5 z-10 px-3 py-2 rounded-full border border-white/15 bg-black/35 backdrop-blur-md md:group-hover:bg-black/60 transition-colors duration-500">
+                    <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-white/75">
+                      ID / {String(project.id).padStart(2, "0")}
                     </span>
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-                  {project.gallery && project.gallery.length > 0 ? (
-                    project.gallery.map((img, index) => (
-                      <motion.div
-                        key={index}
-                        className="tile overflow-hidden rounded-[20px] md:hover:-translate-y-2 md:hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.8)] transition-all duration-500 transform-gpu group"
-                        initial={{ opacity: 0, y: 18 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.7, delay: index * 0.08 }}
-                      >
-                        <img
-                          src={img}
-                          loading="lazy"
-                          alt={`${project.title} screenshot ${index + 1}`}
-                          className="w-full h-full object-cover aspect-video transition-transform duration-[900ms] ease-[cubic-bezier(.22,1,.36,1)] md:group-hover:scale-[1.08] transform-gpu"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-70 pointer-events-none md:group-hover:opacity-40 transition-opacity duration-500" />
-                        <div className="absolute bottom-4 left-4 px-3 py-2 rounded-full border border-white/15 bg-black/35 backdrop-blur-md md:group-hover:bg-black/60 transition-colors duration-300">
-                          <span className="f-mono text-[0.52rem] tracking-[0.26em] uppercase text-white/80">
-                            Shot {String(index + 1).padStart(2, "0")}
-                          </span>
-                        </div>
-                      </motion.div>
-                    ))
-                  ) : (
-                    <p className="text-gray-500 italic">No snapshots available.</p>
-                  )}
-                </div>
-              </motion.section>
-            </div>
-
-            {/* RIGHT SIDEBAR */}
-            <div className="lg:col-span-4">
-              <div className="sticky top-24 space-y-8">
-                <div className="artifact p-7 md:hover:shadow-[0_15px_30px_-10px_rgba(214,178,94,0.05)] md:hover:border-[rgba(214,178,94,0.15)] transition-all duration-500">
-                  <div className="sheen" />
-                  <span className="screw" style={{ top: 14, left: 14 }} />
-                  <span className="screw" style={{ top: 14, right: 14 }} />
-
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
-                      <Sparkles className="w-5 h-5 text-[var(--metal2)]" />
-                    </div>
-                    <div>
-                      <p className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-[rgba(154,148,138,0.95)]">
-                        project card
-                      </p>
-                      <p className="f-display text-xl font-semibold italic leading-tight">
-                        {project.title}
-                      </p>
-                    </div>
                   </div>
 
-                  {/* Role */}
-                  <div className="mb-7">
-                    <h3 className="f-mono text-[0.55rem] font-medium text-[rgba(154,148,138,0.95)] uppercase tracking-[0.26em] mb-3 flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-[var(--rust)]" />
-                      Role
-                    </h3>
-                    <p className="f-sans text-lg font-semibold text-[rgba(244,240,232,0.90)]">
-                      {project.role}
-                    </p>
-                  </div>
-
-                  {/* Tech */}
-                  <div className="mb-8">
-                    <h3 className="f-mono text-[0.55rem] font-medium text-[rgba(154,148,138,0.95)] uppercase tracking-[0.26em] mb-3 flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-[var(--haze)]" />
-                      Tech Stack
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {project.tech.map((tech, idx) => (
-                        <span
-                          key={idx}
-                          className="px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[0.8rem] text-[rgba(244,240,232,0.78)] cursor-default md:hover:bg-[rgba(214,178,94,0.1)] md:hover:border-[rgba(214,178,94,0.3)] md:hover:text-[var(--bone)] transition-colors f-sans"
-                        >
-                          {tech}
-                        </span>
-                      ))}
+                  <div className="absolute bottom-5 left-5 right-5 z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <span className="w-2 h-2 rounded-full bg-[var(--rust)] opacity-80 md:group-hover:animate-pulse" />
+                      <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-white/80 md:group-hover:text-white transition-colors">
+                        Scroll for details
+                      </span>
                     </div>
-                  </div>
 
-                  <div className="h-px w-full bg-gradient-to-r from-[rgba(214,178,94,0.32)] to-transparent my-7" />
-
-                  {/* Actions - UI Desktop Enhanced */}
-                  <div className="flex flex-col gap-4">
                     {project.links.demo && project.links.demo !== "#" && (
                       <a
                         href={project.links.demo}
                         target="_blank"
                         rel="noreferrer"
-                        className="group w-full py-4 rounded-2xl text-center md:transition-all flex items-center justify-center gap-3 relative overflow-hidden border border-[rgba(214,178,94,0.28)] bg-[rgba(255,255,255,0.03)] md:hover:bg-[rgba(214,178,94,0.1)] md:hover:border-[var(--metal)] md:hover:shadow-[0_0_20px_rgba(214,178,94,0.15)]"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[rgba(214,178,94,0.26)] bg-[rgba(255,255,255,0.03)] md:hover:bg-[var(--metal)] md:hover:border-[var(--metal)] transition-all duration-500 group/btn"
                       >
-                        <span className="absolute inset-0 opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                          style={{
-                            background:
-                              "radial-gradient(circle at 20% 30%, rgba(214,178,94,0.18), transparent 55%), radial-gradient(circle at 80% 20%, rgba(124,58,237,0.16), transparent 52%)",
-                          }}
-                        />
-                        <ExternalLink className="w-5 h-5 text-[var(--metal2)] relative z-10 md:group-hover:text-[var(--bone)] transition-colors" />
-                        <span className="f-mono text-[0.62rem] tracking-[0.26em] uppercase text-[rgba(244,240,232,0.9)] relative z-10 md:group-hover:text-[var(--bone)] transition-colors">
-                          Live Demo
+                        <ExternalLink className="w-4 h-4 text-[var(--metal2)] md:group-hover/btn:text-black transition-colors" />
+                        <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-white/85 md:group-hover/btn:text-black md:group-hover/btn:font-bold transition-all">
+                          Open live
                         </span>
-                        <ArrowUpRight className="w-5 h-5 text-[rgba(244,240,232,0.75)] relative z-10 md:group-hover:translate-x-1 md:group-hover:-translate-y-1 md:group-hover:text-[var(--metal)] transition-all duration-300" />
                       </a>
                     )}
-
-                    <div className="flex gap-3">
-                      {project.links.github && project.links.github !== "#" && (
-                        <a
-                          href={project.links.github}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="flex-1 py-3 rounded-2xl border border-white/10 bg-white/5 md:hover:bg-[rgba(255,255,255,0.1)] md:hover:border-[rgba(255,255,255,0.3)] transition-all flex items-center justify-center gap-2 group/btn"
-                        >
-                          <Github className="w-5 h-5 text-[rgba(244,240,232,0.85)] md:group-hover/btn:scale-110 transition-transform" />
-                          <span className="f-mono text-[0.58rem] tracking-[0.24em] uppercase text-[rgba(244,240,232,0.82)] md:group-hover/btn:text-white transition-colors">
-                            Code
-                          </span>
-                        </a>
-                      )}
-
-                      {project.links.figma && project.links.figma !== "#" && (
-                        <a
-                          href={project.links.figma}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="flex-1 py-3 rounded-2xl border border-white/10 bg-white/5 md:hover:bg-[rgba(255,107,107,0.1)] md:hover:border-[#ff6b6b]/40 md:hover:text-[#ff6b6b] transition-all flex items-center justify-center gap-2 group/btn"
-                        >
-                          <FaFigma className="w-5 h-5 text-[rgba(244,240,232,0.85)] md:group-hover/btn:text-[#ff6b6b] md:group-hover/btn:scale-110 transition-all" />
-                          <span className="f-mono text-[0.58rem] tracking-[0.24em] uppercase text-[rgba(244,240,232,0.82)] md:group-hover/btn:text-[#ff6b6b] transition-colors">
-                            Design
-                          </span>
-                        </a>
-                      )}
-                    </div>
                   </div>
                 </div>
+              </motion.div>
+            </motion.div>
 
-                {/* Next project - UI Desktop Enhanced */}
-                {next && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 18 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.1 }}
-                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                    className="artifact p-7 md:transition-all md:duration-500 md:hover:shadow-[0_15px_30px_-10px_rgba(214,178,94,0.1)] md:hover:border-[rgba(214,178,94,0.3)] group/next"
-                  >
-                    <div className="sheen" />
-                    <span className="screw md:group-hover/next:rotate-90 transition-transform duration-700" style={{ top: 14, left: 14 }} />
-                    <span className="screw md:group-hover/next:-rotate-90 transition-transform duration-700" style={{ top: 14, right: 14 }} />
-
-                    <p className="f-mono text-[0.55rem] tracking-[0.28em] uppercase text-[rgba(154,148,138,0.95)] mb-3 md:group-hover/next:text-[var(--metal)] transition-colors">
-                      Next Project
-                    </p>
-
-                    <h3 className="f-display text-2xl md:text-3xl font-semibold italic leading-tight">
-                      <span className="meshText md:group-hover/next:brightness-125 transition-all">{next.title}</span>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+              <div className="lg:col-span-8 flex flex-col gap-18">
+                <motion.section
+                  initial={{ opacity: 0, y: 26 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <div className="flex items-center gap-3 mb-8">
+                    <div className="w-10 h-10 rounded-xl border border-[rgba(214,178,94,0.25)] bg-[rgba(255,255,255,0.03)] flex items-center justify-center">
+                      <Layers className="w-5 h-5 text-[var(--metal2)]" />
+                    </div>
+                    <h3 className="f-display text-3xl md:text-4xl font-semibold italic">
+                      Overview <span className="meshText not-italic">/</span>
                     </h3>
+                  </div>
 
-                    <p className="f-sans text-sm text-[rgba(244,240,232,0.68)] mt-3 line-clamp-2 md:group-hover/next:text-[rgba(244,240,232,0.9)] transition-colors">
-                      {next.description}
-                    </p>
+                  <div className="artifact p-7 md:p-9 md:hover:shadow-[0_15px_30px_-10px_rgba(214,178,94,0.05)] md:hover:border-[rgba(214,178,94,0.15)] transition-all duration-500">
+                    <div className="sheen" />
+                    <span className="screw" style={{ top: 14, left: 14 }} />
+                    <span className="screw" style={{ top: 14, right: 14 }} />
+                    <span className="screw" style={{ bottom: 14, left: 14 }} />
+                    <span className="screw" style={{ bottom: 14, right: 14 }} />
 
-                    <button
-                      onClick={() => navigate(`/project/${next.id}`)}
-                      className="mt-6 w-full py-3 rounded-2xl border border-[rgba(214,178,94,0.26)] bg-[rgba(255,255,255,0.03)] md:group-hover/next:bg-[rgba(214,178,94,0.15)] md:group-hover/next:border-[var(--metal)] transition-all flex items-center justify-center gap-2"
-                    >
-                      <span className="f-mono text-[0.58rem] tracking-[0.26em] uppercase text-[rgba(244,240,232,0.88)] md:group-hover/next:text-[var(--bone)] md:group-hover/next:font-bold transition-all">
-                        Next
+                    <div className="flex items-start gap-4 md:gap-6">
+                      <div className="hidden md:block w-1.5 min-h-[120px] rounded-full bg-gradient-to-b from-[rgba(214,178,94,0.55)] via-[rgba(124,58,237,0.22)] to-transparent" />
+                      <p className="f-sans text-[1rem] md:text-[1.05rem] leading-loose text-[rgba(244,240,232,0.75)]">
+                        {project.fullDescription || project.description}
+                      </p>
+                    </div>
+
+                    <div className="mt-6 flex items-center gap-2 text-[rgba(154,148,138,0.95)]">
+                      <CornerDownRight className="w-4 h-4" />
+                      <span className="f-mono text-[0.55rem] tracking-[0.24em] uppercase">
+                        role:{" "}
+                        <span className="text-[rgba(244,240,232,0.85)]">{project.role}</span>
                       </span>
-                      <ArrowUpRight className="w-5 h-5 text-[rgba(244,240,232,0.80)] md:group-hover/next:translate-x-1 md:group-hover/next:-translate-y-1 md:group-hover/next:text-[var(--metal2)] transition-all duration-300" />
-                    </button>
-                  </motion.div>
-                )}
+                    </div>
+                  </div>
+                </motion.section>
+
+                <motion.section
+                  initial={{ opacity: 0, y: 26 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.85, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
+                  className="pt-10 border-t border-white/5"
+                >
+                  <div className="flex items-center justify-between gap-6 mb-8">
+                    <h3 className="f-display text-2xl md:text-3xl font-semibold italic flex items-center gap-3">
+                      <ImageIcon className="w-6 h-6 text-[var(--haze)]" />
+                      Snapshots
+                    </h3>
+                    <span className="hidden md:inline-flex px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
+                      <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-[rgba(244,240,232,0.75)]">
+                        gallery / {project.gallery?.length ?? 0}
+                      </span>
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                    {project.gallery && project.gallery.length > 0 ? (
+                      project.gallery.map((img, index) => (
+                        <motion.div
+                          key={index}
+                          className="tile overflow-hidden rounded-[20px] md:hover:-translate-y-2 md:hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.8)] transition-all duration-500 transform-gpu group"
+                          initial={{ opacity: 0, y: 18 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.7, delay: index * 0.08 }}
+                        >
+                          <img
+                            src={img}
+                            loading="lazy"
+                            alt={`${project.title} screenshot ${index + 1}`}
+                            className="w-full h-full object-cover aspect-video transition-transform duration-[900ms] ease-[cubic-bezier(.22,1,.36,1)] md:group-hover:scale-[1.08] transform-gpu"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-70 pointer-events-none md:group-hover:opacity-40 transition-opacity duration-500" />
+                          <div className="absolute bottom-4 left-4 px-3 py-2 rounded-full border border-white/15 bg-black/35 backdrop-blur-md md:group-hover:bg-black/60 transition-colors duration-300">
+                            <span className="f-mono text-[0.52rem] tracking-[0.26em] uppercase text-white/80">
+                              Shot {String(index + 1).padStart(2, "0")}
+                            </span>
+                          </div>
+                        </motion.div>
+                      ))
+                    ) : (
+                      <p className="text-gray-500 italic">No snapshots available.</p>
+                    )}
+                  </div>
+                </motion.section>
+              </div>
+
+              <div className="lg:col-span-4">
+                <div className="sticky top-24 space-y-8">
+                  <div className="artifact p-7 md:hover:shadow-[0_15px_30px_-10px_rgba(214,178,94,0.05)] md:hover:border-[rgba(214,178,94,0.15)] transition-all duration-500">
+                    <div className="sheen" />
+                    <span className="screw" style={{ top: 14, left: 14 }} />
+                    <span className="screw" style={{ top: 14, right: 14 }} />
+
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-10 h-10 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
+                        <Sparkles className="w-5 h-5 text-[var(--metal2)]" />
+                      </div>
+                      <div>
+                        <p className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-[rgba(154,148,138,0.95)]">
+                          project card
+                        </p>
+                        <p className="f-display text-xl font-semibold italic leading-tight">
+                          {project.title}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="mb-7">
+                      <h3 className="f-mono text-[0.55rem] font-medium text-[rgba(154,148,138,0.95)] uppercase tracking-[0.26em] mb-3 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-[var(--rust)]" />
+                        Role
+                      </h3>
+                      <p className="f-sans text-lg font-semibold text-[rgba(244,240,232,0.90)]">
+                        {project.role}
+                      </p>
+                    </div>
+
+                    <div className="mb-8">
+                      <h3 className="f-mono text-[0.55rem] font-medium text-[rgba(154,148,138,0.95)] uppercase tracking-[0.26em] mb-3 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-[var(--haze)]" />
+                        Tech Stack
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        {project.tech.map((tech, idx) => (
+                          <span
+                            key={idx}
+                            className="px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[0.8rem] text-[rgba(244,240,232,0.78)] cursor-default md:hover:bg-[rgba(214,178,94,0.1)] md:hover:border-[rgba(214,178,94,0.3)] md:hover:text-[var(--bone)] transition-colors f-sans"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="h-px w-full bg-gradient-to-r from-[rgba(214,178,94,0.32)] to-transparent my-7" />
+
+                    <div className="flex flex-col gap-4">
+                      {project.links.demo && project.links.demo !== "#" && (
+                        <a
+                          href={project.links.demo}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="group w-full py-4 rounded-2xl text-center md:transition-all flex items-center justify-center gap-3 relative overflow-hidden border border-[rgba(214,178,94,0.28)] bg-[rgba(255,255,255,0.03)] md:hover:bg-[rgba(214,178,94,0.1)] md:hover:border-[var(--metal)] md:hover:shadow-[0_0_20px_rgba(214,178,94,0.15)]"
+                        >
+                          <span className="absolute inset-0 opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                            style={{
+                              background:
+                                "radial-gradient(circle at 20% 30%, rgba(214,178,94,0.18), transparent 55%), radial-gradient(circle at 80% 20%, rgba(124,58,237,0.16), transparent 52%)",
+                            }}
+                          />
+                          <ExternalLink className="w-5 h-5 text-[var(--metal2)] relative z-10 md:group-hover:text-[var(--bone)] transition-colors" />
+                          <span className="f-mono text-[0.62rem] tracking-[0.26em] uppercase text-[rgba(244,240,232,0.9)] relative z-10 md:group-hover:text-[var(--bone)] transition-colors">
+                            Live Demo
+                          </span>
+                          <ArrowUpRight className="w-5 h-5 text-[rgba(244,240,232,0.75)] relative z-10 md:group-hover:translate-x-1 md:group-hover:-translate-y-1 md:group-hover:text-[var(--metal)] transition-all duration-300" />
+                        </a>
+                      )}
+
+                      <div className="flex gap-3">
+                        {project.links.github && project.links.github !== "#" && (
+                          <a
+                            href={project.links.github}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex-1 py-3 rounded-2xl border border-white/10 bg-white/5 md:hover:bg-[rgba(255,255,255,0.1)] md:hover:border-[rgba(255,255,255,0.3)] transition-all flex items-center justify-center gap-2 group/btn"
+                          >
+                            <Github className="w-5 h-5 text-[rgba(244,240,232,0.85)] md:group-hover/btn:scale-110 transition-transform" />
+                            <span className="f-mono text-[0.58rem] tracking-[0.24em] uppercase text-[rgba(244,240,232,0.82)] md:group-hover/btn:text-white transition-colors">
+                              Code
+                            </span>
+                          </a>
+                        )}
+
+                        {project.links.figma && project.links.figma !== "#" && (
+                          <a
+                            href={project.links.figma}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex-1 py-3 rounded-2xl border border-white/10 bg-white/5 md:hover:bg-[rgba(255,107,107,0.1)] md:hover:border-[#ff6b6b]/40 md:hover:text-[#ff6b6b] transition-all flex items-center justify-center gap-2 group/btn"
+                          >
+                            <FaFigma className="w-5 h-5 text-[rgba(244,240,232,0.85)] md:group-hover/btn:text-[#ff6b6b] md:group-hover/btn:scale-110 transition-all" />
+                            <span className="f-mono text-[0.58rem] tracking-[0.24em] uppercase text-[rgba(244,240,232,0.82)] md:group-hover/btn:text-[#ff6b6b] transition-colors">
+                              Design
+                            </span>
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {next && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 18 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.1 }}
+                      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                      className="artifact p-7 md:transition-all md:duration-500 md:hover:shadow-[0_15px_30px_-10px_rgba(214,178,94,0.1)] md:hover:border-[rgba(214,178,94,0.3)] group/next"
+                    >
+                      <div className="sheen" />
+                      <span className="screw md:group-hover/next:rotate-90 transition-transform duration-700" style={{ top: 14, left: 14 }} />
+                      <span className="screw md:group-hover/next:-rotate-90 transition-transform duration-700" style={{ top: 14, right: 14 }} />
+
+                      <p className="f-mono text-[0.55rem] tracking-[0.28em] uppercase text-[rgba(154,148,138,0.95)] mb-3 md:group-hover/next:text-[var(--metal)] transition-colors">
+                        Next Project
+                      </p>
+
+                      <h3 className="f-display text-2xl md:text-3xl font-semibold italic leading-tight">
+                        <span className="meshText md:group-hover/next:brightness-125 transition-all">{next.title}</span>
+                      </h3>
+
+                      <p className="f-sans text-sm text-[rgba(244,240,232,0.68)] mt-3 line-clamp-2 md:group-hover/next:text-[rgba(244,240,232,0.9)] transition-colors">
+                        {next.description}
+                      </p>
+
+                      <button
+                        onClick={() => navigate(`/project/${next.id}`)}
+                        className="mt-6 w-full py-3 rounded-2xl border border-[rgba(214,178,94,0.26)] bg-[rgba(255,255,255,0.03)] md:group-hover/next:bg-[rgba(214,178,94,0.15)] md:group-hover/next:border-[var(--metal)] transition-all flex items-center justify-center gap-2"
+                      >
+                        <span className="f-mono text-[0.58rem] tracking-[0.26em] uppercase text-[rgba(244,240,232,0.88)] md:group-hover/next:text-[var(--bone)] md:group-hover/next:font-bold transition-all">
+                          Next
+                        </span>
+                        <ArrowUpRight className="w-5 h-5 text-[rgba(244,240,232,0.80)] md:group-hover/next:translate-x-1 md:group-hover/next:-translate-y-1 md:group-hover/next:text-[var(--metal2)] transition-all duration-300" />
+                      </button>
+                    </motion.div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </article>
+        </article>
+      )}
     </>
   );
 };
