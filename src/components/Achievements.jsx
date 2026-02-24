@@ -2,13 +2,14 @@ import React, { useRef, useCallback } from "react";
 import { motion, useInView } from "framer-motion";
 import { Award, ExternalLink } from "lucide-react";
 
+// OPTIMASI: Menghapus filter blur untuk performa HP yang maksimal
 const FadeUp = ({ children, delay = 0, className = "" }) => (
   <motion.div
     className={className}
-    initial={{ opacity: 0, y: 26, filter: "blur(6px)" }}
-    whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+    initial={{ opacity: 0, y: 26 }}
+    whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, amount: 0.15 }}
-    transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay }}
+    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay }}
   >
     {children}
   </motion.div>
@@ -85,28 +86,54 @@ const Achievements = () => {
   ];
 
   const certifications = [
-    { name: "Belajar Dasar AI", issuer: "Dicoding Indonesia", date: "2025", id: "53XEKYQ4KXRN" },
-    { name: "Introduction to Software Engineering", issuer: "Revou Indonesia", date: "2025", id: "SEFC210425-01-1-00018" },
-    { name: "Web Design for Beginners", issuer: "Udemy", date: "2025", id: "G-UX-25" },
+    {
+      name: "Belajar Dasar AI",
+      issuer: "Dicoding Indonesia",
+      date: "2025",
+      id: "53XEKYQ4KXRN",
+    },
+    {
+      name: "Introduction to Software Engineering",
+      issuer: "Revou Indonesia",
+      date: "2025",
+      id: "SEFC210425-01-1-00018",
+    },
+    {
+      name: "Web Design for Beginners",
+      issuer: "Udemy",
+      date: "2025",
+      id: "G-UX-25",
+    },
   ];
 
-  // Animation variants
+  // Animation variants (Blur dihapus)
   const containerStagger = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.12, delayChildren: 0.15 },
+    },
   };
 
   const cardIn = {
     hidden: { opacity: 0, y: 34, scale: 0.98 },
-    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+    },
   };
 
   const slideIn = {
     hidden: { opacity: 0, x: 40 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] } },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
+    },
   };
 
-  // Optional: mouse specular highlight (subtle) – matches Skills v3 idea, but softer
   const onCardMove = useCallback((e) => {
     const el = e.currentTarget;
     const r = el.getBoundingClientRect();
@@ -137,12 +164,12 @@ const Achievements = () => {
 
         {/* watermark */}
         <motion.div
-          className="absolute top-[6%] left-0 right-0 pointer-events-none flex justify-center select-none z-0"
+          className="absolute top-[6%] left-0 right-0 pointer-events-none flex justify-center select-none z-0 transform-gpu"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
         >
-          <span className="ac-display ac-watermark text-[clamp(6rem,20vw,20rem)] font-bold italic leading-none whitespace-nowrap opacity-[0.50]">
+          <span className="ac-display ac-watermark text-[clamp(6rem,20vw,20rem)] font-bold italic leading-none whitespace-nowrap opacity-[0.40] md:opacity-[0.50]">
             HONORS
           </span>
         </motion.div>
@@ -153,7 +180,7 @@ const Achievements = () => {
             <div className="mb-16 md:mb-20 flex flex-col lg:flex-row lg:items-end justify-between gap-8 border-b border-[rgba(214,178,94,0.14)] pb-8">
               <div className="max-w-2xl">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-px bg-[var(--metal)] opacity-80" />
+                  <div className="w-12 h-px bg-[var(--metal)] opacity-80 md:w-16 transition-all" />
                   <span className="ac-mono text-[0.62rem] tracking-[0.32em] uppercase text-[var(--metal)]">
                     Vol. 04 — Milestones
                   </span>
@@ -161,18 +188,19 @@ const Achievements = () => {
 
                 <h2 className="ac-display text-[clamp(3rem,6vw,5.2rem)] font-light italic leading-[0.92] tracking-tight">
                   Moments of{" "}
-                  <span className="ac-outlineWord ac-sans font-extrabold not-italic tracking-[-0.03em]">
+                  <span className="ac-outlineWord ac-sans font-extrabold not-italic tracking-[-0.03em] drop-shadow-[0_0_15px_rgba(214,178,94,0.2)]">
                     Glory.
                   </span>
                 </h2>
 
                 <p className="ac-sans text-[0.9rem] md:text-[0.95rem] text-[rgba(154,148,138,0.95)] leading-[1.9] mt-5 max-w-xl">
-                  Highlights from competitions, scholarships, and certifications — curated like a personal archive.
+                  Highlights from competitions, scholarships, and certifications
+                  — curated like a personal archive.
                 </p>
               </div>
 
               {/* small meta */}
-              <div className="lg:max-w-xs border-l-2 border-[rgba(214,178,94,0.30)] pl-6 py-2">
+              <div className="lg:max-w-xs border-l-2 border-[rgba(214,178,94,0.30)] pl-6 py-2 md:hover:border-[var(--metal)] transition-colors duration-500">
                 <p className="ac-mono text-[0.58rem] tracking-[0.26em] uppercase text-[rgba(154,148,138,0.95)] leading-[2]">
                   awards · credibility · proof of work
                 </p>
@@ -180,18 +208,18 @@ const Achievements = () => {
             </div>
           </FadeUp>
 
-          {/* Competition highlights (Artifact Gallery) */}
+          {/* Competition highlights (Artifact Gallery) - UI Desktop Enhanced */}
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7 mb-24"
             variants={containerStagger}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.12 }}
+            viewport={{ once: true, amount: 0.1 }}
           >
             {competitions.map((item, idx) => (
               <motion.div key={item.id} variants={cardIn}>
                 <div
-                  className="ac-card p-6 md:p-7 group"
+                  className="ac-card p-6 md:p-7 group relative overflow-hidden md:transition-all md:duration-500 md:hover:-translate-y-2 md:hover:shadow-[0_20px_40px_-15px_rgba(214,178,94,0.15)] md:hover:border-[rgba(214,178,94,0.3)]"
                   onMouseMove={onCardMove}
                   onMouseLeave={onCardLeave}
                 >
@@ -199,32 +227,45 @@ const Achievements = () => {
                   <div className="ac-sheen" />
 
                   {/* screws */}
-                  <div className="ac-screw" style={{ top: 12, left: 12 }} />
-                  <div className="ac-screw" style={{ top: 12, right: 12 }} />
-                  <div className="ac-screw" style={{ bottom: 12, left: 12 }} />
-                  <div className="ac-screw" style={{ bottom: 12, right: 12 }} />
+                  <div
+                    className="ac-screw md:group-hover:rotate-90 transition-transform duration-700"
+                    style={{ top: 12, left: 12 }}
+                  />
+                  <div
+                    className="ac-screw md:group-hover:-rotate-90 transition-transform duration-700"
+                    style={{ top: 12, right: 12 }}
+                  />
+                  <div
+                    className="ac-screw md:group-hover:-rotate-90 transition-transform duration-700"
+                    style={{ bottom: 12, left: 12 }}
+                  />
+                  <div
+                    className="ac-screw md:group-hover:rotate-90 transition-transform duration-700"
+                    style={{ bottom: 12, right: 12 }}
+                  />
 
                   {/* badge + index */}
                   <div className="relative z-10 flex items-center justify-between mb-5">
-                    <span className="ac-badge ac-mono text-[0.55rem] tracking-[0.24em] uppercase px-4 py-2 text-[rgba(244,240,232,0.90)]">
+                    <span className="ac-badge ac-mono text-[0.55rem] tracking-[0.24em] uppercase px-4 py-2 text-[rgba(244,240,232,0.90)] md:group-hover:bg-[rgba(214,178,94,0.15)] md:group-hover:text-[var(--metal)] transition-colors duration-500">
                       {item.badge}
                     </span>
-                    <span className="ac-mono text-[0.55rem] tracking-[0.24em] uppercase text-[rgba(154,148,138,0.95)]">
+                    <span className="ac-mono text-[0.55rem] tracking-[0.24em] uppercase text-[rgba(154,148,138,0.95)] md:group-hover:text-[var(--metal)] transition-colors duration-500">
                       {String(idx + 1).padStart(2, "0")} / 09
                     </span>
                   </div>
 
                   {/* image */}
-                  <div className="relative z-10 ac-frame aspect-[4/3] mb-6">
+                  <div className="relative z-10 ac-frame aspect-[4/3] mb-6 overflow-hidden rounded-sm md:group-hover:border-[rgba(214,178,94,0.3)] transition-colors duration-500">
                     <img
                       src={item.image}
                       alt={item.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                      loading="lazy"
+                      className="w-full h-full object-cover transition-transform duration-700 md:group-hover:scale-110 transform-gpu"
                       style={{ filter: "saturate(0.92) contrast(1.06)" }}
                     />
                     {/* soft overlay */}
                     <div
-                      className="absolute inset-0 pointer-events-none"
+                      className="absolute inset-0 pointer-events-none transition-opacity duration-500 md:group-hover:opacity-60"
                       style={{
                         background:
                           "linear-gradient(180deg, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.18) 70%, rgba(0,0,0,0.35) 100%)",
@@ -234,20 +275,20 @@ const Achievements = () => {
 
                   {/* text */}
                   <div className="relative z-10">
-                    <h3 className="ac-display text-2xl md:text-[1.7rem] font-semibold italic leading-[1.1] mb-3">
+                    <h3 className="ac-display text-2xl md:text-[1.7rem] font-semibold italic leading-[1.1] mb-3 text-[var(--bone)] md:group-hover:text-[var(--metal2)] transition-colors duration-500">
                       {item.title}
                     </h3>
 
                     <div className="flex items-center gap-3">
-                      <span className="h-px w-10 bg-[rgba(214,178,94,0.28)]" />
-                      <p className="ac-mono text-[0.62rem] tracking-[0.26em] uppercase text-[rgba(154,148,138,0.95)]">
+                      <span className="h-px w-10 bg-[rgba(214,178,94,0.28)] md:group-hover:w-16 md:group-hover:bg-[var(--metal)] transition-all duration-500" />
+                      <p className="ac-mono text-[0.62rem] tracking-[0.26em] uppercase text-[rgba(154,148,138,0.95)] md:group-hover:text-[var(--bone)] transition-colors duration-500">
                         {item.location}
                       </p>
                     </div>
                   </div>
 
                   {/* subtle bottom number */}
-                  <span className="ac-display font-bold absolute -bottom-2 right-6 text-6xl text-[var(--metal)] opacity-[0.04] select-none pointer-events-none z-0">
+                  <span className="ac-display font-bold absolute -bottom-2 right-6 text-6xl text-[var(--metal)] opacity-[0.03] md:group-hover:opacity-[0.08] md:group-hover:-translate-y-2 transition-all duration-500 select-none pointer-events-none z-0">
                     {String(item.id).padStart(2, "0")}
                   </span>
                 </div>
@@ -255,7 +296,7 @@ const Achievements = () => {
             ))}
           </motion.div>
 
-          {/* Certifications (Ticket Artifact) */}
+          {/* Certifications (Ticket Artifact) - UI Desktop Enhanced */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             {/* Left */}
             <FadeUp className="lg:col-span-4">
@@ -264,7 +305,8 @@ const Achievements = () => {
                 Certifications
               </h3>
               <p className="ac-sans text-[0.9rem] text-[rgba(154,148,138,0.95)] leading-[1.9] mb-7">
-                Continuous learning is the edge. These credentials validate my foundations and growth.
+                Continuous learning is the edge. These credentials validate my
+                foundations and growth.
               </p>
               <div className="w-14 h-[2px] bg-[rgba(214,178,94,0.35)] rounded-full" />
             </FadeUp>
@@ -275,12 +317,12 @@ const Achievements = () => {
               variants={containerStagger}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.18 }}
+              viewport={{ once: true, amount: 0.1 }}
             >
               {certifications.map((cert, i) => (
                 <motion.div key={i} variants={slideIn}>
                   <div
-                    className="ac-card ac-ticket ac-perf p-6 md:p-7 flex items-center justify-between gap-6 group"
+                    className="ac-card ac-ticket ac-perf p-6 md:p-7 flex items-center justify-between gap-6 group relative overflow-hidden md:transition-all md:duration-500 md:hover:-translate-y-1.5 md:hover:translate-x-1 md:hover:shadow-[0_15px_30px_-10px_rgba(214,178,94,0.1)] md:hover:border-[rgba(214,178,94,0.3)]"
                     onMouseMove={onCardMove}
                     onMouseLeave={onCardLeave}
                   >
@@ -291,19 +333,19 @@ const Achievements = () => {
                     <div className="ac-screw" style={{ top: 12, right: 12 }} />
 
                     {/* watermark year */}
-                    <span className="absolute -right-3 -bottom-4 ac-display text-6xl md:text-7xl font-black text-[rgba(244,240,232,0.06)] select-none pointer-events-none">
+                    <span className="absolute -right-3 -bottom-4 ac-display text-6xl md:text-7xl font-black text-[rgba(244,240,232,0.04)] md:group-hover:text-[rgba(214,178,94,0.08)] transition-colors duration-500 select-none pointer-events-none z-0">
                       {cert.date}
                     </span>
 
                     <div className="relative z-10 flex items-center gap-5">
-                      <div className="w-12 h-12 rounded-2xl border border-[rgba(214,178,94,0.18)] bg-[rgba(255,255,255,0.02)] flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <div className="w-12 h-12 rounded-2xl border border-[rgba(214,178,94,0.18)] bg-[rgba(255,255,255,0.02)] flex items-center justify-center md:group-hover:scale-110 md:group-hover:bg-[rgba(214,178,94,0.1)] md:group-hover:border-[rgba(214,178,94,0.4)] transition-all duration-500">
                         <Award className="w-6 h-6 text-[var(--metal)]" />
                       </div>
                       <div>
-                        <h4 className="ac-sans text-lg md:text-xl font-bold text-[rgba(244,240,232,0.96)] group-hover:text-[var(--metal2)] transition-colors">
+                        <h4 className="ac-sans text-lg md:text-xl font-bold text-[rgba(244,240,232,0.96)] md:group-hover:text-[var(--metal2)] transition-colors duration-300">
                           {cert.name}
                         </h4>
-                        <p className="ac-mono text-[0.62rem] tracking-[0.18em] uppercase text-[rgba(154,148,138,0.95)] mt-1">
+                        <p className="ac-mono text-[0.62rem] tracking-[0.18em] uppercase text-[rgba(154,148,138,0.95)] mt-1 md:group-hover:text-[var(--bone)] transition-colors duration-300">
                           {cert.issuer} • ID: {cert.id}
                         </p>
                       </div>
@@ -311,7 +353,7 @@ const Achievements = () => {
 
                     <a
                       href="#"
-                      className="relative z-10 hidden sm:flex items-center gap-2 ac-mono text-[0.6rem] tracking-[0.26em] uppercase px-5 py-3 rounded-full border border-[rgba(214,178,94,0.18)] text-[rgba(154,148,138,0.95)] hover:text-[rgba(244,240,232,0.95)] hover:border-[rgba(244,240,232,0.45)] transition-colors"
+                      className="relative z-10 hidden sm:flex items-center gap-2 ac-mono text-[0.6rem] tracking-[0.26em] uppercase px-5 py-3 rounded-full border border-[rgba(214,178,94,0.18)] text-[rgba(154,148,138,0.95)] md:hover:bg-[var(--bone)] md:hover:text-[var(--bg)] md:hover:border-[var(--bone)] md:hover:scale-105 transition-all duration-300"
                     >
                       Verify <ExternalLink className="w-3.5 h-3.5" />
                     </a>

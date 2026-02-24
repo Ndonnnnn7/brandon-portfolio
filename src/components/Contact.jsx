@@ -49,15 +49,21 @@ const Contact = () => {
         <div className="ct-dust" />
         <div className="ct-vignette" />
 
+        {/* Ambient Desktop Glow (Optimized with transform-gpu) */}
+        <div className="absolute inset-0 pointer-events-none hidden md:block overflow-hidden transform-gpu" style={{ zIndex: 0 }}>
+          <div className="absolute top-[20%] right-[-10%] w-[40vw] h-[40vw] rounded-full mix-blend-screen blur-[120px] opacity-[0.04] bg-[var(--metal)] animate-pulse-slow" />
+          <div className="absolute bottom-[10%] left-[-10%] w-[30vw] h-[30vw] rounded-full mix-blend-screen blur-[100px] opacity-[0.03] bg-[var(--plum)] animate-float-slow" />
+        </div>
+
         {/* watermark */}
         <motion.div
-          className="absolute top-[6%] left-0 right-0 pointer-events-none flex justify-center select-none z-0"
+          className="absolute top-[6%] left-0 right-0 pointer-events-none flex justify-center select-none z-0 transform-gpu"
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
         >
-          <span className="ct-display ct-watermark text-[clamp(6rem,20vw,20rem)] font-bold italic leading-none whitespace-nowrap opacity-[0.50]">
+          <span className="ct-display ct-watermark text-[clamp(6rem,20vw,20rem)] font-bold italic leading-none whitespace-nowrap opacity-[0.40] md:opacity-[0.50]">
             CONTACT
           </span>
         </motion.div>
@@ -69,20 +75,20 @@ const Contact = () => {
               <motion.div
                 initial={{ opacity: 0, y: 18 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               >
                 {/* Status */}
                 <motion.div
-                  className="flex items-center gap-3 mb-6"
+                  className="flex items-center gap-3 mb-6 w-fit md:hover:bg-[rgba(255,255,255,0.02)] md:px-3 md:-ml-3 md:py-1 rounded-full transition-colors cursor-default"
                   initial={{ scale: 0.9, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.12, type: "spring", stiffness: 200 }}
                 >
                   <span className="relative flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--haze)] opacity-60"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-[var(--haze)]"></span>
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#3DDC84] opacity-60"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-[#3DDC84]"></span>
                   </span>
 
                   <span className="ct-status ct-mono text-[0.62rem] md:text-[0.68rem] tracking-[0.28em] uppercase px-4 py-2 text-[rgba(244,240,232,0.92)]">
@@ -99,7 +105,7 @@ const Contact = () => {
                   transition={{ delay: 0.15, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                 >
                   Let’s start a <br />
-                  <span className="ct-outlineWord ct-sans font-extrabold not-italic tracking-[-0.03em]">
+                  <span className="ct-outlineWord ct-sans font-extrabold not-italic tracking-[-0.03em] drop-shadow-[0_0_15px_rgba(214,178,94,0.15)]">
                     project
                   </span>{" "}
                   together.
@@ -116,7 +122,7 @@ const Contact = () => {
                   for freelance projects and open to full-time opportunities.
                 </motion.p>
 
-                {/* Email Artifact CTA */}
+                {/* Email Artifact CTA - UI Desktop Enhanced */}
                 <motion.div
                   className="group relative w-full sm:w-fit"
                   initial={{ opacity: 0, scale: 0.98 }}
@@ -126,32 +132,29 @@ const Contact = () => {
                   whileTap={{ scale: 0.99 }}
                 >
                   <div
-                    className="ct-card p-5 md:p-6"
+                    className="ct-card p-5 md:p-6 md:transition-all md:duration-500 md:hover:-translate-y-1.5 md:hover:shadow-[0_20px_40px_-15px_rgba(214,178,94,0.15)] md:hover:border-[rgba(214,178,94,0.35)] cursor-pointer"
                     onMouseMove={onCardMove}
                     onMouseLeave={onCardLeave}
+                    onClick={handleCopyEmail}
                   >
                     <div className="ct-film" />
                     <div className="ct-sheen" />
-    
 
-                    <button
-                      onClick={handleCopyEmail}
-                      className="relative z-10 w-full flex items-center justify-between gap-4"
-                    >
+                    <div className="relative z-10 w-full flex items-center justify-between gap-4">
                       <div className="flex items-start gap-4 min-w-0">
                         <motion.div
                           whileHover={{ rotate: [0, -10, 10, -10, 0] }}
                           transition={{ duration: 0.5 }}
-                          className="w-12 h-12 rounded-2xl border border-[rgba(214,178,94,0.18)] bg-[rgba(255,255,255,0.02)] flex items-center justify-center flex-shrink-0"
+                          className="w-12 h-12 rounded-2xl border border-[rgba(214,178,94,0.18)] bg-[rgba(255,255,255,0.02)] flex items-center justify-center flex-shrink-0 md:group-hover:bg-[rgba(214,178,94,0.15)] md:group-hover:border-[rgba(214,178,94,0.4)] transition-all duration-500"
                         >
-                          <Mail className="w-6 h-6 text-[var(--metal2)]" />
+                          <Mail className="w-6 h-6 text-[var(--metal2)] md:group-hover:text-[var(--bone)] transition-colors duration-500" />
                         </motion.div>
 
                         <div className="flex-1 min-w-0 text-left">
                           <p className="ct-mono text-[0.58rem] tracking-[0.26em] uppercase text-[rgba(154,148,138,0.95)]">
                             Email
                           </p>
-                          <p className="ct-sans text-base md:text-xl font-semibold text-[rgba(244,240,232,0.96)] truncate">
+                          <p className="ct-sans text-base md:text-xl font-semibold text-[rgba(244,240,232,0.96)] truncate md:group-hover:text-[var(--metal)] transition-colors duration-500">
                             brandon.geraldo28@gmail.com
                           </p>
                         </div>
@@ -162,8 +165,8 @@ const Contact = () => {
                           <motion.span
                             className="ct-mono text-[0.62rem] tracking-[0.26em] uppercase px-4 py-2 rounded-full"
                             style={{
-                              border: "1px solid rgba(20,184,166,0.28)",
-                              background: "rgba(20,184,166,0.10)",
+                              border: "1px solid rgba(61,220,132,0.3)",
+                              background: "rgba(61,220,132,0.15)",
                               color: "rgba(244,240,232,0.95)",
                             }}
                             initial={{ scale: 0.9, opacity: 0 }}
@@ -173,12 +176,12 @@ const Contact = () => {
                             Copied
                           </motion.span>
                         ) : (
-                          <span className="ct-chip ct-mono text-[0.6rem] tracking-[0.26em] uppercase px-4 py-2 text-[rgba(154,148,138,0.95)] group-hover:text-[rgba(244,240,232,0.95)] transition-colors">
-                            Copy <Copy className="inline-block w-4 h-4 ml-2 -translate-y-[1px]" />
+                          <span className="ct-chip ct-mono text-[0.6rem] tracking-[0.26em] uppercase px-4 py-2 text-[rgba(154,148,138,0.95)] md:group-hover:text-[var(--bone)] md:group-hover:border-[var(--metal)] transition-all duration-300">
+                            Copy <Copy className="inline-block w-4 h-4 ml-2 -translate-y-[1px] md:group-hover:scale-110 transition-transform" />
                           </span>
                         )}
                       </div>
-                    </button>
+                    </div>
                   </div>
                 </motion.div>
               </motion.div>
@@ -188,29 +191,28 @@ const Contact = () => {
             <motion.div
               initial={{ opacity: 0, x: 18 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ delay: 0.12, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col gap-8 md:gap-10 mt-8 lg:mt-0"
             >
               {/* Info list */}
               <div className="space-y-6 md:space-y-8">
-                {/* Phone */}
+                {/* Phone - UI Desktop Enhanced */}
                 <motion.div
-                  className="ct-card p-6 md:p-7"
+                  className="ct-card p-6 md:p-7 md:transition-all md:duration-500 md:hover:-translate-y-1.5 md:hover:shadow-[0_15px_30px_-10px_rgba(214,178,94,0.1)] md:hover:border-[rgba(214,178,94,0.3)] group relative overflow-hidden"
                   onMouseMove={onCardMove}
                   onMouseLeave={onCardLeave}
                   initial={{ opacity: 0, y: 18 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, amount: 0.1 }}
                   transition={{ delay: 0.18, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <div className="ct-film" />
                   <div className="ct-sheen" />
-    
 
                   <div className="relative z-10 flex items-start gap-5 md:gap-6">
-                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl border border-[rgba(214,178,94,0.18)] bg-[rgba(255,255,255,0.02)] flex items-center justify-center flex-shrink-0">
-                      <Phone className="w-6 h-6 text-[var(--metal2)]" />
+                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl border border-[rgba(214,178,94,0.18)] bg-[rgba(255,255,255,0.02)] flex items-center justify-center flex-shrink-0 md:group-hover:bg-[rgba(214,178,94,0.1)] md:group-hover:border-[rgba(214,178,94,0.4)] transition-all duration-500">
+                      <Phone className="w-6 h-6 text-[var(--metal2)] md:group-hover:text-[var(--bone)] transition-colors duration-500" />
                     </div>
 
                     <div className="min-w-0">
@@ -221,10 +223,10 @@ const Contact = () => {
                         href="https://wa.me/6285855462022"
                         target="_blank"
                         rel="noreferrer"
-                        className="ct-sans text-lg md:text-2xl font-bold text-[rgba(244,240,232,0.96)] hover:text-[var(--metal2)] transition-colors inline-flex items-center gap-2 flex-wrap"
+                        className="ct-sans text-lg md:text-2xl font-bold text-[rgba(244,240,232,0.96)] md:group-hover:text-[var(--metal2)] transition-colors inline-flex items-center gap-2 flex-wrap"
                       >
                         +62 858 5546 2022
-                        <ArrowUpRight className="w-5 h-5 opacity-60" />
+                        <ArrowUpRight className="w-5 h-5 opacity-60 md:group-hover:opacity-100 md:group-hover:translate-x-1 md:group-hover:-translate-y-1 transition-all duration-300" />
                       </a>
                       <p className="ct-sans text-[0.9rem] text-[rgba(154,148,138,0.92)] mt-2">
                         Quick response for inquiries & collabs.
@@ -233,27 +235,26 @@ const Contact = () => {
                   </div>
                 </motion.div>
 
-                {/* Location */}
+                {/* Location - UI Desktop Enhanced */}
                 <motion.div
-                  className="ct-card p-6 md:p-7"
+                  className="ct-card p-6 md:p-7 md:transition-all md:duration-500 md:hover:-translate-y-1.5 md:hover:shadow-[0_15px_30px_-10px_rgba(214,178,94,0.1)] md:hover:border-[rgba(214,178,94,0.3)] group relative overflow-hidden"
                   onMouseMove={onCardMove}
                   onMouseLeave={onCardLeave}
                   initial={{ opacity: 0, y: 18 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, amount: 0.1 }}
                   transition={{ delay: 0.26, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <div className="ct-film" />
                   <div className="ct-sheen" />
-              
 
                   <div className="relative z-10 flex items-start gap-5 md:gap-6">
-                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl border border-[rgba(214,178,94,0.18)] bg-[rgba(255,255,255,0.02)] flex items-center justify-center flex-shrink-0">
+                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl border border-[rgba(214,178,94,0.18)] bg-[rgba(255,255,255,0.02)] flex items-center justify-center flex-shrink-0 md:group-hover:bg-[rgba(214,178,94,0.1)] md:group-hover:border-[rgba(214,178,94,0.4)] transition-all duration-500">
                       <motion.div
                         animate={{ y: [0, -3, 0] }}
                         transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
                       >
-                        <MapPin className="w-6 h-6 text-[var(--metal2)]" />
+                        <MapPin className="w-6 h-6 text-[var(--metal2)] md:group-hover:text-[var(--bone)] transition-colors duration-500" />
                       </motion.div>
                     </div>
 
@@ -261,7 +262,7 @@ const Contact = () => {
                       <p className="ct-mono text-[0.58rem] tracking-[0.28em] uppercase text-[rgba(154,148,138,0.95)]">
                         Location
                       </p>
-                      <p className="ct-sans text-lg md:text-2xl font-bold text-[rgba(244,240,232,0.96)]">
+                      <p className="ct-sans text-lg md:text-2xl font-bold text-[rgba(244,240,232,0.96)] md:group-hover:text-[var(--metal)] transition-colors duration-500">
                         Malang, Indonesia
                       </p>
                       <p className="ct-sans text-[0.9rem] text-[rgba(154,148,138,0.92)] mt-2">
@@ -272,18 +273,18 @@ const Contact = () => {
                 </motion.div>
               </div>
 
-              {/* Social Dock */}
+              {/* Social Dock - UI Desktop Enhanced */}
               <motion.div
                 initial={{ opacity: 0, y: 14 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ delay: 0.32, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               >
                 <div className="flex items-center justify-between mb-5">
                   <h4 className="ct-display text-xl md:text-2xl font-semibold italic">
                     Connect with me
                   </h4>
-                  <span className="ct-mono text-[0.58rem] tracking-[0.26em] uppercase text-[rgba(154,148,138,0.95)]">
+                  <span className="ct-mono text-[0.58rem] tracking-[0.26em] uppercase text-[rgba(154,148,138,0.95)] border-b border-transparent md:hover:border-[var(--metal)] transition-colors cursor-default">
                     social dock
                   </span>
                 </div>
@@ -299,14 +300,14 @@ const Contact = () => {
                       href={social.href}
                       target="_blank"
                       rel="noreferrer"
-                      className="ct-card w-14 h-14 md:w-16 md:h-16 flex items-center justify-center"
+                      className="ct-card w-14 h-14 md:w-16 md:h-16 flex items-center justify-center relative overflow-hidden group/social"
                       onMouseMove={onCardMove}
                       onMouseLeave={onCardLeave}
                       initial={{ opacity: 0, y: 16 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: 0.38 + i * 0.08, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                      whileHover={{ y: -8, rotate: [0, -2, 2, 0], transition: { duration: 0.25 } }}
+                      whileHover={{ y: -8, scale: 1.05, transition: { duration: 0.25 } }}
                       whileTap={{ scale: 0.98 }}
                       onHoverStart={() => setHoveredSocial(i)}
                       onHoverEnd={() => setHoveredSocial(null)}
@@ -314,18 +315,26 @@ const Contact = () => {
                     >
                       <div className="ct-film" />
                       <div className="ct-sheen" />
-                      
+
+                      {/* Brand-colored background glow on hover */}
+                      <div 
+                        className="absolute inset-0 opacity-0 group-hover/social:opacity-[0.15] transition-opacity duration-500 z-0 pointer-events-none"
+                        style={{ background: `radial-gradient(circle at center, ${social.tone} 0%, transparent 70%)` }}
+                      />
 
                       <motion.div
                         className="relative z-10"
                         animate={
                           hoveredSocial === i
-                            ? { rotate: [0, 12, -12, 0], scale: [1, 1.1, 1.1, 1] }
+                            ? { rotate: [0, 12, -12, 0], scale: [1, 1.15, 1.15, 1] }
                             : {}
                         }
                         transition={{ duration: 0.45 }}
                       >
-                        <social.icon className="w-6 h-6" style={{ color: social.tone }} />
+                        <social.icon 
+                          className="w-6 h-6 md:w-7 md:h-7 transition-colors duration-300" 
+                          style={{ color: hoveredSocial === i ? social.tone : 'rgba(244,240,232,0.6)' }} 
+                        />
                       </motion.div>
                     </motion.a>
                   ))}

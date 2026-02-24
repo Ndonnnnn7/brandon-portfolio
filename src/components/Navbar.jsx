@@ -22,23 +22,24 @@ const Navbar = () => {
     { id: 3, link: "skills", label: "Skills", index: "03" },
     { id: 4, link: "projects", label: "Projects", index: "04" },
     { id: 5, link: "achievements", label: "Achievements", index: "05" },
-    // ❌ contact dihapus dari list supaya CTA jadi satu-satunya jalan ke contact
-    // { id: 6, link: "contact", label: "Contact", index: "06" },
   ];
 
-  /* ── 3D micro-tilt ───────────────────────────────────────────────────── */
+  /* ── 3D micro-tilt (Optimized) ───────────────────────────────────────── */
   const mx = useMotionValue(0.5);
   const my = useMotionValue(0.5);
-  const sx = useSpring(mx, { stiffness: 60, damping: 20, mass: 0.7 });
-  const sy = useSpring(my, { stiffness: 60, damping: 20, mass: 0.7 });
+  const sx = useSpring(mx, { stiffness: 60, damping: 20, mass: 0.5 }); // Mass dikurangi agar lebih responsif
+  const sy = useSpring(my, { stiffness: 60, damping: 20, mass: 0.5 });
 
-  const rX = useTransform(sy, [0, 1], [2.2, -2.2]);
-  const rY = useTransform(sx, [0, 1], [-2.2, 2.2]);
+  const rX = useTransform(sy, [0, 1], [1.5, -1.5]); // Rotasi sedikit dikurangi agar lebih subtle
+  const rY = useTransform(sx, [0, 1], [-1.5, 1.5]);
   const glareX = useTransform(sx, [0, 1], [-10, 110]);
   const glareY = useTransform(sy, [0, 1], [-10, 110]);
 
   const onMove = useCallback(
     (e) => {
+      // Hanya jalankan efek 3D jika bukan di perangkat touch/mobile
+      if (window.innerWidth < 768) return;
+
       const rect = cardRef.current?.getBoundingClientRect();
       if (!rect) return;
       mx.set((e.clientX - rect.left) / rect.width);
@@ -58,7 +59,6 @@ const Navbar = () => {
       setScrolled(window.scrollY > 30);
       const scrollPos = window.scrollY + 120;
 
-      // tracking untuk sections di links
       links.forEach(({ link }) => {
         const el = document.getElementById(link);
         if (
@@ -70,7 +70,6 @@ const Navbar = () => {
         }
       });
 
-      // tracking juga untuk contact (meskipun tidak ada di menu list)
       const contactEl = document.getElementById("contact");
       if (
         contactEl &&
@@ -117,6 +116,7 @@ const Navbar = () => {
         initial={{ y: -40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
+        className="transform-gpu"
         style={{
           position: "fixed",
           top: scrolled ? 12 : 20,
@@ -134,7 +134,7 @@ const Navbar = () => {
           ref={cardRef}
           onMouseMove={onMove}
           onMouseLeave={onLeave}
-          className="navArtifact navGrain"
+          className={`navArtifact navGrain ${scrolled ? "shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] md:shadow-[0_15px_40px_-15px_rgba(214,178,94,0.15)]" : "shadow-none"} transition-shadow duration-500 transform-gpu`}
           style={{
             rotateX: rX,
             rotateY: rY,
@@ -149,9 +149,10 @@ const Navbar = () => {
           <div className="navTexture" />
           <div className="navTopo" />
           <div className="sheen" />
-          
 
+          {/* Glare - Hanya terlihat di desktop */}
           <motion.div
+            className="hidden md:block transform-gpu"
             style={{
               position: "absolute",
               inset: 0,
@@ -166,14 +167,16 @@ const Navbar = () => {
               }),
             }}
           />
-          {/* LOGO */}
+
+          {/* LOGO - UI Desktop Enhanced */}
           <motion.button
             onClick={() => {
               window.scrollTo({ top: 0, behavior: "smooth" });
               setActiveSection("home");
             }}
-            whileHover={{ y: -1 }}
-            whileTap={{ scale: 0.98 }}
+            whileHover={{ y: -1, scale: 1.02 }}
+            whileTap={{ scale: 0.96 }}
+            className="group outline-none"
             style={{
               background: "none",
               border: "none",
@@ -188,6 +191,7 @@ const Navbar = () => {
             aria-label="Go to top"
           >
             <span
+              className="md:group-hover:bg-[#ff6b6b] transition-colors duration-300"
               style={{
                 display: "inline-block",
                 width: 8,
@@ -213,20 +217,21 @@ const Navbar = () => {
               My
             </span>
             <span
-              className="f-display"
+              className="f-display md:group-hover:text-[var(--bone)] transition-colors duration-300"
               style={{
                 color: "var(--metal2)",
                 fontSize: scrolled ? 20 : 24,
                 fontWeight: 350,
                 letterSpacing: "-0.01em",
                 lineHeight: 1,
-                transition: "font-size .35s",
+                transition: "font-size .35s, color .3s",
               }}
             >
               Portfolio
             </span>
           </motion.button>
-          {/* LINKS */}
+
+          {/* LINKS - UI Desktop Enhanced */}
           <ul
             className="mdFlex"
             style={{
@@ -234,9 +239,15 @@ const Navbar = () => {
               gap: 2,
               listStyle: "none",
               margin: 0,
-              padding: 0,
+              padding: "2px 4px",
               position: "relative",
               zIndex: 2,
+              background: scrolled ? "rgba(255,255,255,0.02)" : "transparent",
+              borderRadius: 999,
+              border: scrolled
+                ? "1px solid rgba(255,255,255,0.05)"
+                : "1px solid transparent",
+              transition: "all .4s ease",
             }}
           >
             {links.map(({ id, link, label, index }) => {
@@ -261,22 +272,25 @@ const Navbar = () => {
                       color: isActive
                         ? "var(--bone)"
                         : isHovered
-                          ? "rgba(244,240,232,0.88)"
-                          : "rgba(154,148,138,0.92)",
+                          ? "rgba(244,240,232,0.95)"
+                          : "rgba(154,148,138,0.85)",
                       fontSize: "0.66rem",
                       letterSpacing: "0.22em",
                       textTransform: "uppercase",
-                      fontWeight: 500,
-                      transition: "color .25s, background .25s, transform .25s",
+                      fontWeight: isActive ? 600 : 500,
+                      transition: "all .25s",
                       background: isActive
-                        ? "rgba(255,255,255,0.04)"
-                        : "transparent",
+                        ? "rgba(214,178,94,0.1)"
+                        : isHovered
+                          ? "rgba(255,255,255,0.04)"
+                          : "transparent",
                       border: isActive
-                        ? "1px solid rgba(214,178,94,0.20)"
+                        ? "1px solid rgba(214,178,94,0.25)"
                         : "1px solid transparent",
-                      transform: isHovered
-                        ? "translateY(-1px)"
-                        : "translateY(0)",
+                      transform:
+                        isHovered && !isActive
+                          ? "translateY(-1px)"
+                          : "translateY(0)",
                       position: "relative",
                     }}
                   >
@@ -284,9 +298,10 @@ const Navbar = () => {
                       className="idx"
                       style={{
                         fontSize: "0.55rem",
-                        color: "var(--metal)",
+                        color: isActive ? "var(--metal2)" : "var(--metal)",
                         fontStyle: "italic",
                         lineHeight: 1,
+                        transition: "color .3s",
                       }}
                     >
                       {index}
@@ -309,7 +324,7 @@ const Navbar = () => {
                           height: 4,
                           borderRadius: "50%",
                           background: "var(--metal)",
-                          boxShadow: "0 0 10px rgba(214,178,94,0.55)",
+                          boxShadow: "0 0 10px rgba(214,178,94,0.8)",
                         }}
                         transition={{
                           type: "spring",
@@ -323,7 +338,8 @@ const Navbar = () => {
               );
             })}
           </ul>
-          {/* ✅ SINGLE CTA (Contact + Hire Me jadi satu) */}
+
+          {/* CTA & HAMBURGER */}
           <div
             style={{
               display: "flex",
@@ -336,7 +352,7 @@ const Navbar = () => {
             <a
               href="#contact"
               onClick={(e) => handleNavClick(e, "contact")}
-              className="ctaPulse mdFlex f-mono"
+              className="ctaPulse mdFlex f-mono relative overflow-hidden group"
               style={{
                 padding: "9px 18px",
                 borderRadius: 999,
@@ -356,11 +372,13 @@ const Navbar = () => {
                 gap: 10,
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-1px)";
+                e.currentTarget.style.transform = "translateY(-2px)";
                 e.currentTarget.style.background =
                   "linear-gradient(135deg, rgba(214,178,94,0.95), rgba(212,93,58,0.75))";
                 e.currentTarget.style.color = "var(--bg)";
                 e.currentTarget.style.borderColor = "rgba(214,178,94,0.10)";
+                e.currentTarget.style.boxShadow =
+                  "0 10px 20px -10px rgba(214,178,94,0.5)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "translateY(0)";
@@ -368,24 +386,32 @@ const Navbar = () => {
                   "linear-gradient(135deg, rgba(214,178,94,0.14), rgba(212,93,58,0.10))";
                 e.currentTarget.style.color = "var(--metal2)";
                 e.currentTarget.style.borderColor = "rgba(214,178,94,0.50)";
+                e.currentTarget.style.boxShadow = "none";
               }}
             >
               Contact / Hire
-              <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <svg
+                width="12"
+                height="10"
+                viewBox="0 0 12 10"
+                fill="none"
+                className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+              >
                 <path
                   d="M1 5h10M6 1l5 4-5 4"
                   stroke="currentColor"
-                  strokeWidth="1"
-                  strokeLinecap="square"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             </a>
 
-            {/* Hamburger mobile only */}
+            {/* Hamburger mobile only - NO BLUR */}
             <button
               onClick={() => setNav(!nav)}
               aria-label="Toggle menu"
-              className="hamOnly"
+              className="hamOnly md:hover:border-[rgba(214,178,94,0.6)] transition-colors"
               style={{
                 background: "rgba(255,255,255,0.02)",
                 border: "1px solid rgba(214,178,94,0.22)",
@@ -396,7 +422,6 @@ const Navbar = () => {
                 flexDirection: "column",
                 gap: 5,
                 alignItems: "flex-end",
-                boxShadow: "0 10px 40px rgba(0,0,0,0.45)",
               }}
             >
               <motion.span
@@ -432,7 +457,7 @@ const Navbar = () => {
         </motion.div>
       </motion.nav>
 
-      {/* MOBILE DRAWER */}
+      {/* MOBILE DRAWER - Optimasi backdrop filter agar tidak berat */}
       <AnimatePresence>
         {nav && (
           <motion.div
@@ -440,14 +465,15 @@ const Navbar = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.28 }}
+            transition={{ duration: 0.25 }}
             onClick={() => setNav(false)}
+            className="transform-gpu"
             style={{
               position: "fixed",
               inset: 0,
-              background: "rgba(7,7,10,0.72)",
-              backdropFilter: "blur(8px)",
-              WebkitBackdropFilter: "blur(8px)",
+              background: "rgba(7,7,10,0.85)", // Fallback gelap
+              backdropFilter: "blur(4px)", // Dikurangi dari 8px ke 4px
+              WebkitBackdropFilter: "blur(4px)",
               zIndex: 48,
             }}
           />
@@ -458,19 +484,19 @@ const Navbar = () => {
         {nav && (
           <motion.aside
             key="drawer"
-            className="drawerGrain"
+            className="drawerGrain transform-gpu"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "spring", stiffness: 260, damping: 30 }}
+            transition={{ type: "tween", duration: 0.3, ease: "easeInOut" }} // Diganti ke tween untuk HP lebih mulus
             style={{
               position: "fixed",
               top: 0,
               right: 0,
-              width: "min(88vw, 360px)",
+              width: "min(85vw, 340px)",
               height: "100dvh",
               background:
-                "linear-gradient(180deg, rgba(7,7,10,0.96), rgba(7,7,10,0.92))",
+                "linear-gradient(180deg, rgba(7,7,10,0.98), rgba(7,7,10,0.95))",
               borderLeft: "1px solid rgba(214,178,94,0.22)",
               zIndex: 49,
               display: "flex",
@@ -491,9 +517,12 @@ const Navbar = () => {
                 opacity: 0.9,
                 maskImage:
                   "radial-gradient(circle at 40% 10%, black 0%, black 55%, transparent 82%)",
+                WebkitMaskImage:
+                  "radial-gradient(circle at 40% 10%, black 0%, black 55%, transparent 82%)",
               }}
             />
             <div
+              className="transform-gpu"
               style={{
                 position: "absolute",
                 top: -90,
@@ -502,7 +531,7 @@ const Navbar = () => {
                 height: 280,
                 borderRadius: "50%",
                 background:
-                  "radial-gradient(circle, rgba(214,178,94,0.10), transparent 70%)",
+                  "radial-gradient(circle, rgba(214,178,94,0.12), transparent 70%)",
                 pointerEvents: "none",
                 zIndex: 0,
               }}
@@ -602,13 +631,14 @@ const Navbar = () => {
                     d="M1 1l12 12M13 1L1 13"
                     stroke="currentColor"
                     strokeWidth="1.2"
-                    strokeLinecap="square"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
               </button>
             </div>
 
-            {/* links */}
+            {/* links mobile */}
             <ul
               style={{
                 listStyle: "none",
@@ -617,6 +647,7 @@ const Navbar = () => {
                 flex: 1,
                 position: "relative",
                 zIndex: 1,
+                overflowY: "auto",
               }}
             >
               {links.map(({ id, link, label, index }, i) => {
@@ -625,12 +656,12 @@ const Navbar = () => {
                 return (
                   <motion.li
                     key={id}
-                    initial={{ x: 30, opacity: 0 }}
+                    initial={{ x: 20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{
-                      delay: 0.05 * i + 0.08,
-                      duration: 0.55,
-                      ease: [0.22, 1, 0.36, 1],
+                      delay: 0.05 * i + 0.05,
+                      duration: 0.4,
+                      ease: "easeOut",
                     }}
                   >
                     <a
@@ -645,7 +676,7 @@ const Navbar = () => {
                         textDecoration: "none",
                         borderBottom: "1px solid rgba(214,178,94,0.06)",
                         background: isActive
-                          ? "rgba(214,178,94,0.05)"
+                          ? "rgba(214,178,94,0.08)"
                           : "transparent",
                         transition: "background .25s",
                         position: "relative",
@@ -676,8 +707,8 @@ const Navbar = () => {
                         <span
                           className="f-display"
                           style={{
-                            fontSize: 28,
-                            fontWeight: isActive ? 650 : 350,
+                            fontSize: 26,
+                            fontWeight: isActive ? 600 : 350,
                             fontStyle: isActive ? "italic" : "normal",
                             color: isActive
                               ? "var(--bone)"
@@ -709,8 +740,9 @@ const Navbar = () => {
                           <path
                             d="M1 6h14M9 1l6 5-6 5"
                             stroke="currentColor"
-                            strokeWidth="1"
-                            strokeLinecap="square"
+                            strokeWidth="1.2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                           />
                         </svg>
                       </motion.div>
@@ -720,13 +752,13 @@ const Navbar = () => {
               })}
             </ul>
 
-            {/* ✅ SINGLE CTA di drawer juga */}
+            {/* CTA Sidebar Mobile */}
             <div
               style={{
                 position: "relative",
                 zIndex: 1,
                 borderTop: "1px solid rgba(214,178,94,0.16)",
-                padding: "18px 24px",
+                padding: "20px 24px 30px 24px",
               }}
             >
               <a
@@ -738,12 +770,12 @@ const Navbar = () => {
                   alignItems: "center",
                   justifyContent: "center",
                   gap: 10,
-                  padding: "14px 0",
+                  padding: "16px 0",
                   borderRadius: 18,
                   background:
                     "linear-gradient(135deg, rgba(214,178,94,0.95), rgba(212,93,58,0.75))",
                   color: "var(--bg)",
-                  fontSize: "0.62rem",
+                  fontSize: "0.65rem",
                   letterSpacing: "0.28em",
                   textTransform: "uppercase",
                   fontWeight: 800,
@@ -764,13 +796,14 @@ const Navbar = () => {
                   <path
                     d="M1 5h10M6 1l5 4-5 4"
                     stroke="currentColor"
-                    strokeWidth="1"
-                    strokeLinecap="square"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
               </a>
 
-              <div style={{ marginTop: 14, opacity: 0.55 }}>
+              <div style={{ marginTop: 16, opacity: 0.55 }}>
                 <div
                   className="f-mono"
                   style={{

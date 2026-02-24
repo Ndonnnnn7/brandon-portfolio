@@ -293,17 +293,17 @@ const ProjectDetail = () => {
     );
   }
 
+  // OPTIMASI: Hapus filter blur di seluruh animasi masuk
   const fadeInUp = {
     hidden: { opacity: 0, y: 26 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
   };
 
   const scaleIn = {
-    hidden: { opacity: 0, scale: 0.975, filter: "blur(10px)" },
+    hidden: { opacity: 0, scale: 0.975 },
     visible: {
       opacity: 1,
       scale: 1,
-      filter: "blur(0px)",
       transition: { duration: 1.05, ease: [0.22, 1, 0.36, 1] },
     },
   };
@@ -324,15 +324,15 @@ const ProjectDetail = () => {
         <div className="pd-vignette" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-8 py-12 md:py-20">
-          {/* Back button */}
+          {/* Back button - UI Desktop Enhanced */}
           <motion.button
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             onClick={() => navigate(-1)}
-            className="group flex items-center gap-3 text-[rgba(154,148,138,0.95)] hover:text-[var(--bone)] transition-colors mb-12"
+            className="group flex items-center gap-3 text-[rgba(154,148,138,0.95)] md:hover:text-[var(--metal)] transition-colors mb-12"
           >
-            <div className="p-2 rounded-full border border-[rgba(214,178,94,0.20)] bg-[rgba(255,255,255,0.03)] group-hover:bg-[rgba(255,255,255,0.06)] transition-all">
-              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+            <div className="p-2 rounded-full border border-[rgba(214,178,94,0.20)] bg-[rgba(255,255,255,0.03)] md:group-hover:bg-[rgba(214,178,94,0.15)] md:group-hover:border-[rgba(214,178,94,0.4)] transition-all">
+              <ArrowLeft className="w-5 h-5 md:group-hover:-translate-x-1.5 transition-transform duration-300" />
             </div>
             <span className="f-mono text-[0.62rem] font-medium tracking-[0.28em] uppercase">
               Back to Projects
@@ -341,19 +341,19 @@ const ProjectDetail = () => {
 
           {/* HERO */}
           <motion.div initial="hidden" animate="visible" variants={stagger} className="mb-16 md:mb-24">
-            {/* meta badges */}
+            {/* meta badges - UI Desktop Enhanced */}
             <motion.div variants={fadeInUp} className="flex flex-wrap items-center gap-3 mb-6">
-              <span className="px-4 py-2 rounded-full border border-[rgba(214,178,94,0.22)] bg-[rgba(255,255,255,0.03)] text-[var(--metal2)] flex items-center gap-2 backdrop-blur-md">
+              <span className="px-4 py-2 rounded-full border border-[rgba(214,178,94,0.22)] bg-[rgba(255,255,255,0.03)] text-[var(--metal2)] flex items-center gap-2 backdrop-blur-md md:hover:bg-[rgba(214,178,94,0.1)] transition-colors cursor-default">
                 <Layers className="w-4 h-4" />
                 <span className="f-mono text-[0.6rem] tracking-[0.22em] uppercase">{project.category}</span>
               </span>
 
-              <span className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[rgba(244,240,232,0.8)] flex items-center gap-2 backdrop-blur-md">
+              <span className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[rgba(244,240,232,0.8)] flex items-center gap-2 backdrop-blur-md md:hover:bg-white/10 md:hover:text-white transition-colors cursor-default">
                 <Calendar className="w-4 h-4 text-[rgba(154,148,138,0.95)]" />
                 <span className="f-mono text-[0.6rem] tracking-[0.22em] uppercase">{project.year}</span>
               </span>
 
-              <span className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[rgba(244,240,232,0.8)] flex items-center gap-2 backdrop-blur-md">
+              <span className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[rgba(244,240,232,0.8)] flex items-center gap-2 backdrop-blur-md md:hover:bg-white/10 md:hover:border-[var(--haze)] transition-colors cursor-default">
                 <Sparkles className="w-4 h-4 text-[var(--haze)]" />
                 <span className="f-mono text-[0.6rem] tracking-[0.22em] uppercase">Case Study</span>
               </span>
@@ -365,7 +365,7 @@ const ProjectDetail = () => {
                 className="f-display text-[clamp(3.2rem,7.2vw,6.6rem)] leading-[0.92] tracking-tight mb-6"
               >
                 <span className="italic">{project.title}</span>{" "}
-                <span className="outlineText font-black not-italic">.</span>
+                <span className="outlineText font-black not-italic drop-shadow-[0_0_15px_rgba(214,178,94,0.3)]">.</span>
               </motion.h1>
 
               <motion.p
@@ -376,37 +376,37 @@ const ProjectDetail = () => {
               </motion.p>
             </motion.div>
 
-            {/* hero image */}
-            <motion.div variants={scaleIn} className="artifact heroWrap">
-              <div className="sheen" />
+            {/* hero image - UI Desktop Enhanced & Optimized */}
+            <motion.div variants={scaleIn} className="artifact heroWrap md:hover:shadow-[0_20px_50px_-15px_rgba(214,178,94,0.2)] md:transition-shadow duration-700">
+              <div className="sheen md:group-hover:opacity-100" />
               <span className="screw" style={{ top: 14, left: 14 }} />
               <span className="screw" style={{ top: 14, right: 14 }} />
               <span className="screw" style={{ bottom: 14, left: 14 }} />
               <span className="screw" style={{ bottom: 14, right: 14 }} />
 
-              <div className="relative w-full aspect-video md:aspect-[21/9] rounded-[26px] overflow-hidden">
+              <div className="relative w-full aspect-video md:aspect-[21/9] rounded-[26px] overflow-hidden group transform-gpu">
                 <motion.div style={{ y: yParallax }} className="w-full h-full">
                   <img
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-full object-cover scale-[1.12] transition-transform duration-[1100ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.08]"
+                    className="w-full h-full object-cover scale-[1.12] transition-transform duration-[1100ms] ease-[cubic-bezier(.22,1,.36,1)] md:group-hover:scale-[1.05] transform-gpu"
                   />
                 </motion.div>
 
                 {/* overlays */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#07070a] via-transparent to-transparent opacity-70 pointer-events-none" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(214,178,94,0.10),transparent_55%),radial-gradient(circle_at_85%_20%,rgba(124,58,237,0.12),transparent_55%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                <div className="scanline" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#07070a] via-transparent to-transparent opacity-70 pointer-events-none md:group-hover:opacity-40 transition-opacity duration-700" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(214,178,94,0.15),transparent_55%),radial-gradient(circle_at_85%_20%,rgba(124,58,237,0.15),transparent_55%)] opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                <div className="scanline opacity-30 md:group-hover:opacity-60 transition-opacity" />
 
                 {/* corner chips */}
-                <div className="absolute top-5 left-5 z-10 flex items-center gap-2 px-3 py-2 rounded-full border border-white/15 bg-black/35 backdrop-blur-md">
+                <div className="absolute top-5 left-5 z-10 flex items-center gap-2 px-3 py-2 rounded-full border border-white/15 bg-black/35 backdrop-blur-md md:group-hover:bg-black/60 transition-colors duration-500">
                   <Code2 className="w-4 h-4 text-[var(--metal2)]" />
                   <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-white/85">
                     Featured
                   </span>
                 </div>
 
-                <div className="absolute top-5 right-5 z-10 px-3 py-2 rounded-full border border-white/15 bg-black/35 backdrop-blur-md">
+                <div className="absolute top-5 right-5 z-10 px-3 py-2 rounded-full border border-white/15 bg-black/35 backdrop-blur-md md:group-hover:bg-black/60 transition-colors duration-500">
                   <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-white/75">
                     ID / {String(project.id).padStart(2, "0")}
                   </span>
@@ -415,8 +415,8 @@ const ProjectDetail = () => {
                 {/* bottom caption */}
                 <div className="absolute bottom-5 left-5 right-5 z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <span className="w-2 h-2 rounded-full bg-[var(--rust)] opacity-80" />
-                    <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-white/80">
+                    <span className="w-2 h-2 rounded-full bg-[var(--rust)] opacity-80 md:group-hover:animate-pulse" />
+                    <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-white/80 md:group-hover:text-white transition-colors">
                       Scroll for details
                     </span>
                   </div>
@@ -426,10 +426,10 @@ const ProjectDetail = () => {
                       href={project.links.demo}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[rgba(214,178,94,0.26)] bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.06)] transition-all"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[rgba(214,178,94,0.26)] bg-[rgba(255,255,255,0.03)] md:hover:bg-[var(--metal)] md:hover:border-[var(--metal)] transition-all duration-500 group/btn"
                     >
-                      <ExternalLink className="w-4 h-4 text-[var(--metal2)]" />
-                      <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-white/85">
+                      <ExternalLink className="w-4 h-4 text-[var(--metal2)] md:group-hover/btn:text-black transition-colors" />
+                      <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-white/85 md:group-hover/btn:text-black md:group-hover/btn:font-bold transition-all">
                         Open live
                       </span>
                     </a>
@@ -447,7 +447,7 @@ const ProjectDetail = () => {
               <motion.section
                 initial={{ opacity: 0, y: 26 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
               >
                 <div className="flex items-center gap-3 mb-8">
@@ -459,7 +459,7 @@ const ProjectDetail = () => {
                   </h3>
                 </div>
 
-                <div className="artifact p-7 md:p-9">
+                <div className="artifact p-7 md:p-9 md:hover:shadow-[0_15px_30px_-10px_rgba(214,178,94,0.05)] md:hover:border-[rgba(214,178,94,0.15)] transition-all duration-500">
                   <div className="sheen" />
                   <span className="screw" style={{ top: 14, left: 14 }} />
                   <span className="screw" style={{ top: 14, right: 14 }} />
@@ -487,7 +487,7 @@ const ProjectDetail = () => {
               <motion.section
                 initial={{ opacity: 0, y: 26 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.85, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
                 className="pt-10 border-t border-white/5"
               >
@@ -508,20 +508,20 @@ const ProjectDetail = () => {
                     project.gallery.map((img, index) => (
                       <motion.div
                         key={index}
-                        className="tile"
+                        className="tile overflow-hidden rounded-[20px] md:hover:-translate-y-2 md:hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.8)] transition-all duration-500 transform-gpu group"
                         initial={{ opacity: 0, y: 18 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.7, delay: index * 0.08 }}
-                        whileHover={{ rotate: index % 2 === 0 ? -0.35 : 0.35 }}
                       >
                         <img
                           src={img}
+                          loading="lazy"
                           alt={`${project.title} screenshot ${index + 1}`}
-                          className="w-full h-full object-cover aspect-video transition-transform duration-[900ms] ease-[cubic-bezier(.22,1,.36,1)] hover:scale-[1.06]"
+                          className="w-full h-full object-cover aspect-video transition-transform duration-[900ms] ease-[cubic-bezier(.22,1,.36,1)] md:group-hover:scale-[1.08] transform-gpu"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent opacity-70 pointer-events-none" />
-                        <div className="absolute bottom-4 left-4 px-3 py-2 rounded-full border border-white/15 bg-black/35 backdrop-blur-md">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-70 pointer-events-none md:group-hover:opacity-40 transition-opacity duration-500" />
+                        <div className="absolute bottom-4 left-4 px-3 py-2 rounded-full border border-white/15 bg-black/35 backdrop-blur-md md:group-hover:bg-black/60 transition-colors duration-300">
                           <span className="f-mono text-[0.52rem] tracking-[0.26em] uppercase text-white/80">
                             Shot {String(index + 1).padStart(2, "0")}
                           </span>
@@ -538,7 +538,7 @@ const ProjectDetail = () => {
             {/* RIGHT SIDEBAR */}
             <div className="lg:col-span-4">
               <div className="sticky top-24 space-y-8">
-                <div className="artifact p-7">
+                <div className="artifact p-7 md:hover:shadow-[0_15px_30px_-10px_rgba(214,178,94,0.05)] md:hover:border-[rgba(214,178,94,0.15)] transition-all duration-500">
                   <div className="sheen" />
                   <span className="screw" style={{ top: 14, left: 14 }} />
                   <span className="screw" style={{ top: 14, right: 14 }} />
@@ -578,7 +578,7 @@ const ProjectDetail = () => {
                       {project.tech.map((tech, idx) => (
                         <span
                           key={idx}
-                          className="px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[0.8rem] text-[rgba(244,240,232,0.78)] cursor-default hover:bg-white/10 hover:border-[rgba(214,178,94,0.25)] transition-colors f-sans"
+                          className="px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[0.8rem] text-[rgba(244,240,232,0.78)] cursor-default md:hover:bg-[rgba(214,178,94,0.1)] md:hover:border-[rgba(214,178,94,0.3)] md:hover:text-[var(--bone)] transition-colors f-sans"
                         >
                           {tech}
                         </span>
@@ -588,26 +588,26 @@ const ProjectDetail = () => {
 
                   <div className="h-px w-full bg-gradient-to-r from-[rgba(214,178,94,0.32)] to-transparent my-7" />
 
-                  {/* Actions */}
+                  {/* Actions - UI Desktop Enhanced */}
                   <div className="flex flex-col gap-4">
                     {project.links.demo && project.links.demo !== "#" && (
                       <a
                         href={project.links.demo}
                         target="_blank"
                         rel="noreferrer"
-                        className="group w-full py-4 rounded-2xl text-center transition-all flex items-center justify-center gap-3 relative overflow-hidden border border-[rgba(214,178,94,0.28)] bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.06)]"
+                        className="group w-full py-4 rounded-2xl text-center md:transition-all flex items-center justify-center gap-3 relative overflow-hidden border border-[rgba(214,178,94,0.28)] bg-[rgba(255,255,255,0.03)] md:hover:bg-[rgba(214,178,94,0.1)] md:hover:border-[var(--metal)] md:hover:shadow-[0_0_20px_rgba(214,178,94,0.15)]"
                       >
-                        <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                        <span className="absolute inset-0 opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                           style={{
                             background:
                               "radial-gradient(circle at 20% 30%, rgba(214,178,94,0.18), transparent 55%), radial-gradient(circle at 80% 20%, rgba(124,58,237,0.16), transparent 52%)",
                           }}
                         />
-                        <ExternalLink className="w-5 h-5 text-[var(--metal2)] relative z-10" />
-                        <span className="f-mono text-[0.62rem] tracking-[0.26em] uppercase text-[rgba(244,240,232,0.9)] relative z-10">
+                        <ExternalLink className="w-5 h-5 text-[var(--metal2)] relative z-10 md:group-hover:text-[var(--bone)] transition-colors" />
+                        <span className="f-mono text-[0.62rem] tracking-[0.26em] uppercase text-[rgba(244,240,232,0.9)] relative z-10 md:group-hover:text-[var(--bone)] transition-colors">
                           Live Demo
                         </span>
-                        <ArrowUpRight className="w-5 h-5 text-[rgba(244,240,232,0.75)] relative z-10 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                        <ArrowUpRight className="w-5 h-5 text-[rgba(244,240,232,0.75)] relative z-10 md:group-hover:translate-x-1 md:group-hover:-translate-y-1 md:group-hover:text-[var(--metal)] transition-all duration-300" />
                       </a>
                     )}
 
@@ -617,10 +617,10 @@ const ProjectDetail = () => {
                           href={project.links.github}
                           target="_blank"
                           rel="noreferrer"
-                          className="flex-1 py-3 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-[rgba(214,178,94,0.26)] transition-all flex items-center justify-center gap-2"
+                          className="flex-1 py-3 rounded-2xl border border-white/10 bg-white/5 md:hover:bg-[rgba(255,255,255,0.1)] md:hover:border-[rgba(255,255,255,0.3)] transition-all flex items-center justify-center gap-2 group/btn"
                         >
-                          <Github className="w-5 h-5 text-[rgba(244,240,232,0.85)]" />
-                          <span className="f-mono text-[0.58rem] tracking-[0.24em] uppercase text-[rgba(244,240,232,0.82)]">
+                          <Github className="w-5 h-5 text-[rgba(244,240,232,0.85)] md:group-hover/btn:scale-110 transition-transform" />
+                          <span className="f-mono text-[0.58rem] tracking-[0.24em] uppercase text-[rgba(244,240,232,0.82)] md:group-hover/btn:text-white transition-colors">
                             Code
                           </span>
                         </a>
@@ -631,10 +631,10 @@ const ProjectDetail = () => {
                           href={project.links.figma}
                           target="_blank"
                           rel="noreferrer"
-                          className="flex-1 py-3 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-[rgba(214,178,94,0.26)] transition-all flex items-center justify-center gap-2"
+                          className="flex-1 py-3 rounded-2xl border border-white/10 bg-white/5 md:hover:bg-[rgba(255,107,107,0.1)] md:hover:border-[#ff6b6b]/40 md:hover:text-[#ff6b6b] transition-all flex items-center justify-center gap-2 group/btn"
                         >
-                          <FaFigma className="w-5 h-5 text-[rgba(244,240,232,0.85)]" />
-                          <span className="f-mono text-[0.58rem] tracking-[0.24em] uppercase text-[rgba(244,240,232,0.82)]">
+                          <FaFigma className="w-5 h-5 text-[rgba(244,240,232,0.85)] md:group-hover/btn:text-[#ff6b6b] md:group-hover/btn:scale-110 transition-all" />
+                          <span className="f-mono text-[0.58rem] tracking-[0.24em] uppercase text-[rgba(244,240,232,0.82)] md:group-hover/btn:text-[#ff6b6b] transition-colors">
                             Design
                           </span>
                         </a>
@@ -643,47 +643,45 @@ const ProjectDetail = () => {
                   </div>
                 </div>
 
-                {/* Next project */}
+                {/* Next project - UI Desktop Enhanced */}
                 {next && (
                   <motion.div
                     initial={{ opacity: 0, y: 18 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.2 }}
+                    viewport={{ once: true, amount: 0.1 }}
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                    className="artifact p-7"
+                    className="artifact p-7 md:transition-all md:duration-500 md:hover:shadow-[0_15px_30px_-10px_rgba(214,178,94,0.1)] md:hover:border-[rgba(214,178,94,0.3)] group/next"
                   >
                     <div className="sheen" />
-                    <span className="screw" style={{ top: 14, left: 14 }} />
-                    <span className="screw" style={{ top: 14, right: 14 }} />
+                    <span className="screw md:group-hover/next:rotate-90 transition-transform duration-700" style={{ top: 14, left: 14 }} />
+                    <span className="screw md:group-hover/next:-rotate-90 transition-transform duration-700" style={{ top: 14, right: 14 }} />
 
-                    <p className="f-mono text-[0.55rem] tracking-[0.28em] uppercase text-[rgba(154,148,138,0.95)] mb-3">
+                    <p className="f-mono text-[0.55rem] tracking-[0.28em] uppercase text-[rgba(154,148,138,0.95)] mb-3 md:group-hover/next:text-[var(--metal)] transition-colors">
                       Next Project
                     </p>
 
                     <h3 className="f-display text-2xl md:text-3xl font-semibold italic leading-tight">
-                      <span className="meshText">{next.title}</span>
+                      <span className="meshText md:group-hover/next:brightness-125 transition-all">{next.title}</span>
                     </h3>
 
-                    <p className="f-sans text-sm text-[rgba(244,240,232,0.68)] mt-3 line-clamp-2">
+                    <p className="f-sans text-sm text-[rgba(244,240,232,0.68)] mt-3 line-clamp-2 md:group-hover/next:text-[rgba(244,240,232,0.9)] transition-colors">
                       {next.description}
                     </p>
 
                     <button
                       onClick={() => navigate(`/project/${next.id}`)}
-                      className="mt-6 w-full py-3 rounded-2xl border border-[rgba(214,178,94,0.26)] bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.06)] transition-all flex items-center justify-center gap-2"
+                      className="mt-6 w-full py-3 rounded-2xl border border-[rgba(214,178,94,0.26)] bg-[rgba(255,255,255,0.03)] md:group-hover/next:bg-[rgba(214,178,94,0.15)] md:group-hover/next:border-[var(--metal)] transition-all flex items-center justify-center gap-2"
                     >
-                      <span className="f-mono text-[0.58rem] tracking-[0.26em] uppercase text-[rgba(244,240,232,0.88)]">
+                      <span className="f-mono text-[0.58rem] tracking-[0.26em] uppercase text-[rgba(244,240,232,0.88)] md:group-hover/next:text-[var(--bone)] md:group-hover/next:font-bold transition-all">
                         Next
                       </span>
-                      <ArrowUpRight className="w-5 h-5 text-[rgba(244,240,232,0.80)]" />
+                      <ArrowUpRight className="w-5 h-5 text-[rgba(244,240,232,0.80)] md:group-hover/next:translate-x-1 md:group-hover/next:-translate-y-1 md:group-hover/next:text-[var(--metal2)] transition-all duration-300" />
                     </button>
                   </motion.div>
                 )}
               </div>
             </div>
           </div>
-
-          
         </div>
       </article>
     </>

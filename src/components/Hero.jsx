@@ -1,38 +1,76 @@
-import React, { useRef, useCallback } from "react";
+import React, { useRef, useCallback, useEffect, useMemo, useState } from "react";
 import { FaFigma, FaReact } from "react-icons/fa";
 import { SiTailwindcss } from "react-icons/si";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  useReducedMotion,
+} from "framer-motion";
 
 const Hero = () => {
   const profileImage = "img/Profile Photo1.jpg";
   const cardRef = useRef(null);
 
+  // ✅ Detect mobile/touch (pointer: coarse) + reduce motion preference
+  const prefersReducedMotion = useReducedMotion();
+  const [isCoarsePointer, setIsCoarsePointer] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(pointer: coarse)");
+    const update = () => setIsCoarsePointer(!!mq.matches);
+    update();
+    mq.addEventListener?.("change", update);
+    return () => mq.removeEventListener?.("change", update);
+  }, []);
+
+  // ✅ FX only on desktop (non-touch) + not reduced motion
+  const enableFX = !isCoarsePointer && !prefersReducedMotion;
+
   // ── 3D TILT & GLARE PHYSICS ──────────────────────────────────────────────
   const mouseX = useMotionValue(0.5);
   const mouseY = useMotionValue(0.5);
-  const springX = useSpring(mouseX, { stiffness: 45, damping: 18, mass: 0.8 });
-  const springY = useSpring(mouseY, { stiffness: 45, damping: 18, mass: 0.8 });
 
-  const rotateX = useTransform(springY, [0, 1], [10, -10]);
-  const rotateY = useTransform(springX, [0, 1], [-10, 10]);
+  // ✅ lower stiffness a bit (smoother & less jitter)
+  const springX = useSpring(mouseX, { stiffness: 35, damping: 20, mass: 0.9 });
+  const springY = useSpring(mouseY, { stiffness: 35, damping: 20, mass: 0.9 });
 
-  const glareX = useTransform(springX, [0, 1], [-20, 120]);
-  const glareY = useTransform(springY, [0, 1], [-20, 120]);
+  const rotateX = useTransform(springY, [0, 1], enableFX ? [10, -10] : [0, 0]);
+  const rotateY = useTransform(springX, [0, 1], enableFX ? [-10, 10] : [0, 0]);
+
+  const glareX = useTransform(springX, [0, 1], enableFX ? [-20, 120] : [50, 50]);
+  const glareY = useTransform(springY, [0, 1], enableFX ? [-20, 120] : [50, 50]);
 
   const handleMouseMove = useCallback(
     (e) => {
+      if (!enableFX) return; // ✅ no work on mobile
       const rect = cardRef.current?.getBoundingClientRect();
       if (!rect) return;
       mouseX.set((e.clientX - rect.left) / rect.width);
       mouseY.set((e.clientY - rect.top) / rect.height);
     },
-    [mouseX, mouseY]
+    [enableFX, mouseX, mouseY]
   );
 
   const handleMouseLeave = useCallback(() => {
+    if (!enableFX) return;
     mouseX.set(0.5);
     mouseY.set(0.5);
-  }, [mouseX, mouseY]);
+  }, [enableFX, mouseX, mouseY]);
+
+  // ✅ remove Math.random() in render (stabil & hemat)
+  const decoWidths = useMemo(() => [18, 26, 14, 30], []);
+
+  const techList = useMemo(
+    () => [
+      { icon: FaFigma, color: "#ff6b6b", name: "Figma" },
+      { icon: FaReact, color: "#35d0ff", name: "React" },
+      { icon: SiTailwindcss, color: "#14b8a6", name: "Tailwind" },
+    ],
+    []
+  );
 
   return (
     <>
@@ -48,6 +86,7 @@ const Hero = () => {
 
         .hero-bg { background-color: var(--bg); }
 
+        /* ✅ grid + mask lumayan berat → lebih ringan di mobile */
         .bg-architect {
           background-image:
             linear-gradient(rgba(214,178,94,0.11) 1px, transparent 1px),
@@ -59,6 +98,7 @@ const Hero = () => {
           opacity: .85;
         }
 
+        /* ✅ grain overlay besar → nurunin cost di mobile */
         .grain::after {
           content: '';
           position: absolute;
@@ -129,6 +169,8 @@ const Hero = () => {
             0 45px 120px rgba(0,0,0,0.75),
             0 18px 40px rgba(0,0,0,0.55),
             0 0 0 1px rgba(255,255,255,0.06) inset;
+
+          /* ✅ blur mahal di HP → kita matikan via media query */
           backdrop-filter: blur(22px) saturate(140%);
           -webkit-backdrop-filter: blur(22px) saturate(140%);
           transform: translateZ(0);
@@ -186,20 +228,39 @@ const Hero = () => {
 
         @keyframes statusPing { 75%, 100% { transform: scale(2.5); opacity: 0; } }
         .status-ping { animation: statusPing 2s cubic-bezier(0,0,0.2,1) infinite; }
+
+        /* ✅ Optimasi MOBILE */
+        @media (max-width: 1023px) {
+          .bg-architect { opacity: .45; mask-image: none; -webkit-mask-image: none; }
+          .grain::after { opacity: 0.02; }
+          .artifact {
+            /* matikan blur/backdrop-filter yang berat */
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            /* turunkan shadow */
+            box-shadow: 0 24px 60px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.05) inset;
+          }
+          /* hemat animasi */
+          .float-idle { animation: none !important; }
+          .animate-marquee { animation-duration: 40s; } /* lebih pelan, lebih hemat */
+        }
+
+        /* ✅ Kalau user reduce motion, matiin animasi berat */
+        @media (prefers-reduced-motion: reduce) {
+          .float-idle { animation: none !important; }
+          .animate-marquee { animation: none !important; }
+          .text-mesh { animation: none !important; }
+        }
       `}</style>
 
       <section className="relative w-full min-h-screen overflow-hidden text-[var(--bone)] hero-bg grain flex flex-col font-sans">
-        
         <div className="absolute inset-0 pointer-events-none bg-architect" style={{ zIndex: 1 }} />
         <div className="vignette" />
 
         <div className="relative z-20 flex-1 flex flex-col w-full max-w-[1400px] mx-auto">
-          {/* ✅ Disesuaikan: pt-16 pada mobile agar tidak terlalu jauh ke bawah */}
           <div className="flex-1 flex items-center px-5 sm:px-8 md:px-12 pt-16 pb-16 lg:py-0">
-            {/* ✅ Disesuaikan: gap-12 untuk mobile agar jarak teks ke gambar lebih rapat */}
             <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-12 md:gap-16 lg:gap-24 xl:gap-32 lg:pr-8">
-              
-              {/* ─── LEFT: TYPOGRAPHY & COPY ─── */}
+              {/* LEFT */}
               <motion.div
                 className="flex-1 w-full lg:max-w-[55%] xl:max-w-[60%] flex flex-col items-center text-center lg:items-start lg:text-left"
                 initial="hidden"
@@ -217,7 +278,6 @@ const Hero = () => {
                   <div className="w-10 sm:w-12 h-px bg-[var(--metal)] lg:hidden" />
                 </motion.div>
 
-                {/* ✅ Disesuaikan: Nilai minimal clamp() diturunkan dari 4.2rem/3.8rem menjadi 2.75rem/2.5rem agar muat di HP */}
                 <div className="mb-8 sm:mb-10 relative z-10 flex flex-col w-full">
                   <motion.h1
                     variants={{
@@ -256,23 +316,31 @@ const Hero = () => {
                 >
                   <div className="hidden lg:block w-1 min-h-[64px] bg-gradient-to-b from-[var(--metal)] to-transparent shrink-0" />
                   <p className="text-[0.8rem] sm:text-[0.85rem] md:text-sm leading-[1.7] sm:leading-[1.85] text-[rgba(244,240,232,0.7)] tracking-wide">
-                    Bridging the gap between <span className="text-[var(--bone)] font-semibold">engineering precision</span> and <span className="text-[var(--bone)] font-semibold">editorial aesthetics</span>. From pixel-perfect UI to performant production code.
+                    Bridging the gap between{" "}
+                    <span className="text-[var(--bone)] font-semibold">engineering precision</span> and{" "}
+                    <span className="text-[var(--bone)] font-semibold">editorial aesthetics</span>. From pixel-perfect UI to performant production code.
                   </p>
                 </motion.div>
 
                 <motion.div
                   variants={{ hidden: { opacity: 0, y: 18 }, visible: { opacity: 1, y: 0 } }}
-                  className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 sm:gap-8 lg:gap-10 w-full"
+                  className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 sm:gap-8 lg:gap-10 w-full rounded-m"
                 >
                   <a
                     href="#projects"
-                    className="group relative px-8 py-4 sm:px-10 sm:py-5 border border-[var(--border2)] bg-[rgba(255,255,255,0.02)] overflow-hidden flex items-center justify-center gap-4 transition-all active:scale-95 w-full sm:w-auto hover:border-[var(--bone)] hover:shadow-[0_0_20px_rgba(244,240,232,0.1)] shrink-0"
+                    className="group relative px-8 py-4 sm:px-10 sm:py-5 border border-[var(--border2)] bg-[rgba(255,255,255,0.02)] overflow-hidden flex items-center justify-center gap-4 transition-all active:scale-95 w-full sm:w-auto hover:border-[var(--bone)] hover:shadow-[0_0_20px_rgba(244,240,232,0.1)] shrink-0 rounded-m"
                   >
-                    <div className="absolute inset-0 bg-[var(--bone)] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] z-0" />
-                    <span className="relative z-10 font-mono text-[0.6rem] sm:text-[0.65rem] tracking-[0.28em] uppercase font-semibold text-[var(--bone)] group-hover:text-[var(--bg)] transition-colors duration-500">
+                    <div className="absolute inset-0 bg-[var(--bone)] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] z-0 rounded-m" />
+                    <span className="relative z-10 font-mono text-[0.6rem] sm:text-[0.65rem] tracking-[0.28em] uppercase font-semibold text-[var(--bone)] group-hover:text-[var(--bg)] transition-colors duration-500 rounded-m">
                       View Projects
                     </span>
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="relative z-10 text-[var(--bone)] group-hover:text-[var(--bg)] transition-colors duration-500 transform group-hover:translate-x-1">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 14 14"
+                      fill="none"
+                      className="relative z-10 text-[var(--bone)] group-hover:text-[var(--bg)] transition-colors duration-500 transform group-hover:translate-x-1 rounded-m"
+                    >
                       <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
                     </svg>
                   </a>
@@ -281,59 +349,56 @@ const Hero = () => {
                     <span className="font-mono text-[0.55rem] tracking-[0.22em] text-[rgba(154,148,138,0.85)] uppercase hidden lg:block shrink-0">
                       Toolkit //
                     </span>
-                    {[
-                      { icon: FaFigma, color: "#ff6b6b", name: "Figma" },
-                      { icon: FaReact, color: "#35d0ff", name: "React" },
-                      { icon: SiTailwindcss, color: "#14b8a6", name: "Tailwind" },
-                    ].map((tech, i) => (
+                    {techList.map((tech, i) => (
                       <div
                         key={i}
                         title={tech.name}
-                        className="w-10 h-10 sm:w-12 sm:h-12 lg:w-11 lg:h-11 border border-[rgba(214,178,94,0.18)] flex items-center justify-center bg-[rgba(255,255,255,0.02)] hover:border-[var(--bone)] hover:bg-[rgba(255,255,255,0.08)] transition-all cursor-crosshair group rounded-sm shrink-0"
+                      className="w-10 h-10 sm:w-12 sm:h-12 lg:w-11 lg:h-11 border border-[rgba(214,178,94,0.18)] flex items-center justify-center bg-[rgba(255,255,255,0.02)] hover:border-[var(--bone)] hover:bg-[rgba(255,255,255,0.08)] transition-all cursor-crosshair group rounded-m shrink-0"
                       >
-                        <tech.icon style={{ color: tech.color }} className="w-4 h-4 sm:w-5 sm:h-5 lg:w-4 lg:h-4 opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-transform" />
+                        <tech.icon
+                          style={{ color: tech.color }}
+                          className="w-4 h-4 sm:w-5 sm:h-5 lg:w-4 lg:h-4 opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-transform"
+                        />
                       </div>
                     ))}
                   </div>
                 </motion.div>
               </motion.div>
 
-              {/* ─── RIGHT: WRAPPER (MENANGANI KEDUA VERSI DESAIN) ─── */}
+              {/* RIGHT */}
               <motion.div
                 className="w-full max-w-[320px] sm:max-w-[380px] lg:max-w-[440px] xl:max-w-[480px] mx-auto lg:mx-0 lg:ml-auto shrink-0 relative perspective-[1200px] mt-2 lg:mt-0"
                 initial={{ opacity: 0, filter: "blur(12px)", scale: 0.9 }}
                 animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
                 transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
                 ref={cardRef}
-                onMouseMove={handleMouseMove}
-                onMouseLeave={handleMouseLeave}
+                // ✅ only attach handlers if FX enabled
+                onMouseMove={enableFX ? handleMouseMove : undefined}
+                onMouseLeave={enableFX ? handleMouseLeave : undefined}
               >
-                
-                {/* ✅ VERSI MOBILE: DESAIN ORIGINAL TETAP DIPERTAHANKAN ✅ */}
-                <motion.div 
-                  style={{ rotateX, rotateY }} 
-                  className="artifact p-3 pb-20 float-idle lg:hidden"
-                >
-                  <div className="reg-mark reg-tl" />
-                  <div className="reg-mark reg-tr" />
-                  <div className="reg-mark reg-bl" />
-                  <div className="reg-mark reg-br" />
-
-                  <motion.div
-                    className="absolute inset-0 z-50 pointer-events-none opacity-40 mix-blend-overlay transition-opacity duration-300"
-                    style={{
-                      background: useTransform(
-                        () => `radial-gradient(circle at ${glareX.get()}% ${glareY.get()}%, rgba(255,255,255,0.85) 0%, transparent 60%)`
-                      ),
-                    }}
-                  />
+                {/* MOBILE */}
+                <motion.div style={{ rotateX, rotateY }} className="artifact p-3 pb-20 lg:hidden">
+                  {/* ✅ glare hanya desktop */}
+                  {enableFX && (
+                    <motion.div
+                      className="absolute inset-0 z-50 pointer-events-none opacity-40 mix-blend-overlay transition-opacity duration-300"
+                      style={{
+                        background: useTransform(
+                          () =>
+                            `radial-gradient(circle at ${glareX.get()}% ${glareY.get()}%, rgba(255,255,255,0.85) 0%, transparent 60%)`
+                        ),
+                      }}
+                    />
+                  )}
 
                   <div className="relative aspect-[4/5] overflow-hidden border border-[rgba(214,178,94,0.25)] bg-[#0f0f14]">
                     {profileImage ? (
                       <img
                         src={profileImage}
                         alt="Profile of Brandon"
-                        className="w-full h-full object-cover object-center scale-105 hover:scale-100 transition-transform duration-1000 ease-out grayscale-[20%] contrast-[1.15] sepia-[15%]"
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover object-center scale-105 grayscale-[20%] contrast-[1.15] sepia-[15%]"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
@@ -360,36 +425,22 @@ const Hero = () => {
                       <p className="font-mono text-[0.5rem] tracking-[0.22em] text-[rgba(154,148,138,0.9)]">ID-2025</p>
                     </div>
                   </div>
-
-                  <motion.div
-                    className="absolute -top-4 -left-3 z-50 bg-[var(--bone)] px-5 py-2 border border-[rgba(0,0,0,0.18)] shadow-2xl rotate-[-3deg] flex items-center gap-3 rounded-sm"
-                    whileHover={{ scale: 1.05, rotate: -1 }}
-                  >
-                    <div className="relative flex h-2 w-2">
-                      <span className="status-ping absolute inset-0 rounded-full bg-[var(--bg)] opacity-60"></span>
-                      <span className="relative w-2 h-2 rounded-full bg-[var(--bg)]"></span>
-                    </div>
-                  </motion.div>
-
-                  <motion.div
-                    className="absolute -bottom-5 -right-3 z-50 bg-[var(--rust)] px-5 py-3 shadow-2xl rotate-[4deg] border border-[rgba(255,255,255,0.10)] rounded-sm"
-                    whileHover={{ scale: 1.05, rotate: 2 }}
-                  >
-                  </motion.div>
                 </motion.div>
 
+                {/* DESKTOP */}
+                <motion.div className="hidden lg:block relative w-full aspect-square float-idle" style={{ rotateX, rotateY }}>
+                  {enableFX && (
+                    <motion.div
+                      className="absolute inset-0 z-50 pointer-events-none opacity-30 mix-blend-overlay rounded-3xl"
+                      style={{
+                        background: useTransform(
+                          () =>
+                            `radial-gradient(circle at ${glareX.get()}% ${glareY.get()}%, rgba(255,255,255,0.8) 0%, transparent 60%)`
+                        ),
+                      }}
+                    />
+                  )}
 
-                {/* ✅ VERSI DESKTOP: DESAIN BARU "DECONSTRUCTED" (DENGAN hidden lg:block) ✅ */}
-                <motion.div
-                  className="hidden lg:block relative w-full aspect-square float-idle"
-                  style={{ rotateX, rotateY }}
-                >
-                  <motion.div
-                    className="absolute inset-0 z-50 pointer-events-none opacity-30 mix-blend-overlay rounded-3xl"
-                    style={{ background: useTransform(() => `radial-gradient(circle at ${glareX.get()}% ${glareY.get()}%, rgba(255,255,255,0.8) 0%, transparent 60%)`) }}
-                  />
-
-                  {/* Panel Kaca Belakang */}
                   <div className="absolute inset-y-8 inset-x-0 bg-[rgba(20,20,25,0.45)] backdrop-blur-2xl border border-[rgba(255,255,255,0.08)] rounded-3xl shadow-[0_30px_60px_rgba(0,0,0,0.6)] overflow-hidden">
                     <div className="absolute -top-20 -right-20 w-64 h-64 bg-[var(--rust)] opacity-10 rounded-full blur-3xl" />
                     <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-[var(--metal)] opacity-10 rounded-full blur-3xl" />
@@ -402,11 +453,13 @@ const Hero = () => {
                         </div>
                         <span className="font-mono text-[0.6rem] text-[var(--bone)] tracking-[0.2em] uppercase">System Active</span>
                       </div>
-                      <h3 className="text-4xl xl:text-5xl font-extrabold italic text-transparent bg-clip-text bg-gradient-to-br from-[var(--bone)] to-[var(--metal)] mb-2">Brandon.</h3>
+                      <h3 className="text-4xl xl:text-5xl font-extrabold italic text-transparent bg-clip-text bg-gradient-to-br from-[var(--bone)] to-[var(--metal)] mb-2">
+                        Brandon.
+                      </h3>
                       <p className="font-mono text-xs text-[var(--metal)] mb-8 tracking-widest">ID-2025 // DEV</p>
-                      
+
                       <div className="h-px w-full bg-gradient-to-r from-[var(--metal)] to-transparent mb-6 opacity-30" />
-                      
+
                       <div className="grid grid-cols-2 gap-4 font-mono text-[0.6rem] tracking-[0.15em] text-[var(--bone)] uppercase">
                         <div>
                           <span className="block text-[var(--metal)] opacity-60 mb-1 text-[0.5rem]">Role</span>
@@ -424,28 +477,26 @@ const Hero = () => {
                     </div>
                   </div>
 
-                  {/* Foto Mengambang Melampaui Batas (Break out of frame) */}
                   <div className="absolute -top-4 -right-4 w-[50%] aspect-[3/4] bg-[#07070a] rounded-xl shadow-[0_20px_40px_rgba(0,0,0,0.8)] border border-[rgba(214,178,94,0.3)] overflow-hidden transform rotate-3 hover:rotate-0 transition-transform duration-700 ease-out z-20">
                     <img
                       src={profileImage}
                       alt="Profile"
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover grayscale-[15%] contrast-125 hover:scale-105 transition-transform duration-1000"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[rgba(7,7,10,0.9)] via-transparent to-transparent opacity-80" />
-                    
                     <div className="absolute top-5 left-[-32px] bg-[var(--rust)] px-8 py-1.5 text-[var(--bone)] text-[0.5rem] font-bold font-mono tracking-widest -rotate-45 shadow-lg">
-                      PROTOTYPE
+                      Front End Dev
                     </div>
                   </div>
-                  
-                  {/* Dekorasi Garis Kanan Bawah */}
+
                   <div className="absolute bottom-16 right-6 flex flex-col gap-1.5 z-20 opacity-40">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div key={i} className="h-[1.5px] bg-[var(--metal)]" style={{ width: `${Math.random() * 20 + 10}px` }} />
+                    {decoWidths.map((w, i) => (
+                      <div key={i} className="h-[1.5px] bg-[var(--metal)]" style={{ width: `${w}px` }} />
                     ))}
                   </div>
                 </motion.div>
-
               </motion.div>
             </div>
           </div>
@@ -470,7 +521,6 @@ const Hero = () => {
             </div>
           </div>
         </div>
-
       </section>
     </>
   );

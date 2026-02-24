@@ -30,13 +30,14 @@ const educationData = [
   },
 ];
 
+// OPTIMASI: Menghapus filter blur untuk performa mobile yang jauh lebih baik
 const FadeUp = ({ children, delay = 0, className = "" }) => (
   <motion.div
     className={className}
-    initial={{ opacity: 0, y: 26, filter: "blur(6px)" }}
-    whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-    viewport={{ once: true, amount: 0.14 }}
-    transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay }}
+    initial={{ opacity: 0, y: 26 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, amount: 0.1 }}
+    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay }}
   >
     {children}
   </motion.div>
@@ -82,9 +83,9 @@ const About = () => {
         <div className="ab-dust" />
         <div className="ab-vignette" />
 
-        {/* Studio lighting (match HERO) */}
+        {/* OPTIMASI: Menambahkan transform-gpu agar background blur dirender oleh hardware */}
         <div
-          className="absolute inset-0 pointer-events-none overflow-hidden"
+          className="absolute inset-0 pointer-events-none overflow-hidden transform-gpu"
           style={{ zIndex: 0 }}
         >
           <div className="absolute top-[-8%] left-[-10%] w-[52vw] h-[52vw] rounded-full mix-blend-screen blur-[150px] opacity-[0.10] bg-[var(--metal)]" />
@@ -95,7 +96,7 @@ const About = () => {
         {/* Watermark */}
         <motion.div
           style={{ y: watermarkY }}
-          className="absolute top-[5%] left-0 right-0 z-0 pointer-events-none flex justify-center overflow-hidden select-none"
+          className="absolute top-[5%] left-0 right-0 z-0 pointer-events-none flex justify-center overflow-hidden select-none transform-gpu"
         >
           <span className="f-display ab-watermark text-[clamp(7rem,22vw,22rem)] font-bold italic leading-none whitespace-nowrap opacity-[0.55]">
             ABOUT
@@ -141,9 +142,10 @@ const About = () => {
 
           {/* Bento grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5 mb-24 md:mb-32">
-            {/* Intro (2x2) */}
+            
+            {/* Intro (2x2) - UI Desktop Enhance */}
             <FadeUp delay={0.12} className="md:col-span-2 md:row-span-2">
-              <div className="ab-card h-full p-8 md:p-10 group">
+              <div className="ab-card h-full p-8 md:p-10 group md:transition-all md:duration-500 md:hover:-translate-y-1.5 md:hover:shadow-[0_15px_40px_-10px_rgba(214,178,94,0.15)] md:hover:border-[rgba(214,178,94,0.3)]">
                 <div className="ab-film" />
                 <div className="ab-sheen" />
                 <div className="ab-halftone" />
@@ -158,8 +160,8 @@ const About = () => {
                 <div className="ab-reg ab-bl" />
                 <div className="ab-reg ab-br" />
 
-                <Globe className="absolute -right-10 -top-10 w-56 h-56 text-[var(--metal)] opacity-[0.04] group-hover:opacity-[0.08] group-hover:rotate-12 transition-all duration-700 stroke-[0.6]" />
-                <span className="f-display font-bold absolute bottom-4 right-6 text-6xl text-[var(--metal)] opacity-[0.04] select-none">
+                <Globe className="absolute -right-10 -top-10 w-56 h-56 text-[var(--metal)] opacity-[0.04] group-hover:opacity-[0.1] md:group-hover:opacity-[0.15] md:group-hover:-translate-y-4 md:group-hover:-translate-x-4 group-hover:rotate-12 transition-all duration-700 stroke-[0.6]" />
+                <span className="f-display font-bold absolute bottom-4 right-6 text-6xl text-[var(--metal)] opacity-[0.04] md:group-hover:opacity-[0.08] transition-opacity duration-500 select-none">
                   01
                 </span>
 
@@ -168,7 +170,7 @@ const About = () => {
                     <span className="f-mono text-[0.58rem] tracking-[0.28em] text-[var(--metal)] uppercase">
                       01 / Intro
                     </span>
-                    <div className="flex-1 h-[1px] bg-gradient-to-r from-[rgba(214,178,94,0.28)] to-transparent" />
+                    <div className="flex-1 h-[1px] bg-gradient-to-r from-[rgba(214,178,94,0.28)] to-transparent md:group-hover:from-[rgba(214,178,94,0.5)] transition-colors duration-500" />
                   </div>
 
                   <h3 className="f-display text-3xl md:text-4xl lg:text-5xl font-semibold italic text-[var(--bone)] mb-6 leading-[1.08]">
@@ -178,17 +180,11 @@ const About = () => {
                   <div className="space-y-4 f-sans text-xs md:text-sm text-[rgba(244,240,232,0.86)] leading-relaxed max-w-md">
                     <p>
                       A product designer from Indonesia turning ideas into{" "}
-                      <span className="text-[var(--metal2)] font-semibold">
-                        simple
-                      </span>
+                      <span className="text-[var(--metal2)] font-semibold">simple</span>
                       ,{" "}
-                      <span className="text-[var(--metal2)] font-semibold">
-                        elegant
-                      </span>
+                      <span className="text-[var(--metal2)] font-semibold">elegant</span>
                       , and{" "}
-                      <span className="text-[var(--metal2)] font-semibold">
-                        fun-to-use
-                      </span>{" "}
+                      <span className="text-[var(--metal2)] font-semibold">fun-to-use</span>{" "}
                       digital experiences.
                     </p>
                     <p>
@@ -203,7 +199,7 @@ const About = () => {
                   {["Front End", "UI/UX", "Creative"].map((t) => (
                     <span
                       key={t}
-                      className="ab-chip f-mono text-[0.55rem] tracking-[0.18em] uppercase px-4 py-2"
+                      className="ab-chip f-mono text-[0.55rem] tracking-[0.18em] uppercase px-4 py-2 md:hover:bg-[rgba(214,178,94,0.15)] md:hover:text-[var(--metal)] md:transition-colors md:cursor-default"
                     >
                       {t}
                     </span>
@@ -212,11 +208,11 @@ const About = () => {
               </div>
             </FadeUp>
 
-            {/* Experience */}
+            {/* Experience - UI Desktop Enhance */}
             <FadeUp delay={0.22} className="md:col-span-1">
-              <div className="ab-card h-full p-8 flex flex-col items-center justify-center text-center min-h-[210px]">
+              <div className="ab-card h-full p-8 flex flex-col items-center justify-center text-center min-h-[210px] group md:transition-all md:duration-500 md:hover:-translate-y-1.5 md:hover:shadow-[0_15px_40px_-10px_rgba(214,178,94,0.1)]">
                 <div className="ab-film" />
-                <div className="ab-sheen" />
+                <div className="ab-sheen md:group-hover:opacity-100" />
                 <div className="ab-screw" style={{ top: 12, left: 12 }} />
                 <div className="ab-screw" style={{ top: 12, right: 12 }} />
                 <div className="ab-reg ab-tl" />
@@ -224,7 +220,7 @@ const About = () => {
                 <div className="ab-reg ab-bl" />
                 <div className="ab-reg ab-br" />
 
-                <span className="f-display text-6xl md:text-7xl font-bold italic text-[var(--metal)] mb-2 drop-shadow-[0_0_15px_rgba(214,178,94,0.18)]">
+                <span className="f-display text-6xl md:text-7xl font-bold italic text-[var(--metal)] mb-2 drop-shadow-[0_0_15px_rgba(214,178,94,0.18)] md:group-hover:scale-105 transition-transform duration-500">
                   2+
                 </span>
                 <span className="f-mono text-[0.58rem] tracking-[0.28em] uppercase text-[rgba(154,148,138,0.92)] mt-2">
@@ -233,17 +229,17 @@ const About = () => {
                 <div className="w-16 mt-5">
                   <MeterBar pct={100} delay={0.35} />
                 </div>
-                <span className="f-display font-bold absolute bottom-2 right-4 text-4xl text-[var(--metal)] opacity-[0.04] select-none">
+                <span className="f-display font-bold absolute bottom-2 right-4 text-4xl text-[var(--metal)] opacity-[0.04] md:group-hover:opacity-[0.08] transition-opacity duration-500 select-none">
                   02
                 </span>
               </div>
             </FadeUp>
 
-            {/* Projects */}
+            {/* Projects - UI Desktop Enhance */}
             <FadeUp delay={0.32} className="md:col-span-1">
-              <div className="ab-card h-full p-8 flex flex-col items-center justify-center text-center min-h-[210px]">
+              <div className="ab-card h-full p-8 flex flex-col items-center justify-center text-center min-h-[210px] group md:transition-all md:duration-500 md:hover:-translate-y-1.5 md:hover:shadow-[0_15px_40px_-10px_rgba(244,240,232,0.1)]">
                 <div className="ab-film" />
-                <div className="ab-sheen" />
+                <div className="ab-sheen md:group-hover:opacity-100" />
                 <div className="ab-screw" style={{ top: 12, left: 12 }} />
                 <div className="ab-screw" style={{ top: 12, right: 12 }} />
                 <div className="ab-reg ab-tl" />
@@ -251,7 +247,7 @@ const About = () => {
                 <div className="ab-reg ab-bl" />
                 <div className="ab-reg ab-br" />
 
-                <span className="f-display text-6xl md:text-7xl font-bold text-[var(--bone)] mb-2 drop-shadow-[0_0_15px_rgba(244,240,232,0.12)]">
+                <span className="f-display text-6xl md:text-7xl font-bold text-[var(--bone)] mb-2 drop-shadow-[0_0_15px_rgba(244,240,232,0.12)] md:group-hover:scale-105 transition-transform duration-500">
                   10+
                 </span>
                 <span className="f-mono text-[0.58rem] tracking-[0.28em] uppercase text-[rgba(154,148,138,0.92)] mt-2">
@@ -260,15 +256,15 @@ const About = () => {
                 <div className="w-16 mt-5">
                   <MeterBar pct={100} color="var(--rust)" delay={0.42} />
                 </div>
-                <span className="f-display font-bold absolute bottom-2 right-4 text-4xl text-[var(--metal)] opacity-[0.04] select-none">
+                <span className="f-display font-bold absolute bottom-2 right-4 text-4xl text-[var(--metal)] opacity-[0.04] md:group-hover:opacity-[0.08] transition-opacity duration-500 select-none">
                   03
                 </span>
               </div>
             </FadeUp>
 
-            {/* Terminal */}
+            {/* Terminal - UI Desktop Enhance */}
             <FadeUp delay={0.42} className="md:col-span-2">
-              <div className="ab-card h-full p-6 md:p-8 group">
+              <div className="ab-card h-full p-6 md:p-8 group md:transition-all md:duration-500 md:hover:-translate-y-1.5 md:hover:shadow-[0_15px_40px_-10px_rgba(214,178,94,0.15)] md:hover:border-[rgba(214,178,94,0.3)]">
                 <div className="ab-film" />
                 <div className="ab-sheen" />
                 <div className="ab-screw" style={{ top: 12, left: 12 }} />
@@ -278,15 +274,15 @@ const About = () => {
                 <div className="ab-reg ab-bl" />
                 <div className="ab-reg ab-br" />
 
-                <span className="f-display font-bold absolute bottom-2 right-4 text-5xl text-[var(--metal)] opacity-[0.04] select-none z-0">
+                <span className="f-display font-bold absolute bottom-2 right-4 text-5xl text-[var(--metal)] opacity-[0.04] md:group-hover:opacity-[0.08] transition-opacity duration-500 select-none z-0">
                   04
                 </span>
 
                 <div className="flex items-center justify-between mb-6 pb-4 border-b border-[rgba(214,178,94,0.18)] relative z-10">
                   <div className="flex gap-2">
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#ff6b6b] opacity-80" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#f2d89a] opacity-80" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#14b8a6] opacity-80" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#ff6b6b] opacity-80 md:group-hover:opacity-100 md:group-hover:scale-110 transition-all" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#f2d89a] opacity-80 md:group-hover:opacity-100 md:group-hover:scale-110 transition-all delay-75" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#14b8a6] opacity-80 md:group-hover:opacity-100 md:group-hover:scale-110 transition-all delay-150" />
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-[var(--metal)] animate-pulse" />
@@ -328,13 +324,13 @@ const About = () => {
                   </p>
                 </div>
 
-                <Code2 className="absolute bottom-6 right-8 w-12 h-12 text-[var(--bone)] opacity-[0.05] group-hover:scale-110 transition-transform z-0" />
+                <Code2 className="absolute bottom-6 right-8 w-12 h-12 text-[var(--bone)] opacity-[0.05] md:group-hover:text-[var(--metal)] md:group-hover:opacity-[0.15] md:group-hover:scale-110 md:group-hover:-rotate-6 transition-all duration-500 z-0" />
               </div>
             </FadeUp>
 
-            {/* Design */}
+            {/* Design - UI Desktop Enhance */}
             <FadeUp delay={0.52} className="md:col-span-1 lg:col-span-1">
-              <div className="ab-card h-full p-6 md:p-8 flex flex-col justify-between min-h-[270px]">
+              <div className="ab-card h-full p-6 md:p-8 flex flex-col justify-between min-h-[270px] group md:transition-all md:duration-500 md:hover:-translate-y-1.5 md:hover:shadow-[0_15px_40px_-10px_rgba(214,178,94,0.1)] md:hover:border-[rgba(214,178,94,0.3)]">
                 <div className="ab-film" />
                 <div className="ab-sheen" />
                 <div className="ab-reg ab-tl" />
@@ -342,13 +338,13 @@ const About = () => {
                 <div className="ab-reg ab-bl" />
                 <div className="ab-reg ab-br" />
 
-                <span className="f-display font-bold absolute bottom-2 right-4 text-5xl text-[var(--metal)] opacity-[0.04] select-none">
+                <span className="f-display font-bold absolute bottom-2 right-4 text-5xl text-[var(--metal)] opacity-[0.04] md:group-hover:opacity-[0.08] transition-opacity duration-500 select-none">
                   05
                 </span>
 
                 <div className="relative z-10">
                   <div className="flex items-center justify-between mb-6">
-                    <div className="w-10 h-10 border border-[rgba(214,178,94,0.22)] bg-[rgba(255,255,255,0.02)] flex items-center justify-center rounded-xl">
+                    <div className="w-10 h-10 border border-[rgba(214,178,94,0.22)] bg-[rgba(255,255,255,0.02)] flex items-center justify-center rounded-xl md:group-hover:bg-[rgba(214,178,94,0.1)] md:group-hover:rotate-6 transition-all duration-500">
                       <PenTool className="w-4 h-4 text-[var(--metal)]" />
                     </div>
                     <span className="f-mono text-[0.5rem] tracking-[0.2em] text-[var(--metal)] uppercase bg-[rgba(214,178,94,0.10)] px-3 py-1.5 border border-[rgba(214,178,94,0.22)] rounded-full">
@@ -365,9 +361,9 @@ const About = () => {
                 </div>
 
                 <div className="space-y-5 relative z-10">
-                  <div>
+                  <div className="group/meter">
                     <div className="flex justify-between text-[0.56rem] f-mono tracking-[0.18em] mb-2 uppercase">
-                      <span className="text-[rgba(244,240,232,0.85)]">
+                      <span className="text-[rgba(244,240,232,0.85)] md:group-hover/meter:text-[var(--bone)] transition-colors">
                         Figma
                       </span>
                       <span className="text-[var(--metal)] font-bold">95%</span>
@@ -375,9 +371,9 @@ const About = () => {
                     <MeterBar pct={95} delay={0.28} />
                   </div>
 
-                  <div>
+                  <div className="group/meter">
                     <div className="flex justify-between text-[0.56rem] f-mono tracking-[0.18em] mb-2 uppercase">
-                      <span className="text-[rgba(244,240,232,0.85)]">
+                      <span className="text-[rgba(244,240,232,0.85)] md:group-hover/meter:text-[var(--bone)] transition-colors">
                         Canva
                       </span>
                       <span className="text-[var(--metal)] font-bold">80%</span>
@@ -388,9 +384,9 @@ const About = () => {
               </div>
             </FadeUp>
 
-            {/* Frontend */}
+            {/* Frontend - UI Desktop Enhance */}
             <FadeUp delay={0.62} className="md:col-span-1 lg:col-span-1">
-              <div className="ab-card h-full p-6 md:p-8 flex flex-col justify-between min-h-[270px]">
+              <div className="ab-card h-full p-6 md:p-8 flex flex-col justify-between min-h-[270px] group md:transition-all md:duration-500 md:hover:-translate-y-1.5 md:hover:shadow-[0_15px_40px_-10px_rgba(53,208,255,0.15)] md:hover:border-[rgba(53,208,255,0.3)]">
                 <div className="ab-film" />
                 <div className="ab-sheen" />
                 <div className="ab-reg ab-tl" />
@@ -398,13 +394,13 @@ const About = () => {
                 <div className="ab-reg ab-bl" />
                 <div className="ab-reg ab-br" />
 
-                <span className="f-display font-bold absolute bottom-2 right-4 text-5xl text-[var(--metal)] opacity-[0.04] select-none">
+                <span className="f-display font-bold absolute bottom-2 right-4 text-5xl text-[#35d0ff] opacity-[0.03] md:group-hover:opacity-[0.08] transition-opacity duration-500 select-none">
                   06
                 </span>
 
                 <div className="relative z-10">
                   <div className="flex items-center justify-between mb-6">
-                    <div className="w-10 h-10 border border-[rgba(53,208,255,0.22)] bg-[rgba(255,255,255,0.02)] flex items-center justify-center rounded-xl">
+                    <div className="w-10 h-10 border border-[rgba(53,208,255,0.22)] bg-[rgba(255,255,255,0.02)] flex items-center justify-center rounded-xl md:group-hover:bg-[rgba(53,208,255,0.1)] md:group-hover:-rotate-6 transition-all duration-500">
                       <Code2 className="w-4 h-4 text-[#35d0ff]" />
                     </div>
                     <span className="f-mono text-[0.5rem] tracking-[0.2em] text-[#35d0ff] uppercase bg-[rgba(53,208,255,0.10)] px-3 py-1.5 border border-[rgba(53,208,255,0.22)] rounded-full">
@@ -421,9 +417,9 @@ const About = () => {
                 </div>
 
                 <div className="space-y-5 relative z-10">
-                  <div>
+                  <div className="group/meter">
                     <div className="flex justify-between text-[0.56rem] f-mono tracking-[0.18em] mb-2 uppercase">
-                      <span className="text-[rgba(244,240,232,0.85)]">
+                      <span className="text-[rgba(244,240,232,0.85)] md:group-hover/meter:text-[var(--bone)] transition-colors">
                         React.js
                       </span>
                       <span className="text-[#35d0ff] font-bold">90%</span>
@@ -431,9 +427,9 @@ const About = () => {
                     <MeterBar pct={90} color="#35d0ff" delay={0.33} />
                   </div>
 
-                  <div>
+                  <div className="group/meter">
                     <div className="flex justify-between text-[0.56rem] f-mono tracking-[0.18em] mb-2 uppercase">
-                      <span className="text-[rgba(244,240,232,0.85)]">
+                      <span className="text-[rgba(244,240,232,0.85)] md:group-hover/meter:text-[var(--bone)] transition-colors">
                         JavaScript
                       </span>
                       <span className="text-[#35d0ff] font-bold">85%</span>
@@ -444,9 +440,9 @@ const About = () => {
               </div>
             </FadeUp>
 
-            {/* Spec Sheet */}
+            {/* Spec Sheet - UI Desktop Enhance */}
             <FadeUp delay={0.72} className="md:col-span-2 lg:col-span-4">
-              <div className="ab-card p-6 md:p-10">
+              <div className="ab-card p-6 md:p-10 group md:transition-all md:duration-500 md:hover:-translate-y-1 md:hover:shadow-[0_15px_40px_-10px_rgba(214,178,94,0.15)] md:hover:border-[rgba(214,178,94,0.3)]">
                 <div className="ab-film" />
                 <div className="ab-sheen" />
                 <div className="ab-reg ab-tl" />
@@ -456,7 +452,7 @@ const About = () => {
 
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-[rgba(214,178,94,0.18)]">
                   <div className="flex items-center gap-4">
-                    <Layers className="w-5 h-5 text-[var(--metal)]" />
+                    <Layers className="w-5 h-5 text-[var(--metal)] md:group-hover:rotate-180 transition-transform duration-700" />
                     <span className="f-mono text-xs tracking-[0.2em] text-[var(--bone)] uppercase font-semibold">
                       design-system.tokens
                     </span>
@@ -482,7 +478,7 @@ const About = () => {
                       ].map((c) => (
                         <div
                           key={c}
-                          className="w-8 h-8 border border-[rgba(255,255,255,0.18)] shadow-[inset_0_0_10px_rgba(0,0,0,0.5)] rounded-xl"
+                          className="w-8 h-8 border border-[rgba(255,255,255,0.18)] shadow-[inset_0_0_10px_rgba(0,0,0,0.5)] rounded-xl md:hover:scale-110 md:hover:-translate-y-1 transition-transform cursor-crosshair"
                           style={{ background: c }}
                         />
                       ))}
@@ -496,7 +492,7 @@ const About = () => {
                     <p className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-[rgba(154,148,138,0.95)] mb-5">
                       Type Pairing
                     </p>
-                    <div className="border-l-2 border-[var(--metal)] pl-5">
+                    <div className="border-l-2 border-[var(--metal)] pl-5 md:group-hover:border-[var(--bone)] transition-colors duration-500">
                       <h4 className="f-display text-4xl font-semibold italic text-[var(--bone)] leading-none">
                         Aa Display
                       </h4>
@@ -511,14 +507,14 @@ const About = () => {
                       Components
                     </p>
                     <div className="flex gap-4">
-                      <button className="px-6 py-3 bg-[var(--metal)] text-[var(--bg)] f-mono text-[0.55rem] font-bold tracking-[0.2em] uppercase hover:bg-[var(--bone)] transition-colors rounded-full">
+                      <button className="px-6 py-3 bg-[var(--metal)] text-[var(--bg)] f-mono text-[0.55rem] font-bold tracking-[0.2em] uppercase hover:bg-[var(--bone)] md:hover:scale-105 transition-all rounded-full">
                         Primary
                       </button>
-                      <button className="px-6 py-3 border border-[rgba(214,178,94,0.22)] text-[rgba(244,240,232,0.95)] f-mono text-[0.55rem] font-bold tracking-[0.2em] uppercase hover:bg-[rgba(255,255,255,0.05)] transition-colors rounded-full">
+                      <button className="px-6 py-3 border border-[rgba(214,178,94,0.22)] text-[rgba(244,240,232,0.95)] f-mono text-[0.55rem] font-bold tracking-[0.2em] uppercase hover:bg-[rgba(255,255,255,0.05)] md:hover:border-[rgba(214,178,94,0.5)] md:hover:scale-105 transition-all rounded-full">
                         Ghost
                       </button>
                     </div>
-                    <MousePointer2 className="absolute bottom-[-15px] right-8 w-6 h-6 text-[var(--bone)] opacity-60 -rotate-12" />
+                    <MousePointer2 className="absolute bottom-[-15px] right-8 w-6 h-6 text-[var(--bone)] opacity-60 -rotate-12 md:group-hover:animate-bounce" />
                   </div>
                 </div>
               </div>
@@ -556,7 +552,7 @@ const About = () => {
               whileInView={{ scaleY: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 1.8, ease: "easeOut" }}
-              className="absolute left-[38px] md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[var(--metal)] to-transparent md:-translate-x-1/2 z-0 origin-top opacity-70"
+              className="absolute left-[38px] md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[var(--metal)] to-transparent md:-translate-x-1/2 z-0 origin-top opacity-70 transform-gpu"
             />
 
             <div className="space-y-16 md:space-y-24">
@@ -572,7 +568,7 @@ const About = () => {
                     {/* Node (rounded) */}
                     <div className="absolute left-[38px] md:left-1/2 top-6 md:top-10 -translate-x-1/2 z-10 flex flex-col items-center">
                       <div
-                        className={`w-12 h-12 rounded-2xl border bg-[rgba(7,7,10,0.88)] backdrop-blur-md flex items-center justify-center shadow-[0_0_20px_rgba(0,0,0,0.5)] ${
+                        className={`w-12 h-12 rounded-2xl border bg-[rgba(7,7,10,0.88)] backdrop-blur-md flex items-center justify-center shadow-[0_0_20px_rgba(0,0,0,0.5)] md:hover:scale-110 transition-transform ${
                           isCurrent
                             ? "border-[rgba(214,178,94,0.55)]"
                             : "border-[rgba(214,178,94,0.22)]"
@@ -593,12 +589,12 @@ const About = () => {
                       </span>
                     </div>
 
-                    {/* Content card (rounded artifact) */}
+                    {/* Content card - UI Desktop Enhance */}
                     <FadeUp
                       delay={0.12}
                       className={`w-full pl-24 md:pl-0 md:w-[45%] ${isLeft ? "md:pr-20" : "md:pl-20"}`}
                     >
-                      <div className="ab-card p-6 md:p-10 group relative">
+                      <div className="ab-card p-6 md:p-10 group relative md:transition-all md:duration-500 md:hover:-translate-y-2 md:hover:shadow-[0_20px_40px_-15px_rgba(214,178,94,0.2)] md:hover:border-[rgba(214,178,94,0.3)]">
                         <div className="ab-film" />
                         <div className="ab-sheen" />
                         <div className="ab-halftone" />
@@ -616,7 +612,7 @@ const About = () => {
                         <div className="ab-reg ab-br" />
 
                         <div
-                          className={`absolute top-0 bottom-0 w-[3px] bg-[var(--metal)] opacity-0 group-hover:opacity-100 transition-opacity ${isLeft ? "right-0" : "left-0"}`}
+                          className={`absolute top-0 bottom-0 w-[3px] bg-[var(--metal)] opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 ${isLeft ? "right-0" : "left-0"}`}
                         />
 
                         <div className="relative z-10 flex items-center gap-4 mb-6">
@@ -640,7 +636,7 @@ const About = () => {
                         </div>
 
                         <h4
-                          className={`relative z-10 f-display text-2xl md:text-3xl mb-3 leading-snug ${isCurrent ? "font-semibold italic text-[var(--bone)]" : "text-[rgba(244,240,232,0.92)]"}`}
+                          className={`relative z-10 f-display text-2xl md:text-3xl mb-3 leading-snug ${isCurrent ? "font-semibold italic text-[var(--bone)]" : "text-[rgba(244,240,232,0.92)] md:group-hover:text-[var(--bone)] transition-colors"}`}
                         >
                           {item.school}
                         </h4>
@@ -649,7 +645,7 @@ const About = () => {
                           {item.role}
                         </p>
 
-                        <div className="relative z-10 w-12 h-[2px] bg-[rgba(214,178,94,0.28)] mb-6" />
+                        <div className="relative z-10 w-12 h-[2px] bg-[rgba(214,178,94,0.28)] mb-6 md:group-hover:w-24 md:group-hover:bg-[rgba(214,178,94,0.6)] transition-all duration-500" />
 
                         <p className="relative z-10 f-sans text-[0.82rem] text-[rgba(244,240,232,0.86)] leading-[1.85]">
                           {item.desc}

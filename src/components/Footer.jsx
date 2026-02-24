@@ -9,7 +9,8 @@ const Footer = () => {
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
 
-    const toggleVisibility = () => setIsVisible(window.pageYOffset > 300);
+    // OPTIMASI: Menggunakan window.scrollY yang lebih modern daripada pageYOffset
+    const toggleVisibility = () => setIsVisible(window.scrollY > 300);
     window.addEventListener("scroll", toggleVisibility);
 
     return () => {
@@ -33,15 +34,15 @@ const Footer = () => {
         <div className="ft-vignette" />
 
         {/* Watermark */}
-        <div className="absolute -top-6 left-0 right-0 z-0 pointer-events-none flex justify-center select-none">
-          <span className="f-display ft-outline text-[clamp(5rem,18vw,16rem)] font-bold italic leading-none opacity-[0.55]">
+        <div className="absolute -top-6 left-0 right-0 z-0 pointer-events-none flex justify-center select-none transform-gpu">
+          <span className="f-display ft-outline text-[clamp(5rem,18vw,16rem)] font-bold italic leading-none opacity-[0.45] md:opacity-[0.55]">
             FOOTER
           </span>
         </div>
 
         {/* subtle top runner line (not neon) */}
         <motion.div
-          className="absolute top-0 left-0 w-full h-px"
+          className="absolute top-0 left-0 w-full h-px transform-gpu"
           style={{
             background:
               "linear-gradient(90deg, transparent, rgba(214,178,94,0.55), rgba(20,184,166,0.18), transparent)",
@@ -50,10 +51,10 @@ const Footer = () => {
           transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
         />
 
-        {/* Back to top — artifact chip */}
+        {/* Back to top — UI Desktop Enhanced */}
         <motion.button
           onClick={scrollToTop}
-          className="fixed bottom-7 right-7 z-50"
+          className="fixed bottom-7 right-7 z-50 group"
           initial={{ opacity: 0, scale: 0.9, y: 10 }}
           animate={{
             opacity: isVisible ? 1 : 0,
@@ -61,31 +62,32 @@ const Footer = () => {
             y: isVisible ? 0 : 10,
             pointerEvents: isVisible ? "auto" : "none",
           }}
-          transition={{ duration: 0.25 }}
-          whileHover={{ y: -4, scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
+          transition={{ duration: 0.3 }}
+          whileHover={{ y: -4, scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          aria-label="Back to top"
         >
-          <div className="ft-card rounded-full px-4 py-3 flex items-center gap-3">
+          <div className="ft-card rounded-full px-4 py-3 flex items-center gap-3 md:group-hover:border-[rgba(214,178,94,0.5)] md:group-hover:bg-[rgba(20,20,22,0.95)] md:group-hover:shadow-[0_0_20px_rgba(214,178,94,0.15)] transition-all duration-300">
             <div className="ft-sheen" />
-            <div className="w-9 h-9 rounded-full border border-[rgba(214,178,94,0.28)] bg-[rgba(255,255,255,0.03)] flex items-center justify-center">
+            <div className="w-9 h-9 rounded-full border border-[rgba(214,178,94,0.28)] bg-[rgba(255,255,255,0.03)] flex items-center justify-center md:group-hover:bg-[rgba(214,178,94,0.1)] transition-colors duration-300">
               <motion.div animate={{ y: [0, -2, 0] }} transition={{ duration: 1.1, repeat: Infinity }}>
-                <ArrowUp className="w-4 h-4 text-[var(--bone)]" />
+                <ArrowUp className="w-4 h-4 text-[var(--bone)] md:group-hover:text-[var(--metal2)] transition-colors duration-300" />
               </motion.div>
             </div>
-            <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-[rgba(244,240,232,0.85)] hidden sm:block">
+            <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-[rgba(244,240,232,0.85)] hidden sm:block md:group-hover:text-[var(--metal2)] transition-colors duration-300">
               Back to top
             </span>
           </div>
         </motion.button>
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          {/* Main card */}
+          {/* Main card - OPTIMASI: Hapus filter blur */}
           <motion.div
-            className="ft-card p-7 md:p-10"
-            initial={{ opacity: 0, y: 18, filter: "blur(6px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="ft-card p-7 md:p-10 relative overflow-hidden md:transition-all md:duration-500 md:hover:shadow-[0_20px_40px_-15px_rgba(214,178,94,0.08)] md:hover:border-[rgba(214,178,94,0.25)]"
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="ft-sheen" />
             <span className="ft-screw" style={{ top: 14, left: 14 }} />
@@ -119,12 +121,12 @@ const Footer = () => {
                 </p>
 
                 <div className="flex flex-wrap gap-3 mt-6">
-                  <span className="ft-chip px-4 py-2 f-mono text-[0.55rem] tracking-[0.22em] uppercase text-[rgba(244,240,232,0.8)] inline-flex items-center gap-2">
+                  <span className="ft-chip px-4 py-2 f-mono text-[0.55rem] tracking-[0.22em] uppercase text-[rgba(244,240,232,0.8)] inline-flex items-center gap-2 md:hover:bg-[rgba(214,178,94,0.1)] md:hover:text-[var(--metal)] transition-colors duration-300 cursor-default">
                     <MapPin className="w-3.5 h-3.5 text-[var(--metal)]" />
                     Malang, Indonesia
                   </span>
 
-                  <span className="ft-chip px-4 py-2 f-mono text-[0.55rem] tracking-[0.22em] uppercase text-[rgba(244,240,232,0.8)] inline-flex items-center gap-2">
+                  <span className="ft-chip px-4 py-2 f-mono text-[0.55rem] tracking-[0.22em] uppercase text-[rgba(244,240,232,0.8)] inline-flex items-center gap-2 md:hover:bg-[rgba(124,58,237,0.15)] md:hover:text-[var(--haze)] transition-colors duration-300 cursor-default">
                     <Clock3 className="w-3.5 h-3.5 text-[var(--haze)]" />
                     <span suppressHydrationWarning>
                       {time.toLocaleTimeString("en-US", {
@@ -137,7 +139,7 @@ const Footer = () => {
                   </span>
 
                   <motion.span
-                    className="ft-chip px-4 py-2 f-mono text-[0.55rem] tracking-[0.22em] uppercase text-[rgba(244,240,232,0.8)] inline-flex items-center gap-2"
+                    className="ft-chip px-4 py-2 f-mono text-[0.55rem] tracking-[0.22em] uppercase text-[rgba(244,240,232,0.8)] inline-flex items-center gap-2 md:hover:border-[#3DDC84]/40 md:hover:bg-[#3DDC84]/10 transition-colors duration-300 cursor-default"
                     whileHover={{ y: -1 }}
                   >
                     <motion.span
@@ -153,36 +155,36 @@ const Footer = () => {
               {/* Meta / Credits */}
               <div className="lg:col-span-7">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Credits card */}
-                  <div className="ft-card p-6 md:p-7">
+                  {/* Credits card - UI Desktop Enhanced */}
+                  <div className="ft-card p-6 md:p-7 md:transition-all md:duration-500 md:hover:-translate-y-1 md:hover:border-[rgba(214,178,94,0.3)] md:hover:bg-[rgba(255,255,255,0.015)] group">
                     <div className="ft-sheen" />
                     <div className="flex items-center gap-3 mb-4">
-                      <Sparkle className="w-4 h-4 text-[var(--metal)]" />
-                      <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-[rgba(244,240,232,0.85)]">
+                      <Sparkle className="w-4 h-4 text-[var(--metal)] md:group-hover:animate-spin-slow" />
+                      <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-[rgba(244,240,232,0.85)] md:group-hover:text-[var(--metal)] transition-colors">
                         Craft Notes
                       </span>
                     </div>
 
                     <p className="f-sans text-sm text-[rgba(244,240,232,0.72)] leading-relaxed">
                       Designed in{" "}
-                      <span className="text-[var(--bone)] font-semibold">Figma</span>, coded in{" "}
-                      <span className="text-[var(--bone)] font-semibold">VS Code</span>. Built with{" "}
+                      <span className="text-[var(--bone)] font-semibold md:group-hover:text-[#ff6b6b] transition-colors">Figma</span>, coded in{" "}
+                      <span className="text-[var(--bone)] font-semibold md:group-hover:text-[#35d0ff] transition-colors">VS Code</span>. Built with{" "}
                       <span className="text-[var(--haze)] font-semibold">React</span> &{" "}
-                      <span className="text-[var(--haze)] font-semibold">Tailwind</span>.
+                      <span className="text-[#14b8a6] font-semibold">Tailwind</span>.
                     </p>
 
-                    <div className="mt-5 h-px bg-gradient-to-r from-[rgba(214,178,94,0.35)] to-transparent" />
+                    <div className="mt-5 h-px bg-gradient-to-r from-[rgba(214,178,94,0.35)] to-transparent md:group-hover:from-[rgba(214,178,94,0.7)] transition-colors duration-500" />
                     <p className="mt-4 f-mono text-[0.55rem] tracking-[0.26em] uppercase text-[rgba(154,148,138,0.95)]">
                       minimal · brutal · editorial
                     </p>
                   </div>
 
-                  {/* Copyright card */}
-                  <div className="ft-card p-6 md:p-7">
+                  {/* Copyright card - UI Desktop Enhanced */}
+                  <div className="ft-card p-6 md:p-7 md:transition-all md:duration-500 md:hover:-translate-y-1 md:hover:border-[rgba(214,178,94,0.3)] md:hover:bg-[rgba(255,255,255,0.015)] group">
                     <div className="ft-sheen" />
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-2 h-2 bg-[var(--rust)] rounded-full opacity-80" />
-                      <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-[rgba(244,240,232,0.85)]">
+                      <div className="w-2 h-2 bg-[var(--rust)] rounded-full opacity-80 md:group-hover:scale-150 transition-transform duration-500" />
+                      <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-[rgba(244,240,232,0.85)] md:group-hover:text-[var(--rust)] transition-colors">
                         Legal
                       </span>
                     </div>
@@ -191,7 +193,7 @@ const Footer = () => {
                       © {new Date().getFullYear()} Brandon Geraldo. All rights reserved.
                     </p>
 
-                    <div className="mt-5 h-px bg-gradient-to-r from-[rgba(214,178,94,0.35)] to-transparent" />
+                    <div className="mt-5 h-px bg-gradient-to-r from-[rgba(214,178,94,0.35)] to-transparent md:group-hover:from-[rgba(214,178,94,0.7)] transition-colors duration-500" />
                     <p className="mt-4 f-mono text-[0.55rem] tracking-[0.26em] uppercase text-[rgba(154,148,138,0.95)]">
                       built to last
                     </p>
@@ -203,7 +205,7 @@ const Footer = () => {
 
           {/* thin baseline accent */}
           <motion.div
-            className="mt-10 h-px w-full"
+            className="mt-10 h-px w-full md:hover:h-[2px] transition-all duration-300 transform-gpu"
             style={{
               background:
                 "linear-gradient(90deg, transparent, rgba(214,178,94,0.45), rgba(124,58,237,0.12), transparent)",
@@ -214,10 +216,10 @@ const Footer = () => {
 
           {/* micro footer note */}
           <div className="mt-6 flex items-center justify-between flex-col md:flex-row gap-4 text-[rgba(154,148,138,0.95)]">
-            <span className="f-mono text-[0.55rem] tracking-[0.28em] uppercase">
+            <span className="f-mono text-[0.55rem] tracking-[0.28em] uppercase md:hover:text-[var(--metal)] transition-colors cursor-default">
               END / TRANSMISSION
             </span>
-            <span className="f-mono text-[0.55rem] tracking-[0.28em] uppercase">
+            <span className="f-mono text-[0.55rem] tracking-[0.28em] uppercase md:hover:text-[var(--metal)] transition-colors cursor-default">
               Thanks for scrolling.
             </span>
           </div>

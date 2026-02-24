@@ -7,10 +7,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#6d5dfc",    // Ungu Kebiruan
-        secondary: "#885cf7",  // Ungu Terang
-        dark: "#121321",       // Hitam kebiruan 
-        accent: "#f42c7c",     // Pink kemerahan 
+        primary: "#c6a65b",    // Gold
+        secondary: "#c55a3b",  // Oren
+        dark: "#0c0c0f",       // Hitam kebiruan 
+        accent: "#ffa437",     // Pink kemerahan 
       },
       fontFamily: {
         sans: ["Poppins", "sans-serif"],

@@ -191,16 +191,16 @@ const Projects = () => {
       ? projects
       : projects.filter((p) => p.category === activeCategory);
 
-  // Animation
+  // OPTIMASI: Hapus filter blur di framer motion untuk menghindari lag parah di HP
   const containerStagger = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.15 } },
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 18, scale: 0.98, filter: "blur(6px)" },
+    hidden: { opacity: 0, y: 18, scale: 0.98 },
     visible: {
-      opacity: 1, y: 0, scale: 1, filter: "blur(0px)",
+      opacity: 1, y: 0, scale: 1,
       transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
     },
     exit: { opacity: 0, y: 10, scale: 0.98, transition: { duration: 0.25 } },
@@ -208,33 +208,28 @@ const Projects = () => {
 
   return (
     <>
-      {/* Overflow-hidden mencegah grain bocor */}
       <section
         id="projects"
         ref={sectionRef}
         className="relative w-full proj-bg grain overflow-hidden text-[var(--bone)] py-24 md:py-32"
       >
         {/* ── RICH & SEAMLESS BACKGROUND ── */}
-        <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
-          {/* Base Seamless Mask */}
+        <div className="absolute inset-0 pointer-events-none transform-gpu" style={{ zIndex: 0 }}>
           <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg)] via-transparent to-[var(--bg)] opacity-100 z-10" />
-
-          {/* New Circular Dot Grid */}
           <div className="dot-grid" />
 
-          {/* Animated Circular Studio Lights */}
-          <div className="absolute top-[0%] left-[-10%] w-[50vw] h-[50vw] rounded-full mix-blend-screen filter blur-[150px] opacity-[0.06] bg-[var(--plum)] animate-pulse-slow" />
-          <div className="absolute top-[40%] right-[-10%] w-[50vw] h-[50vw] rounded-full mix-blend-screen filter blur-[160px] opacity-[0.05] bg-[var(--haze)] animate-float-slow" />
-          <div className="absolute bottom-[-10%] left-[10%] w-[60vw] h-[60vw] rounded-full mix-blend-screen filter blur-[180px] opacity-[0.06] bg-[var(--metal)] animate-pulse-slow" style={{ animationDelay: '2s' }} />
+          {/* OPTIMASI: Kurangi intensitas filter di mobile, aktifkan blur maksimal hanya di desktop (md:blur) */}
+          <div className="absolute top-[0%] left-[-10%] w-[50vw] h-[50vw] rounded-full mix-blend-screen blur-[80px] md:blur-[150px] opacity-[0.06] bg-[var(--plum)] md:animate-pulse-slow transform-gpu" />
+          <div className="absolute top-[40%] right-[-10%] w-[50vw] h-[50vw] rounded-full mix-blend-screen blur-[90px] md:blur-[160px] opacity-[0.05] bg-[var(--haze)] md:animate-float-slow transform-gpu" />
+          <div className="absolute bottom-[-10%] left-[10%] w-[60vw] h-[60vw] rounded-full mix-blend-screen blur-[100px] md:blur-[180px] opacity-[0.06] bg-[var(--metal)] md:animate-pulse-slow transform-gpu" style={{ animationDelay: '2s' }} />
         </div>
 
-        {/* Vignette */}
         <div className="vignette" />
 
         {/* Watermark Parallax */}
         <motion.div
           style={{ y: watermarkY }}
-          className="absolute top-[5%] left-0 right-0 z-0 pointer-events-none flex justify-center overflow-hidden opacity-30 select-none"
+          className="absolute top-[5%] left-0 right-0 z-0 pointer-events-none flex justify-center overflow-hidden opacity-30 select-none transform-gpu"
         >
           <span className="f-display text-[clamp(7rem,22vw,22rem)] font-bold italic outline leading-none whitespace-nowrap">
             WORKS
@@ -250,7 +245,7 @@ const Projects = () => {
             >
               <div className="max-w-2xl">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-px bg-[var(--metal)] opacity-80" />
+                  <div className="w-12 h-px bg-[var(--metal)] opacity-80 md:w-16 transition-all" />
                   <span className="f-mono text-[0.62rem] tracking-[0.32em] uppercase text-[var(--metal)]">
                     Vol. 04 — Selected Works
                   </span>
@@ -277,14 +272,14 @@ const Projects = () => {
                 </p>
               </div>
 
-              {/* ── ROUNDED TABS ── */}
-              <div className="seg">
+              {/* ── ROUNDED TABS ── UI Desktop Enhanced */}
+              <div className="seg bg-[rgba(255,255,255,0.01)] border border-[rgba(214,178,94,0.1)] p-1 rounded-full backdrop-blur-sm">
                 {categories.map((cat) => (
                   <button
                     key={cat.name}
                     onClick={() => setActiveCategory(cat.name)}
                     data-active={activeCategory === cat.name}
-                    className="f-mono text-[0.62rem] tracking-[0.22em] uppercase"
+                    className="f-mono text-[0.62rem] tracking-[0.22em] uppercase md:hover:bg-[rgba(214,178,94,0.15)] md:hover:text-[var(--bone)] transition-colors duration-300 rounded-full px-4 py-2"
                   >
                     {cat.name}
                   </button>
@@ -298,7 +293,7 @@ const Projects = () => {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.12 }}
+            viewport={{ once: true, amount: 0.1 }}
             variants={containerStagger}
           >
             <AnimatePresence mode="popLayout">
@@ -313,69 +308,68 @@ const Projects = () => {
                   onClick={() => navigate(`/project/${project.id}`)}
                   onMouseMove={onCardMove}
                   onMouseLeave={onCardLeave}
-                  className={`card group cursor-pointer ${
+                  className={`card group cursor-pointer relative overflow-hidden md:transition-all md:duration-500 md:hover:-translate-y-2 md:hover:shadow-[0_20px_40px_-15px_rgba(214,178,94,0.2)] md:hover:border-[rgba(214,178,94,0.35)] ${
                     project.featured
                       ? "md:col-span-2 lg:col-span-2 row-span-2 min-h-[420px]"
                       : "min-h-[320px]"
                   }`}
                 >
-                  <div className="topline" />
+                  <div className="topline md:group-hover:bg-[rgba(214,178,94,0.6)] transition-colors duration-500" />
                   
                   {/* Circular Screws */}
-                  <div className="screw" style={{ top: 16, left: 16 }} />
-                  <div className="screw" style={{ top: 16, right: 16 }} />
+                  <div className="screw md:group-hover:rotate-90 transition-transform duration-700" style={{ top: 16, left: 16 }} />
+                  <div className="screw md:group-hover:-rotate-90 transition-transform duration-700" style={{ top: 16, right: 16 }} />
 
                   {/* Image */}
-                  <div className="absolute inset-0">
+                  <div className="absolute inset-0 z-0">
                     <img
                       src={project.image}
                       alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.08] transform-gpu"
+                      loading="lazy"
                     />
-                    <div className="film" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.92)] via-[rgba(0,0,0,0.18)] to-transparent" />
+                    <div className="film opacity-60 md:group-hover:opacity-30 transition-opacity duration-500" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.95)] via-[rgba(0,0,0,0.3)] to-transparent md:group-hover:via-[rgba(0,0,0,0.1)] transition-colors duration-500" />
                   </div>
 
                   {/* Content */}
                   <div className="relative z-10 h-full p-6 md:p-8 flex flex-col justify-end">
                     <div className="flex items-center justify-between mb-4">
                       {/* Rounded Pill Badge */}
-                      <span className="f-mono text-[0.55rem] tracking-[0.22em] uppercase px-4 py-1.5 rounded-full border border-[rgba(214,178,94,0.25)] bg-[rgba(0,0,0,0.4)] backdrop-blur-md text-[rgba(244,240,232,0.92)]">
+                      <span className="f-mono text-[0.55rem] tracking-[0.22em] uppercase px-4 py-1.5 rounded-full border border-[rgba(214,178,94,0.25)] bg-[rgba(0,0,0,0.5)] backdrop-blur-md text-[rgba(244,240,232,0.92)] md:group-hover:border-[var(--metal)] transition-colors duration-500">
                         {project.category}
                       </span>
 
-                      <span className="f-mono text-[0.55rem] tracking-[0.22em] uppercase text-[rgba(154,148,138,0.9)] bg-[rgba(0,0,0,0.4)] backdrop-blur-md px-3 py-1 rounded-full">
+                      <span className="f-mono text-[0.55rem] tracking-[0.22em] uppercase text-[rgba(154,148,138,0.9)] bg-[rgba(0,0,0,0.5)] backdrop-blur-md px-3 py-1 rounded-full md:group-hover:text-[var(--metal)] transition-colors duration-500">
                         ID-{String(project.id).padStart(2, "0")}
                       </span>
                     </div>
 
                     <h3
-                      className={`text-[var(--bone)] leading-tight ${
+                      className={`text-[var(--bone)] leading-tight drop-shadow-lg ${
                         project.featured
-                          ? "f-display text-3xl md:text-4xl font-semibold italic"
-                          : "f-display text-2xl font-semibold italic"
+                          ? "f-display text-3xl md:text-4xl font-semibold italic md:group-hover:text-[var(--metal2)] transition-colors duration-500"
+                          : "f-display text-2xl font-semibold italic md:group-hover:text-[var(--metal2)] transition-colors duration-500"
                       }`}
                     >
                       {project.title}
                     </h3>
 
-                   
-
                     <div className="mt-5 flex flex-wrap gap-x-3 gap-y-2">
                       {project.tech.map((t, i) => (
-                        <span key={i} className="f-mono text-[0.6rem] tracking-[0.14em] text-[rgba(214,178,94,0.85)]">
+                        <span key={i} className="f-mono text-[0.6rem] tracking-[0.14em] text-[rgba(214,178,94,0.85)] md:group-hover:text-[var(--bone)] transition-colors duration-500 delay-[50ms]">
                           #{t}
                         </span>
                       ))}
                     </div>
 
-                    {/* Micro hover hint */}
-                    <div className="mt-6 flex items-center gap-3 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                    {/* Micro hover hint (Hanya tampil saat di-hover di desktop) */}
+                    <div className="mt-6 hidden md:flex items-center gap-3 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
                       <span className="f-mono text-[0.55rem] tracking-[0.22em] uppercase text-[var(--metal)]">
                         Open case study
                       </span>
-                      <div className="h-px flex-1 bg-[rgba(214,178,94,0.22)]" />
-                      <span className="f-mono text-[0.55rem] tracking-[0.22em] uppercase text-[rgba(244,240,232,0.78)]">
+                      <div className="h-px flex-1 bg-[rgba(214,178,94,0.4)] group-hover:bg-[rgba(214,178,94,0.8)] transition-colors duration-700" />
+                      <span className="f-mono text-[0.55rem] tracking-[0.22em] uppercase text-[var(--bone)] group-hover:translate-x-1 transition-transform duration-500">
                         →
                       </span>
                     </div>
@@ -393,7 +387,7 @@ const Projects = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.25 }}
           >
-            <p className="f-mono text-[0.62rem] tracking-[0.22em] uppercase text-[rgba(154,148,138,0.85)] bg-[rgba(255,255,255,0.03)] inline-block px-6 py-2 rounded-full border border-[rgba(214,178,94,0.15)]">
+            <p className="f-mono text-[0.62rem] tracking-[0.22em] uppercase text-[rgba(154,148,138,0.85)] bg-[rgba(255,255,255,0.03)] inline-block px-6 py-2 rounded-full border border-[rgba(214,178,94,0.15)] md:hover:border-[rgba(214,178,94,0.4)] md:hover:text-[var(--bone)] transition-colors duration-500 cursor-default">
               Showing {filteredProjects.length} projects — {activeCategory}
             </p>
           </motion.div>
@@ -403,13 +397,13 @@ const Projects = () => {
   );
 };
 
-/* Small helper to match other sections */
+/* Small helper to match other sections - Blur dihapus untuk performa mobile */
 const FadeUp = ({ children, delay = 0 }) => (
   <motion.div
-    initial={{ opacity: 0, y: 26, filter: "blur(5px)" }}
-    whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-    viewport={{ once: true, amount: 0.14 }}
-    transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay }}
+    initial={{ opacity: 0, y: 26 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, amount: 0.1 }}
+    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay }}
   >
     {children}
   </motion.div>
