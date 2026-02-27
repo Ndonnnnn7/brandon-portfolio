@@ -258,9 +258,13 @@ const Hero = () => {
           z-index: 40; pointer-events: none; display: flex; justify-content: space-between; align-items: flex-end; will-change: transform;
         }
         .h-name-iam { display: block; font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1.5rem, 4vw, 3rem); text-transform: uppercase; letter-spacing: -0.02em; line-height: 1; color: var(--bone); margin-bottom: -5px; }
-        .h-name-brandon { display: block; font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(3.5rem, 9vw, 8.5rem); text-transform: uppercase; letter-spacing: -0.04em; line-height: 0.9; background: linear-gradient(110deg, var(--bone) 0%, var(--bone) 40%, var(--gold-light) 68%, var(--gold) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 30px rgba(0,0,0,0.8)); }
+        .h-name-brandon { display: block; font-family: 'Syne', sans-serif; font-weight: 800; /* Ukuran diperkecil dari clamp(3.5rem, 9vw, 8.5rem) */font-size: clamp(2.5rem, 7.5vw, 7rem); text-transform: uppercase;  letter-spacing: -0.04em; line-height: 0.9;  background: linear-gradient(110deg, var(--bone) 0%, var(--bone) 40%, var(--gold-light) 68%, var(--gold) 100%); -webkit-background-clip: text; 
+        -webkit-text-fill-color: transparent; 
+        filter: drop-shadow(0 0 30px rgba(0,0,0,0.8)); 
+}
         .h-title-block { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
-        .h-title-word { font-family: 'Syne', sans-serif; font-weight: 900; font-size: clamp(1rem, 2vw, 1.5rem); text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.05; color: white; }
+        .h-title-word { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1rem, 2vw, 4rem); text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.05; color: white; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5)); }
+   
 
         /* === MARQUEE === */
         .h-marquee { position: absolute; bottom: 0; left: 0; right: 0; height: 46px; z-index: 55; border-top: 1px solid rgba(212,175,55,0.15); background: linear-gradient(90deg, rgba(9,9,11,0.98), rgba(18,14,5,0.98), rgba(9,9,11,0.98)); overflow: hidden; display: flex; align-items: center; }
