@@ -1,495 +1,522 @@
-import React, { useRef, useCallback, useEffect, useMemo, useState } from "react";
-import { FaFigma, FaReact } from "react-icons/fa";
-import { SiTailwindcss } from "react-icons/si";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-  useReducedMotion,
-  useMotionTemplate, // ✅ Gunakan fungsi aman untuk menggabungkan nilai rotasi
-} from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 const Hero = () => {
-  const profileImage = "img/Profile Photo1.jpg";
-  const cardRef = useRef(null);
-
-  // ✅ Detect mobile/touch (pointer: coarse) + reduce motion preference
-  const prefersReducedMotion = useReducedMotion();
-  const [isCoarsePointer, setIsCoarsePointer] = useState(false);
+  const profileImage = "img/profile.svg";
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const mq = window.matchMedia("(pointer: coarse)");
-    const update = () => setIsCoarsePointer(!!mq.matches);
-    update();
-    mq.addEventListener?.("change", update);
-    return () => mq.removeEventListener?.("change", update);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // ✅ FX only on desktop (non-touch) + not reduced motion
-  const enableFX = !isCoarsePointer && !prefersReducedMotion;
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springCfg = { damping: 30, stiffness: 80, mass: 0.6 };
+  const springX = useSpring(mouseX, springCfg);
+  const springY = useSpring(mouseY, springCfg);
 
-  // ── 3D TILT & GLARE PHYSICS (Dibuat aman dari Error Hooks) ──────────────
-  const mouseX = useMotionValue(0.5);
-  const mouseY = useMotionValue(0.5);
-
-  const springX = useSpring(mouseX, { stiffness: 35, damping: 20, mass: 0.9 });
-  const springY = useSpring(mouseY, { stiffness: 35, damping: 20, mass: 0.9 });
-
-  // 1. Tentukan rentang rotasi penuh untuk desktop
-  const fullRotateX = useTransform(springY, [0, 1], [10, -10]);
-  const fullRotateY = useTransform(springX, [0, 1], [-10, 10]);
-
-  // 2. Tentukan posisi pantulan cahaya (glare) penuh untuk desktop
-  const fullGlareX = useTransform(springX, [0, 1], [-20, 120]);
-  const fullGlareY = useTransform(springY, [0, 1], [-20, 120]);
-
-  // 3. Gabungkan menjadi satu string transform/background HANYA JIKA enableFX true
-  // Pendekatan ini tidak merusak aturan Hooks karena Hooks selalu dipanggil dengan argumen yang sama
-  const transformStyle = useMotionTemplate`rotateX(${enableFX ? fullRotateX.get() : 0}deg) rotateY(${enableFX ? fullRotateY.get() : 0}deg)`;
-  const glareStyle = useMotionTemplate`radial-gradient(circle at ${enableFX ? fullGlareX.get() : 50}% ${enableFX ? fullGlareY.get() : 50}%, rgba(255,255,255,0.8) 0%, transparent 60%)`;
-  const mobileGlareStyle = useMotionTemplate`radial-gradient(circle at ${enableFX ? fullGlareX.get() : 50}% ${enableFX ? fullGlareY.get() : 50}%, rgba(255,255,255,0.85) 0%, transparent 60%)`;
-
-  const handleMouseMove = useCallback(
-    (e) => {
-      if (!enableFX) return;
-      const rect = cardRef.current?.getBoundingClientRect();
-      if (!rect) return;
-      mouseX.set((e.clientX - rect.left) / rect.width);
-      mouseY.set((e.clientY - rect.top) / rect.height);
-    },
-    [enableFX, mouseX, mouseY]
+  const bgTextX = useTransform(
+    springX,
+    [-0.5, 0.5],
+    isMobile ? [0, 0] : [20, -20],
+  );
+  const bgTextY = useTransform(
+    springY,
+    [-0.5, 0.5],
+    isMobile ? [0, 0] : [10, -10],
+  );
+  const imgX = useTransform(
+    springX,
+    [-0.5, 0.5],
+    isMobile ? [0, 0] : [-12, 12],
+  );
+  const imgY = useTransform(springY, [-0.5, 0.5], isMobile ? [0, 0] : [-8, 8]);
+  const fgTextX = useTransform(
+    springX,
+    [-0.5, 0.5],
+    isMobile ? [0, 0] : [-20, 20],
+  );
+  const fgTextY = useTransform(
+    springY,
+    [-0.5, 0.5],
+    isMobile ? [0, 0] : [-15, 15],
+  );
+  const orb1X = useTransform(
+    springX,
+    [-0.5, 0.5],
+    isMobile ? [0, 0] : [-40, 40],
+  );
+  const orb1Y = useTransform(
+    springY,
+    [-0.5, 0.5],
+    isMobile ? [0, 0] : [-30, 30],
+  );
+  const orb2X = useTransform(
+    springX,
+    [-0.5, 0.5],
+    isMobile ? [0, 0] : [25, -25],
+  );
+  const orb2Y = useTransform(
+    springY,
+    [-0.5, 0.5],
+    isMobile ? [0, 0] : [20, -20],
+  );
+  const orb3X = useTransform(
+    springX,
+    [-0.5, 0.5],
+    isMobile ? [0, 0] : [15, -15],
+  );
+  const orb3Y = useTransform(
+    springY,
+    [-0.5, 0.5],
+    isMobile ? [0, 0] : [-20, 20],
   );
 
-  const handleMouseLeave = useCallback(() => {
-    if (!enableFX) return;
-    mouseX.set(0.5);
-    mouseY.set(0.5);
-  }, [enableFX, mouseX, mouseY]);
+  const handleMouseMove = (e) => {
+    if (isMobile) return;
+    mouseX.set(e.clientX / window.innerWidth - 0.5);
+    mouseY.set(e.clientY / window.innerHeight - 0.5);
+  };
 
-  const decoWidths = useMemo(() => [18, 26, 14, 30], []);
+  const handleMouseLeave = () => {
+    if (isMobile) return;
+    mouseX.set(0);
+    mouseY.set(0);
+  };
 
-  const techList = useMemo(
-    () => [
-      { icon: FaFigma, color: "#ff6b6b", name: "Figma" },
-      { icon: FaReact, color: "#35d0ff", name: "React" },
-      { icon: SiTailwindcss, color: "#14b8a6", name: "Tailwind" },
-    ],
-    []
-  );
+  const marqueeItems = [
+    "UI/UX Designer",
+    "✦",
+    "Front End Dev",
+    "✦",
+    "Available for Hire",
+    "✦",
+    "React Specialist",
+    "✦",
+  ];
 
   return (
     <>
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Syne:wght@700;800&family=DM+Mono:wght@300;400;500&display=swap');
+
         :root {
-          --bg: #07070a;
-          --bone: #f4f0e8;
-          --metal: #9a948a;
-          --rust: #d95c41;
-          --border: rgba(255,255,255,0.08);
-          --border2: rgba(214,178,94,0.15);
+          --bg:         #09090b;
+          --bone:       #fdfbf7;
+          --metal:      #9c978b;
+          --gold:       #d4af37;
+          --gold-light: #fce8a1;
+          --gold-dim:   rgba(212,175,55,0.18);
+          --gold-dark:  #997a15;
+          --px:         5vw; /* <-- VARIABEL BARU UNTUK MENYAMAKAN ALIGNMENT */
         }
 
-        .hero-bg { background-color: var(--bg); }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .bg-architect {
-          background-image:
-            linear-gradient(rgba(214,178,94,0.11) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(214,178,94,0.08) 1px, transparent 1px);
-          background-size: 80px 80px;
-          background-position: center top;
-          mask-image: radial-gradient(circle at 50% 30%, black 0%, black 45%, transparent 80%);
-          -webkit-mask-image: radial-gradient(circle at 50% 30%, black 0%, black 45%, transparent 80%);
-          opacity: .85;
+        .h-root {
+          position: relative; width: 100%; height: 100dvh; overflow: hidden;
+          background: #07070a; color: var(--bone);
+          font-family: 'Syne', sans-serif; cursor: crosshair; user-select: none;
         }
 
-        .grain::after {
-          content: '';
-          position: absolute;
-          inset: -50%;
-          width: 200%;
-          height: 200%;
-          pointer-events: none;
-          z-index: 5;
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 260 260' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.7'/%3E%3C/svg%3E");
-          opacity: 0.045;
-          mix-blend-mode: overlay;
-          transform: rotate(4deg);
-        }
-
-        .vignette {
-          position: absolute; inset: 0; pointer-events: none; z-index: 4;
+        /* === GOLD AMBIENT BASE === */
+        .h-base-glow {
+          position: absolute; inset: 0; z-index: 1; pointer-events: none;
           background:
-            radial-gradient(1000px 600px at 50% 10%, transparent 40%, rgba(0,0,0,0.5) 85%),
-            radial-gradient(900px 700px at 50% 112%, transparent 40%, rgba(0,0,0,0.6) 80%);
+            radial-gradient(ellipse 70% 50% at 15% 85%, rgba(212,175,55,0.10) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 45% at 85% 15%, rgba(212,175,55,0.08) 0%, transparent 60%),
+            radial-gradient(ellipse 80% 60% at 50% 50%, rgba(212,175,55,0.04) 0%, transparent 70%);
         }
 
-        .text-mesh {
-          background: linear-gradient(120deg, var(--bone) 0%, var(--metal) 40%, var(--rust) 75%, var(--bone) 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-size: 200% auto;
-          animation: meshShine 8s linear infinite;
+        /* === DIAGONAL GOLD STREAKS === */
+        .h-streaks {
+          position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden;
         }
-        @keyframes meshShine { to { background-position: 200% center; } }
+        .h-streak { position: absolute; background: linear-gradient(to right, transparent, rgba(212,175,55,0.12), transparent); transform-origin: left center; }
+        .h-streak:nth-child(1) { width: 120%; height: 1px; top: 22%; left: -10%; transform: rotate(-12deg); opacity: 0.7; box-shadow: 0 0 12px 2px rgba(212,175,55,0.08); }
+        .h-streak:nth-child(2) { width: 80%; height: 1px; top: 55%; left: 20%; transform: rotate(-12deg); opacity: 0.4; }
+        .h-streak:nth-child(3) { width: 60%; height: 1px; top: 75%; left: 0%; transform: rotate(-12deg); opacity: 0.25; }
+        .h-streak:nth-child(4) { width: 50%; height: 1px; top: 38%; right: 0%; left: auto; transform: rotate(-12deg); opacity: 0.3; background: linear-gradient(to left, transparent, rgba(252,232,161,0.10), transparent); }
 
-        .text-outline {
-          -webkit-text-stroke: 1.5px rgba(214,178,94,0.65);
-          color: transparent;
+        /* === CORNER ORNAMENTS === */
+        .h-corner { position: absolute; z-index: 6; pointer-events: none; width: 100px; height: 100px; }
+        .h-corner::before, .h-corner::after { content: ''; position: absolute; background: var(--gold); opacity: 0.35; }
+        .h-corner::before { width: 40px; height: 1px; }
+        .h-corner::after  { width: 1px; height: 40px; }
+        .h-corner-tl { top: 28px; left: 28px; } .h-corner-tl::before, .h-corner-tl::after { top: 0; left: 0; }
+        .h-corner-tr { top: 28px; right: 28px; transform: scaleX(-1); } .h-corner-tr::before, .h-corner-tr::after { top: 0; left: 0; }
+        .h-corner-br { bottom: 56px; right: 28px; transform: scale(-1); } .h-corner-br::before, .h-corner-br::after { top: 0; left: 0; }
+        .h-corner-bl { bottom: 56px; left: 28px; transform: scaleY(-1); } .h-corner-bl::before, .h-corner-bl::after { top: 0; left: 0; }
+
+        /* === GOLD GRID & SCANLINES === */
+        .h-grid {
+          position: absolute; inset: 0; z-index: 3; pointer-events: none;
+          background-image: linear-gradient(rgba(212,175,55,0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(212,175,55,0.055) 1px, transparent 1px);
+          background-size: 64px 64px;
+          mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 20%, transparent 80%);
+          -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 20%, transparent 80%);
+        }
+        .h-scanlines {
+          position: absolute; inset: 0; z-index: 4; pointer-events: none;
+          background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(212,175,55,0.012) 3px, rgba(212,175,55,0.012) 4px);
+          mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 30%, transparent 75%);
+          -webkit-mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 30%, transparent 75%);
         }
 
-        @keyframes marquee-fast { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        .animate-marquee { animation: marquee-fast 22s linear infinite; }
-
-        .barcode {
-          background: repeating-linear-gradient(
-            to right,
-            rgba(154,148,138,0.9) 0, rgba(154,148,138,0.9) 2px,
-            transparent 2px, transparent 4px,
-            rgba(154,148,138,0.7) 4px, rgba(154,148,138,0.7) 5px,
-            transparent 5px, transparent 8px,
-            rgba(154,148,138,0.8) 8px, rgba(154,148,138,0.8) 12px
-          );
+        /* === DUST PARTICLES === */
+        .h-dust { position: absolute; inset: 0; z-index: 5; pointer-events: none; overflow: hidden; }
+        .h-dust-dot { position: absolute; border-radius: 50%; background: var(--gold); opacity: 0; animation: h-float var(--dur) ease-in-out var(--delay) infinite; }
+        @keyframes h-float {
+          0%   { opacity: 0; transform: translateY(0) scale(1); }
+          20%, 80%  { opacity: var(--op); }
+          100% { opacity: 0; transform: translateY(-60px) scale(0.6); }
         }
 
-        .artifact {
-          position: relative;
-          border-radius: 22px;
+        .h-hline {
+          position: absolute; left: 5%; right: 5%; height: 1px;
+          background: linear-gradient(to right, transparent, rgba(212,175,55,0.25), rgba(212,175,55,0.12), transparent);
+          z-index: 7; pointer-events: none;
+        }
+        .h-hline-top { top: 14%; } .h-hline-bottom { bottom: 56px; }
+
+        /* === GRAIN & VIGNETTE === */
+        .h-grain {
+          position: absolute; inset: -40%; width: 180%; height: 180%; z-index: 60; pointer-events: none;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+          opacity: 0.04; mix-blend-mode: overlay; transform: rotate(4deg);
+        }
+        .h-vig {
+          position: absolute; inset: 0; z-index: 8; pointer-events: none;
           background:
-            radial-gradient(1200px 800px at 20% 10%, rgba(217, 92, 65, 0.12), transparent 55%),
-            radial-gradient(1000px 700px at 90% 30%, rgba(214, 178, 94, 0.14), transparent 60%),
-            linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015)),
-            rgba(7,7,10,0.78);
-          box-shadow:
-            0 45px 120px rgba(0,0,0,0.75),
-            0 18px 40px rgba(0,0,0,0.55),
-            0 0 0 1px rgba(255,255,255,0.06) inset;
-
-          /* ✅ Blur dihilangkan agar super lancar di HP! */
-          transform: translateZ(0);
-          will-change: transform;
-          overflow: hidden;
+            radial-gradient(ellipse 110% 55% at 50% 0%,   transparent 35%, rgba(7,7,10,0.80) 100%),
+            radial-gradient(ellipse 110% 50% at 50% 100%, transparent 25%, rgba(7,7,10,0.97) 100%),
+            radial-gradient(ellipse 30%  100% at 0% 50%,  rgba(7,7,10,0.60) 0%, transparent 70%),
+            radial-gradient(ellipse 30%  100% at 100% 50%,rgba(7,7,10,0.60) 0%, transparent 70%);
         }
 
-        .artifact::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          padding: 1px;
-          border-radius: 22px;
-          background: linear-gradient(
-            135deg,
-            rgba(214,178,94,0.55),
-            rgba(255,255,255,0.10),
-            rgba(217,92,65,0.35),
-            rgba(255,255,255,0.06)
-          );
-          -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-          -webkit-mask-composite: xor;
-          mask-composite: exclude;
-          opacity: 0.85;
-          pointer-events: none;
+        /* === LIGHT ORBS === */
+        .h-orb { position: absolute; border-radius: 50%; filter: blur(140px); pointer-events: none; z-index: 9; will-change: transform; }
+        .h-orb-primary { width: 600px; height: 600px; background: radial-gradient(circle, rgba(212,175,55,0.18) 0%, rgba(153,122,21,0.08) 40%, transparent 65%); top: -150px; left: -100px; }
+        .h-orb-secondary { width: 680px; height: 420px; background: radial-gradient(circle, rgba(252,232,161,0.10) 0%, rgba(212,175,55,0.06) 40%, transparent 65%); top: 35%; right: -130px; }
+        .h-orb-floor { width: 900px; height: 260px; background: radial-gradient(ellipse, rgba(212,175,55,0.10) 0%, transparent 65%); bottom: 30px; left: 50%; transform: translateX(-50%); filter: blur(80px); }
+
+        /* === BG HEADLINE === */
+        .h-bg-text { position: absolute; top: 12%; left: 0; right: 0; text-align: center; z-index: 10; pointer-events: none; will-change: transform; }
+        .h-bg-text h1 {
+          font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300; font-size: clamp(5rem, 15vw, 16.5rem);
+          line-height: 1; white-space: nowrap; letter-spacing: -0.02em; color: #fdfbf7; -webkit-text-stroke: 1px rgba(212,175,55,0.5);  
+          text-shadow:  0 0 30px rgba(212,175,55,0.25), 0 0 60px rgba(212,175,55,0.15);
         }
 
-        .artifact::after {
-          content: "";
-          position: absolute;
-          inset: -2px;
-          border-radius: 24px;
-          pointer-events: none;
-          opacity: 0.55;
-          mix-blend-mode: overlay;
-          background:
-            linear-gradient(
-              115deg,
-              transparent 0%,
-              rgba(255,255,255,0.08) 18%,
-              rgba(214,178,94,0.10) 38%,
-              rgba(20,184,166,0.08) 55%,
-              rgba(124,58,237,0.08) 72%,
-              rgba(217,92,65,0.10) 86%,
-              transparent 100%
-            );
+        /* === IMAGE === */
+        .h-img-container {
+          position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+          z-index: 20; width: 45%; max-width: 1000px; height: 85vh; display: flex; align-items: flex-end; justify-content: center; pointer-events: none;
         }
+        .h-img-wrap { width: 100%; height: 100%; will-change: transform; }
+        .h-img-inner { position: relative; width: 100%; height: 100%; }
+        .h-img-inner img { width: 100%; height: 100%; object-fit: contain; object-position: bottom center; filter: contrast(1.06) saturate(0.85); display: block; }
+        .h-img-inner::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 25vh; background: linear-gradient(to top, #07070a 0%, transparent 100%); pointer-events: none; }
+        .h-img-halo { position: absolute; bottom: 10%; left: 50%; transform: translateX(-50%); width: 60%; height: 50%; background: radial-gradient(ellipse, rgba(212,175,55,0.15) 0%, transparent 70%); filter: blur(60px); z-index: 19; pointer-events: none; }
 
-        @keyframes floatIdle {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-8px); }
+        /* === MIDDLE BADGES === */
+        .h-middle {
+          position: absolute; top: 50%; transform: translateY(-50%);
+          left: 0; right: 0; padding: 0 var(--px); /* ALIGNMENT FIX */
+          z-index: 30; pointer-events: none;
         }
-        .float-idle { animation: floatIdle 6s ease-in-out infinite; }
-
-        @media (max-width: 1023px) {
-          .bg-architect { opacity: .45; mask-image: none; -webkit-mask-image: none; }
-          .grain::after { opacity: 0.02; }
-          .artifact {
-            box-shadow: 0 24px 60px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.05) inset;
-          }
-          .float-idle { animation: none !important; }
-          .animate-marquee { animation-duration: 40s; }
+        .h-middle-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; will-change: transform; }
+        
+        .h-badge {
+          display: flex; align-items: center; gap: 10px; padding: 8px 18px 8px 8px; border-radius: 100px;
+          border: 1px solid rgba(212,175,55,0.22); background: rgba(9,9,11,0.75); backdrop-filter: blur(16px);
+          box-shadow: 0 6px 28px rgba(0,0,0,0.45), inset 0 0 0 0.5px rgba(212,175,55,0.08); pointer-events: auto;
         }
+        .h-badge-icon { width: 28px; height: 28px; border-radius: 50%; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.35); display: flex; align-items: center; justify-content: center; }
+        .h-badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 10px var(--gold); animation: pulse-h 2.5s infinite; }
+        @keyframes pulse-h { 0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.5); } 50% { box-shadow: 0 0 0 6px rgba(212,175,55,0); } }
+        .h-badge-text { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--bone); }
 
-        @media (prefers-reduced-motion: reduce) {
-          .float-idle { animation: none !important; }
-          .animate-marquee { animation: none !important; }
-          .text-mesh { animation: none !important; }
+        .h-spec {
+          max-width: 240px; padding: 20px; border-radius: 18px; border: 1px solid rgba(212,175,55,0.14);
+          background: rgba(9,9,11,0.65); backdrop-filter: blur(18px); box-shadow: 0 10px 40px rgba(0,0,0,0.5), inset 0 0 0 0.5px rgba(212,175,55,0.06); pointer-events: auto;
+        }
+        .h-spec-deco { display: flex; gap: 6px; align-items: center; margin-bottom: 12px; }
+        .h-spec-deco span { display: block; height: 1.5px; }
+        .h-spec-deco span:nth-child(1) { background: var(--gold-light); width: 20px; opacity: 0.8; }
+        .h-spec-deco span:nth-child(2) { background: var(--gold); width: 8px; opacity: 0.8; }
+        .h-spec p { font-family: 'DM Mono', monospace; font-size: 0.7rem; line-height: 1.7; color: var(--metal); font-weight: 400; }
+        .h-spec strong { color: var(--bone); font-weight: 500; }
+
+        /* === BOTTOM TEXT === */
+        .h-bottom {
+          position: absolute; bottom: 70px; left: 0; right: 0;
+          padding: 0 var(--px); /* ALIGNMENT FIX */
+          z-index: 40; pointer-events: none; display: flex; justify-content: space-between; align-items: flex-end; will-change: transform;
+        }
+        .h-name-iam { display: block; font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1.5rem, 4vw, 3rem); text-transform: uppercase; letter-spacing: -0.02em; line-height: 1; color: var(--bone); margin-bottom: -5px; }
+        .h-name-brandon { display: block; font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(3.5rem, 9vw, 8.5rem); text-transform: uppercase; letter-spacing: -0.04em; line-height: 0.9; background: linear-gradient(110deg, var(--bone) 0%, var(--bone) 40%, var(--gold-light) 68%, var(--gold) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 30px rgba(0,0,0,0.8)); }
+        .h-title-block { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+        .h-title-word { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: clamp(1.5rem, 4vw, 3.5rem); text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.05; color: transparent; -webkit-text-stroke: 1.5px rgba(253,251,247,0.4); filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5)); }
+        .h-title-word:nth-child(2) { -webkit-text-stroke: 1.5px rgba(212,175,55,0.5); }
+        .h-title-word:nth-child(3) { -webkit-text-stroke: 1.5px rgba(212,175,55,0.85); }
+
+        /* === MARQUEE === */
+        .h-marquee { position: absolute; bottom: 0; left: 0; right: 0; height: 46px; z-index: 55; border-top: 1px solid rgba(212,175,55,0.15); background: linear-gradient(90deg, rgba(9,9,11,0.98), rgba(18,14,5,0.98), rgba(9,9,11,0.98)); overflow: hidden; display: flex; align-items: center; }
+        @keyframes h-mq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .h-mq-track { display: flex; width: max-content; animation: h-mq 25s linear infinite; }
+        .h-mq-item { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; padding: 0 26px; color: rgba(156,151,139,0.6); white-space: nowrap; }
+        .h-mq-item.acc { color: var(--gold); }
+
+        /* ENTRANCE */
+        @keyframes h-fadeup { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .h-fu { opacity: 0; animation: h-fadeup 1s cubic-bezier(0.22,1,0.36,1) forwards; }
+        .h-d2 { animation-delay: 0.2s; }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+          .h-img-container { width: 100%; height: 75vh; }
+          .h-spec { display: none; }
+        }
+        @media (max-width: 768px) {
+          .h-img-container { width: 130%; height: 80vh; bottom: 50px; }
+          .h-img-inner::after { height: 35vh; }
+          .h-bg-text { top: 10%; }
+          .h-bg-text h1 { font-size: clamp(3rem, 18vw, 6rem); }
+          .h-bottom { flex-direction: column; align-items: center; justify-content: flex-end; font-size: 1rem; bottom: 70px; gap: 15px; text-align: center; padding: 0 20px; }
+          .h-name-iam, .h-name-brandon { text-align: center; font-size: clamp(2.5rem, 6vw, 4rem); }
+          .h-title-block { align-items: center; flex-direction: row; gap: 8px; flex-wrap: wrap; justify-content: center; }
+          .h-title-word { font-size: 1.1rem; }
+          .h-middle { top: 20%; transform: none; padding: 0 20px; }
+          .h-middle-inner { justify-content: center; }
+          .h-badge { background: rgba(9,9,11,0.85); }
+          .h-corner { display: none; }
+          .h-streak { opacity: 0.5; }
         }
       `}</style>
 
-      <section className="relative w-full min-h-screen overflow-hidden text-[var(--bone)] hero-bg grain flex flex-col font-sans">
-        <div className="absolute inset-0 pointer-events-none bg-architect transform-gpu" style={{ zIndex: 1 }} />
-        <div className="vignette" />
+      <section
+        className="h-root"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
+        {/* === BACKGROUND LAYERS === */}
+        <div className="h-base-glow" />
+        <div className="h-streaks">
+          <div className="h-streak" />
+          <div className="h-streak" />
+          <div className="h-streak" />
+          <div className="h-streak" />
+        </div>
+        <div className="h-grid" />
+        <div className="h-scanlines" />
 
-        <div className="relative z-20 flex-1 flex flex-col w-full max-w-[1400px] mx-auto">
-          <div className="flex-1 flex items-center px-5 sm:px-8 md:px-12 pt-16 pb-16 lg:py-0">
-            <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-12 md:gap-16 lg:gap-24 xl:gap-32 lg:pr-8">
-              {/* LEFT */}
-              <motion.div
-                className="flex-1 w-full lg:max-w-[55%] xl:max-w-[60%] flex flex-col items-center text-center lg:items-start lg:text-left"
-                initial="hidden"
-                animate="visible"
-                variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
-              >
-                <motion.div
-                  variants={{ hidden: { opacity: 0, y: -20 }, visible: { opacity: 1, y: 0 } }}
-                  className="flex items-center justify-center lg:justify-start gap-3 sm:gap-5 mb-6 sm:mb-8 w-full"
-                >
-                  <div className="w-10 sm:w-12 lg:w-16 h-px bg-[var(--metal)]" />
-                  <span className="font-mono text-[0.6rem] sm:text-[0.65rem] font-medium tracking-[0.25em] sm:tracking-[0.35em] uppercase text-[var(--metal)] whitespace-nowrap">
-                    Index / 01
-                  </span>
-                  <div className="w-10 sm:w-12 h-px bg-[var(--metal)] lg:hidden" />
-                </motion.div>
-
-                <div className="mb-8 sm:mb-10 relative z-10 flex flex-col w-full">
-                  <motion.h1
-                    variants={{
-                      hidden: { opacity: 0, y: 30 },
-                      visible: { opacity: 1, y: 0, transition: { duration: 0.85, ease: [0.22, 1, 0.36, 1] } },
-                    }}
-                    className="text-[clamp(2.75rem,11.5vw,8.5rem)] leading-[0.9] tracking-tight font-light italic"
-                  >
-                    Building
-                  </motion.h1>
-
-                  <motion.h1
-                    variants={{
-                      hidden: { opacity: 0, y: 30 },
-                      visible: { opacity: 1, y: 0, transition: { duration: 0.85, delay: 0.1, ease: [0.22, 1, 0.36, 1] } },
-                    }}
-                    className="text-[clamp(2.5rem,10.5vw,7.8rem)] leading-[0.9] tracking-tighter font-extrabold text-mesh uppercase lg:ml-12 lg:-mt-2"
-                  >
-                    Modern
-                  </motion.h1>
-
-                  <motion.h1
-                    variants={{
-                      hidden: { opacity: 0, y: 30 },
-                      visible: { opacity: 1, y: 0, transition: { duration: 0.85, delay: 0.2, ease: [0.22, 1, 0.36, 1] } },
-                    }}
-                    className="text-[clamp(2.75rem,11.5vw,8.5rem)] leading-[0.9] tracking-tight text-outline font-bold italic lg:-mt-2 drop-shadow-[0_0_15px_rgba(214,178,94,0.15)]"
-                  >
-                    Interfaces.
-                  </motion.h1>
-                </div>
-
-                <motion.div
-                  variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 1, delay: 0.35 } } }}
-                  className="flex flex-col lg:flex-row items-center lg:items-start gap-4 sm:gap-6 mb-10 lg:mb-12 w-full max-w-sm sm:max-w-md mx-auto lg:mx-0 lg:max-w-xl"
-                >
-                  <div className="hidden lg:block w-1 min-h-[64px] bg-gradient-to-b from-[var(--metal)] to-transparent shrink-0" />
-                  <p className="text-[0.8rem] sm:text-[0.85rem] md:text-sm leading-[1.7] sm:leading-[1.85] text-[rgba(244,240,232,0.7)] tracking-wide">
-                    Bridging the gap between{" "}
-                    <span className="text-[var(--bone)] font-semibold">engineering precision</span> and{" "}
-                    <span className="text-[var(--bone)] font-semibold">editorial aesthetics</span>. From pixel-perfect UI to performant production code.
-                  </p>
-                </motion.div>
-
-                <motion.div
-                  variants={{ hidden: { opacity: 0, y: 18 }, visible: { opacity: 1, y: 0 } }}
-                  className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 sm:gap-8 lg:gap-10 w-full"
-                >
-                  <a
-                    href="#projects"
-                    className="group relative px-8 py-4 sm:px-10 sm:py-5 border border-[var(--border2)] bg-[rgba(255,255,255,0.02)] overflow-hidden flex items-center justify-center gap-4 transition-all active:scale-95 w-full sm:w-auto md:hover:border-[var(--bone)] md:hover:shadow-[0_0_20px_rgba(244,240,232,0.1)] shrink-0 rounded-[14px]"
-                  >
-                    <div className="absolute inset-0 bg-[var(--bone)] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] z-0 rounded-[14px]" />
-                    <span className="relative z-10 font-mono text-[0.6rem] sm:text-[0.65rem] tracking-[0.28em] uppercase font-semibold text-[var(--bone)] group-hover:text-[var(--bg)] transition-colors duration-500">
-                      View Projects
-                    </span>
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 14 14"
-                      fill="none"
-                      className="relative z-10 text-[var(--bone)] group-hover:text-[var(--bg)] transition-colors duration-500 transform group-hover:translate-x-1"
-                    >
-                      <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
-                    </svg>
-                  </a>
-
-                  <div className="flex items-center gap-3 sm:gap-4">
-                    <span className="font-mono text-[0.55rem] tracking-[0.22em] text-[rgba(154,148,138,0.85)] uppercase hidden lg:block shrink-0">
-                      Toolkit //
-                    </span>
-                    {techList.map((tech, i) => (
-                      <div
-                        key={i}
-                        title={tech.name}
-                        className="w-10 h-10 sm:w-12 sm:h-12 lg:w-11 lg:h-11 border border-[rgba(214,178,94,0.18)] flex items-center justify-center bg-[rgba(255,255,255,0.02)] md:hover:border-[var(--bone)] md:hover:bg-[rgba(255,255,255,0.08)] transition-all cursor-crosshair group rounded-[12px] shrink-0"
-                      >
-                        <tech.icon
-                          style={{ color: tech.color }}
-                          className="w-4 h-4 sm:w-5 sm:h-5 lg:w-4 lg:h-4 opacity-80 md:group-hover:opacity-100 md:group-hover:scale-110 transition-transform"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              </motion.div>
-
-              {/* RIGHT */}
-              <motion.div
-                className="w-full max-w-[320px] sm:max-w-[380px] lg:max-w-[440px] xl:max-w-[480px] mx-auto lg:mx-0 lg:ml-auto shrink-0 relative perspective-[1200px] mt-2 lg:mt-0"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
-                ref={cardRef}
-                onMouseMove={enableFX ? handleMouseMove : undefined}
-                onMouseLeave={enableFX ? handleMouseLeave : undefined}
-              >
-                {/* MOBILE */}
-                <motion.div style={{ transform: transformStyle }} className="artifact p-3 pb-20 lg:hidden transform-gpu">
-                  {enableFX && (
-                    <motion.div
-                      className="absolute inset-0 z-50 pointer-events-none opacity-40 mix-blend-overlay transition-opacity duration-300 transform-gpu"
-                      style={{ background: mobileGlareStyle }}
-                    />
-                  )}
-
-                  <div className="relative aspect-[4/5] overflow-hidden border border-[rgba(214,178,94,0.25)] bg-[#0f0f14] rounded-t-xl">
-                    {profileImage ? (
-                      <img
-                        src={profileImage}
-                        alt="Profile of Brandon"
-                        loading="lazy"
-                        decoding="async"
-                        className="w-full h-full object-cover object-center scale-105 grayscale-[20%] contrast-[1.15] sepia-[15%]"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <span className="text-8xl italic text-[var(--metal)] opacity-30">B.</span>
-                      </div>
-                    )}
-
-                    <div className="absolute inset-0 shadow-[inset_0_0_60px_rgba(0,0,0,0.65)] pointer-events-none" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[rgba(7,7,10,0.95)] via-transparent to-transparent opacity-90 pointer-events-none" />
-
-                    <div className="absolute top-4 right-4 flex items-center gap-2 border border-[rgba(255,255,255,0.15)] px-2 py-1 bg-[rgba(0,0,0,0.50)] backdrop-blur-md rounded-sm">
-                      <div className="w-1.5 h-1.5 rounded-full bg-[var(--rust)] animate-pulse" />
-                      <span className="font-mono text-[0.45rem] tracking-widest uppercase text-white">REC</span>
-                    </div>
-                  </div>
-
-                  <div className="absolute bottom-5 left-5 right-5 flex justify-between items-end z-20">
-                    <div className="flex flex-col gap-1">
-                      <span className="font-mono text-[0.5rem] tracking-[0.28em] uppercase text-[var(--metal)]">Subject</span>
-                      <p className="text-2xl md:text-3xl font-medium italic text-[var(--bone)] leading-none">Brandon.</p>
-                    </div>
-                    <div className="flex flex-col items-end gap-2">
-                      <div className="barcode w-20 h-5 opacity-60" />
-                      <p className="font-mono text-[0.5rem] tracking-[0.22em] text-[rgba(154,148,138,0.9)]">ID-2025</p>
-                    </div>
-                  </div>
-                </motion.div>
-
-                {/* DESKTOP */}
-                <motion.div className="hidden lg:block relative w-full aspect-square float-idle transform-gpu" style={{ transform: transformStyle }}>
-                  {enableFX && (
-                    <motion.div
-                      className="absolute inset-0 z-50 pointer-events-none opacity-30 mix-blend-overlay rounded-3xl transform-gpu"
-                      style={{ background: glareStyle }}
-                    />
-                  )}
-
-                  <div className="absolute inset-y-8 inset-x-0 bg-[rgba(20,20,25,0.45)] backdrop-blur-2xl border border-[rgba(255,255,255,0.08)] rounded-3xl shadow-[0_30px_60px_rgba(0,0,0,0.6)] overflow-hidden">
-                    <div className="absolute -top-20 -right-20 w-64 h-64 bg-[var(--rust)] opacity-10 rounded-full blur-3xl" />
-                    <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-[var(--metal)] opacity-10 rounded-full blur-3xl" />
-
-                    <div className="absolute inset-8 flex flex-col justify-end w-[55%] pb-4 z-10">
-                      <div className="flex items-center gap-3 mb-6">
-                        <div className="relative flex h-2 w-2">
-                          <span className="animate-ping absolute inset-0 rounded-full bg-[#3DDC84] opacity-75"></span>
-                          <span className="relative rounded-full h-2 w-2 bg-[#3DDC84]"></span>
-                        </div>
-                        <span className="font-mono text-[0.6rem] text-[var(--bone)] tracking-[0.2em] uppercase">System Active</span>
-                      </div>
-                      <h3 className="text-4xl xl:text-5xl font-extrabold italic text-transparent bg-clip-text bg-gradient-to-br from-[var(--bone)] to-[var(--metal)] mb-2">
-                        Brandon.
-                      </h3>
-                      <p className="font-mono text-xs text-[var(--metal)] mb-8 tracking-widest">ID-2025 // DEV</p>
-
-                      <div className="h-px w-full bg-gradient-to-r from-[var(--metal)] to-transparent mb-6 opacity-30" />
-
-                      <div className="grid grid-cols-2 gap-4 font-mono text-[0.6rem] tracking-[0.15em] text-[var(--bone)] uppercase">
-                        <div>
-                          <span className="block text-[var(--metal)] opacity-60 mb-1 text-[0.5rem]">Role</span>
-                          Front End
-                        </div>
-                        <div>
-                          <span className="block text-[var(--metal)] opacity-60 mb-1 text-[0.5rem]">Status</span>
-                          Available
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="absolute top-4 left-6 font-mono text-[10rem] xl:text-[12rem] leading-none text-[rgba(255,255,255,0.02)] font-bold italic z-0 pointer-events-none select-none">
-                      01
-                    </div>
-                  </div>
-
-                  <div className="absolute -top-4 -right-4 w-[50%] aspect-[3/4] bg-[#07070a] rounded-[24px] shadow-[0_20px_40px_rgba(0,0,0,0.8)] border border-[rgba(214,178,94,0.3)] overflow-hidden transform rotate-3 hover:rotate-0 transition-transform duration-700 ease-out z-20">
-                    <img
-                      src={profileImage}
-                      alt="Profile"
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-full object-cover grayscale-[15%] contrast-125 hover:scale-105 transition-transform duration-1000 transform-gpu"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[rgba(7,7,10,0.9)] via-transparent to-transparent opacity-80" />
-                    <div className="absolute top-5 left-[-32px] bg-[var(--rust)] px-8 py-1.5 text-[var(--bone)] text-[0.5rem] font-bold font-mono tracking-widest -rotate-45 shadow-lg">
-                      Front End Dev
-                    </div>
-                  </div>
-
-                  <div className="absolute bottom-16 right-6 flex flex-col gap-1.5 z-20 opacity-40">
-                    {decoWidths.map((w, i) => (
-                      <div key={i} className="h-[1.5px] bg-[var(--metal)] rounded-full" style={{ width: `${w}px` }} />
-                    ))}
-                  </div>
-                </motion.div>
-              </motion.div>
-            </div>
-          </div>
+        {/* FLOATING DUST PARTICLES */}
+        <div className="h-dust" aria-hidden="true">
+          {[
+            {
+              top: "70%",
+              left: "12%",
+              size: 2,
+              op: 0.5,
+              dur: "6s",
+              delay: "0s",
+            },
+            {
+              top: "40%",
+              left: "25%",
+              size: 1,
+              op: 0.4,
+              dur: "8s",
+              delay: "1.5s",
+            },
+            {
+              top: "60%",
+              left: "70%",
+              size: 2,
+              op: 0.5,
+              dur: "7s",
+              delay: "0.8s",
+            },
+            {
+              top: "30%",
+              left: "80%",
+              size: 1,
+              op: 0.3,
+              dur: "9s",
+              delay: "2.2s",
+            },
+            {
+              top: "80%",
+              left: "45%",
+              size: 2,
+              op: 0.45,
+              dur: "6s",
+              delay: "3.5s",
+            },
+            {
+              top: "20%",
+              left: "55%",
+              size: 1,
+              op: 0.3,
+              dur: "10s",
+              delay: "4s",
+            },
+            {
+              top: "55%",
+              left: "8%",
+              size: 2,
+              op: 0.4,
+              dur: "7s",
+              delay: "1s",
+            },
+            {
+              top: "15%",
+              left: "35%",
+              size: 1,
+              op: 0.25,
+              dur: "8s",
+              delay: "5s",
+            },
+          ].map((d, i) => (
+            <div
+              key={i}
+              className="h-dust-dot"
+              style={{
+                top: d.top,
+                left: d.left,
+                width: d.size,
+                height: d.size,
+                "--op": d.op,
+                "--dur": d.dur,
+                "--delay": d.delay,
+              }}
+            />
+          ))}
         </div>
 
-        <div className="w-full z-30 border-t border-[var(--border)] bg-[rgba(7,7,10,0.85)] backdrop-blur-lg mt-auto">
-          <div className="overflow-hidden py-3.5" aria-hidden="true">
-            <div className="animate-marquee flex whitespace-nowrap w-max items-center">
-              {Array(6)
-                .fill(["UI/UX DESIGNER", "✦", "FRONT END DEV", "✦", "AVAILABLE FOR HIRE", "✦"])
-                .flat()
-                .map((t, i) => (
-                  <span
-                    key={i}
-                    className={`font-mono text-[0.62rem] px-8 tracking-[0.35em] uppercase ${
-                      t === "✦" ? "text-[var(--rust)]" : "text-[rgba(244,240,232,0.85)]"
-                    }`}
-                  >
-                    {t}
-                  </span>
-                ))}
+        {/* HORIZONTAL GOLD LINES */}
+        <div className="h-hline h-hline-top" />
+        <div className="h-hline h-hline-bottom" />
+
+        {/* CORNER ORNAMENTS */}
+        <div className="h-corner h-corner-tl" />
+        <div className="h-corner h-corner-tr" />
+        <div className="h-corner h-corner-br" />
+        <div className="h-corner h-corner-bl" />
+
+        {/* GRAIN + VIGNETTE */}
+        <div className="h-grain" />
+        <div className="h-vig" />
+
+        {/* ORBS */}
+        <motion.div
+          className="h-orb h-orb-primary"
+          style={{ x: orb1X, y: orb1Y }}
+        />
+        <motion.div
+          className="h-orb h-orb-secondary"
+          style={{ x: orb2X, y: orb2Y }}
+        />
+        <motion.div
+          className="h-orb h-orb-floor"
+          style={{ x: orb3X, y: orb3Y }}
+        />
+
+        {/* BACKGROUND TEXT */}
+        <motion.div className="h-bg-text" style={{ x: bgTextX, y: bgTextY }}>
+          <h1>Hey, there</h1>
+        </motion.div>
+
+        {/* IMAGE */}
+        <div className="h-img-halo" />
+        <div className="h-img-container">
+          <motion.div
+            className="h-img-wrap h-fu h-d2"
+            style={{ x: imgX, y: imgY }}
+          >
+            <div className="h-img-inner">
+              <img src={profileImage} alt="Brandon" loading="eager" />
             </div>
+          </motion.div>
+        </div>
+
+        {/* MIDDLE BADGES - WITH ADDED INNER WRAPPER FOR PARALLAX ALIGNMENT */}
+        <div className="h-middle">
+          <motion.div
+            className="h-middle-inner"
+            style={{ x: fgTextX, y: fgTextY }}
+          >
+            <motion.div
+              className="h-badge"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.7 }}
+            >
+              <div className="h-badge-icon">
+                <div className="h-badge-dot" />
+              </div>
+              <span className="h-badge-text">
+                Available for new opportunities
+              </span>
+            </motion.div>
+
+            <motion.div
+              className="h-spec"
+              initial={{ opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.8, duration: 0.7 }}
+            >
+              <div className="h-spec-deco">
+                <span />
+                <span />
+              </div>
+              <p>
+                Specialized in <strong>Web Design</strong>,{" "}
+                <strong>UX / UI</strong>, and{" "}
+                <strong>Front End Development</strong>.
+              </p>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* BOTTOM TEXT */}
+        <motion.div className="h-bottom" style={{ x: fgTextX, y: fgTextY }}>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.9 }}
+          >
+            <span className="h-name-iam">I Am</span>
+            <span className="h-name-brandon">Brandon</span>
+          </motion.div>
+
+          <motion.div
+            className="h-title-block"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.9 }}
+          >
+            <span className="h-title-word">Digital</span>
+            <span className="h-title-word">Product</span>
+            <span className="h-title-word">Designer</span>
+          </motion.div>
+        </motion.div>
+
+        {/* MARQUEE */}
+        <div className="h-marquee" aria-hidden="true">
+          <div className="h-mq-track">
+            {Array(6)
+              .fill(marqueeItems)
+              .flat()
+              .map((t, i) => (
+                <span key={i} className={`h-mq-item${t === "✦" ? " acc" : ""}`}>
+                  {t}
+                </span>
+              ))}
           </div>
         </div>
       </section>
