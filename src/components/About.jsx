@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import {
   Globe,
   PenTool,
@@ -6,6 +6,7 @@ import {
   Layers,
   MousePointer2,
   Calendar,
+  Sparkles,
 } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
@@ -30,13 +31,14 @@ const educationData = [
   },
 ];
 
-// OPTIMASI: Menghapus filter blur untuk performa mobile yang jauh lebih baik
+const introTags = ["Front End", "UI/UX", "Creative"];
+
 const FadeUp = ({ children, delay = 0, className = "" }) => (
   <motion.div
     className={className}
-    initial={{ opacity: 0, y: 26 }}
+    initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, amount: 0.1 }}
+    viewport={{ once: true, margin: "-100px" }}
     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay }}
   >
     {children}
@@ -44,16 +46,15 @@ const FadeUp = ({ children, delay = 0, className = "" }) => (
 );
 
 const MeterBar = ({ pct, color = "var(--metal)", delay = 0.18 }) => (
-  <div className="ab-meter">
+  <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden relative backdrop-blur-sm">
     <motion.div
       initial={{ width: 0 }}
       whileInView={{ width: `${pct}%` }}
       viewport={{ once: true }}
-      transition={{ duration: 1.25, ease: [0.22, 1, 0.36, 1], delay }}
+      transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay }}
       style={{ background: color }}
-      className="ab-meterFill"
+      className="absolute top-0 left-0 h-full rounded-full shadow-[0_0_10px_currentColor]"
     />
-    <div className="ab-meterSheen" />
   </div>
 );
 
@@ -65,601 +66,369 @@ const About = () => {
     offset: ["start end", "end start"],
   });
 
-  const watermarkY = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
-  const headY = useTransform(scrollYProgress, [0, 1], ["0px", "-56px"]);
+  const watermarkY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
+  const headY = useTransform(scrollYProgress, [0, 1], ["0px", "-60px"]);
 
   return (
-    <>
-      <section
-        id="about"
-        ref={sectionRef}
-        className="relative w-full overflow-hidden text-[var(--bone)] ab-bg ab-grain"
-        style={{ paddingTop: 112, paddingBottom: 120 }}
+    <section
+      id="about"
+      ref={sectionRef}
+      className="relative w-full overflow-hidden text-[var(--bone)] bg-[#07070a]"
+      style={{ paddingTop: 120, paddingBottom: 120 }}
+    >
+      {/* Background Layers - Optimized for aesthetics */}
+      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 mix-blend-overlay pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#07070a]/50 to-[#07070a] pointer-events-none" />
+
+      {/* Hardware Accelerated Blur Orbs */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden transform-gpu flex justify-center items-center z-0">
+        <div className="absolute top-[-10%] left-[-5%] w-[40vw] h-[40vw] rounded-full mix-blend-screen blur-[120px] opacity-[0.15] bg-[#D6B25E]" />
+        <div className="absolute bottom-[-10%] right-[-5%] w-[50vw] h-[50vw] rounded-full mix-blend-screen blur-[150px] opacity-[0.1] bg-[#D6B25E]" />
+      </div>
+
+      {/* Watermark */}
+      <motion.div
+        style={{ y: watermarkY }}
+        className="absolute top-[5%] left-0 right-0 z-0 pointer-events-none flex justify-center overflow-hidden select-none"
       >
-        {/* Background layers */}
-        <div className="ab-grid" />
-        <div className="ab-fiber" />
-        <div className="ab-topo" />
-        <div className="ab-dust" />
-        <div className="ab-vignette" />
+        <span className="text-[clamp(6rem,20vw,20rem)] font-black italic leading-none whitespace-nowrap text-white/[0.02] tracking-tighter">
+          ABOUT
+        </span>
+      </motion.div>
 
-        {/* OPTIMASI: Menambahkan transform-gpu agar background blur dirender oleh hardware */}
-        <div
-          className="absolute inset-0 pointer-events-none overflow-hidden transform-gpu"
-          style={{ zIndex: 0 }}
-        >
-          <div className="absolute top-[-8%] left-[-10%] w-[52vw] h-[52vw] rounded-full mix-blend-screen blur-[150px] opacity-[0.10] bg-[var(--metal)]" />
-          <div className="absolute bottom-[-10%] right-[-12%] w-[60vw] h-[60vw] rounded-full mix-blend-screen blur-[170px] opacity-[0.07] bg-[var(--plum)]" />
-          <div className="absolute top-[46%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[40vw] rounded-full mix-blend-screen blur-[190px] opacity-[0.03] bg-[var(--haze)]" />
-        </div>
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+        {/* Header */}
+        <FadeUp>
+          <motion.div style={{ y: headY }} className="mb-20 md:mb-32">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-[2px] bg-[var(--metal)] opacity-80" />
+              <span className="text-[0.65rem] tracking-[0.35em] uppercase text-[var(--metal)] font-mono font-semibold">
+                Vol. 02 — The Architect
+              </span>
+            </div>
 
-        {/* Watermark */}
-        <motion.div
-          style={{ y: watermarkY }}
-          className="absolute top-[5%] left-0 right-0 z-0 pointer-events-none flex justify-center overflow-hidden select-none transform-gpu"
-        >
-          <span className="f-display ab-watermark text-[clamp(7rem,22vw,22rem)] font-bold italic leading-none whitespace-nowrap opacity-[0.55]">
-            ABOUT
-          </span>
-        </motion.div>
+            <h2 className="text-[clamp(3rem,6vw,6rem)] font-light italic leading-[1] tracking-tight text-white/90">
+              More than just{" "}
+              <span className="font-extrabold not-italic text-transparent bg-clip-text bg-gradient-to-r from-[#D6B25E] to-[#E5C98A] drop-shadow-[0_0_20px_rgba(214,178,94,0.3)]">
+                CODE.
+              </span>
+            </h2>
 
-        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-          {/* Header */}
-          <FadeUp>
-            <motion.div style={{ y: headY }} className="mb-16 md:mb-24">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-px bg-[var(--metal)] opacity-80" />
-                <span className="f-mono text-[0.62rem] tracking-[0.32em] uppercase text-[var(--metal)]">
-                  Vol. 02 — The Architect
-                </span>
-              </div>
+            <h2 className="text-[clamp(3rem,6vw,6rem)] font-bold italic leading-[1] tracking-tight text-transparent text-stroke-metal mt-2">
+              I design solutions.
+            </h2>
 
-              <h2 className="f-display text-[clamp(3rem,6.5vw,6rem)] font-light italic leading-[0.92] tracking-tight text-[var(--bone)]">
-                More than just{" "}
-                <span className="f-sans font-extrabold not-italic tracking-[-0.03em] text-[var(--metal2)] drop-shadow-[0_0_20px_rgba(242,216,154,0.28)]">
-                  CODE.
-                </span>
-              </h2>
+            <div className="mt-8 flex items-center gap-6">
+              <span className="text-[0.6rem] tracking-[0.3em] uppercase text-white/50 font-mono">
+                research · systems · execution
+              </span>
+            </div>
+          </motion.div>
+        </FadeUp>
 
-              <h2
-                className="f-display text-[clamp(3rem,6.5vw,6rem)] font-bold italic leading-[0.92] tracking-tight mt-2"
-                style={{
-                  color: "transparent",
-                  WebkitTextStroke: "1.35px rgba(214,178,94,0.78)",
-                }}
-              >
-                I design solutions.
-              </h2>
+        {/* Bento grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5 mb-32">
+          {/* Intro (2x2) */}
+          <FadeUp delay={0.1} className="md:col-span-2 md:row-span-2">
+            <div className="relative h-full p-8 md:p-10 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] hover:border-[#D6B25E]/30 transition-all duration-500 group overflow-hidden shadow-2xl backdrop-blur-md">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-[#D6B25E]/10 to-transparent rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-              <div className="mt-6 flex items-center gap-4">
-                <span className="f-mono text-[0.58rem] tracking-[0.26em] uppercase text-[rgba(154,148,138,0.95)]">
-                  research · systems · execution
-                </span>
-                <span className="hidden md:block w-16 h-px bg-[rgba(214,178,94,0.28)]" />
-              </div>
-            </motion.div>
-          </FadeUp>
+              <Globe className="absolute -right-8 -top-8 w-64 h-64 text-[#D6B25E] opacity-[0.03] group-hover:opacity-[0.08] group-hover:-translate-y-2 group-hover:-translate-x-2 group-hover:rotate-12 transition-all duration-700 stroke-[0.5]" />
+              <span className="absolute bottom-6 right-8 text-7xl font-bold text-white/[0.02] group-hover:text-white/[0.05] transition-colors duration-500 select-none pointer-events-none">
+                01
+              </span>
 
-          {/* Bento grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5 mb-24 md:mb-32">
-            
-            {/* Intro (2x2) - UI Desktop Enhance */}
-            <FadeUp delay={0.12} className="md:col-span-2 md:row-span-2">
-              <div className="ab-card h-full p-8 md:p-10 group md:transition-all md:duration-500 md:hover:-translate-y-1.5 md:hover:shadow-[0_15px_40px_-10px_rgba(214,178,94,0.15)] md:hover:border-[rgba(214,178,94,0.3)]">
-                <div className="ab-film" />
-                <div className="ab-sheen" />
-                <div className="ab-halftone" />
-
-                <div className="ab-screw" style={{ top: 12, left: 12 }} />
-                <div className="ab-screw" style={{ top: 12, right: 12 }} />
-                <div className="ab-screw" style={{ bottom: 12, left: 12 }} />
-                <div className="ab-screw" style={{ bottom: 12, right: 12 }} />
-
-                <div className="ab-reg ab-tl" />
-                <div className="ab-reg ab-tr" />
-                <div className="ab-reg ab-bl" />
-                <div className="ab-reg ab-br" />
-
-                <Globe className="absolute -right-10 -top-10 w-56 h-56 text-[var(--metal)] opacity-[0.04] group-hover:opacity-[0.1] md:group-hover:opacity-[0.15] md:group-hover:-translate-y-4 md:group-hover:-translate-x-4 group-hover:rotate-12 transition-all duration-700 stroke-[0.6]" />
-                <span className="f-display font-bold absolute bottom-4 right-6 text-6xl text-[var(--metal)] opacity-[0.04] md:group-hover:opacity-[0.08] transition-opacity duration-500 select-none">
-                  01
-                </span>
-
-                <div className="relative z-10">
-                  <div className="flex items-center gap-4 mb-8">
-                    <span className="f-mono text-[0.58rem] tracking-[0.28em] text-[var(--metal)] uppercase">
-                      01 / Intro
-                    </span>
-                    <div className="flex-1 h-[1px] bg-gradient-to-r from-[rgba(214,178,94,0.28)] to-transparent md:group-hover:from-[rgba(214,178,94,0.5)] transition-colors duration-500" />
-                  </div>
-
-                  <h3 className="f-display text-3xl md:text-4xl lg:text-5xl font-semibold italic text-[var(--bone)] mb-6 leading-[1.08]">
-                    Hi, I'm Brandon.
-                  </h3>
-
-                  <div className="space-y-4 f-sans text-xs md:text-sm text-[rgba(244,240,232,0.86)] leading-relaxed max-w-md">
-                    <p>
-                      A product designer from Indonesia turning ideas into{" "}
-                      <span className="text-[var(--metal2)] font-semibold">simple</span>
-                      ,{" "}
-                      <span className="text-[var(--metal2)] font-semibold">elegant</span>
-                      , and{" "}
-                      <span className="text-[var(--metal2)] font-semibold">fun-to-use</span>{" "}
-                      digital experiences.
-                    </p>
-                    <p>
-                      I work where design meets code — making interfaces feel{" "}
-                      <span className="text-[var(--metal)]">intentional</span>{" "}
-                      and <span className="text-[var(--metal)]">alive</span>.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-2.5 mt-10 relative z-10">
-                  {["Front End", "UI/UX", "Creative"].map((t) => (
-                    <span
-                      key={t}
-                      className="ab-chip f-mono text-[0.55rem] tracking-[0.18em] uppercase px-4 py-2 md:hover:bg-[rgba(214,178,94,0.15)] md:hover:text-[var(--metal)] md:transition-colors md:cursor-default"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </FadeUp>
-
-            {/* Experience - UI Desktop Enhance */}
-            <FadeUp delay={0.22} className="md:col-span-1">
-              <div className="ab-card h-full p-8 flex flex-col items-center justify-center text-center min-h-[210px] group md:transition-all md:duration-500 md:hover:-translate-y-1.5 md:hover:shadow-[0_15px_40px_-10px_rgba(214,178,94,0.1)]">
-                <div className="ab-film" />
-                <div className="ab-sheen md:group-hover:opacity-100" />
-                <div className="ab-screw" style={{ top: 12, left: 12 }} />
-                <div className="ab-screw" style={{ top: 12, right: 12 }} />
-                <div className="ab-reg ab-tl" />
-                <div className="ab-reg ab-tr" />
-                <div className="ab-reg ab-bl" />
-                <div className="ab-reg ab-br" />
-
-                <span className="f-display text-6xl md:text-7xl font-bold italic text-[var(--metal)] mb-2 drop-shadow-[0_0_15px_rgba(214,178,94,0.18)] md:group-hover:scale-105 transition-transform duration-500">
-                  2+
-                </span>
-                <span className="f-mono text-[0.58rem] tracking-[0.28em] uppercase text-[rgba(154,148,138,0.92)] mt-2">
-                  Years / Experience
-                </span>
-                <div className="w-16 mt-5">
-                  <MeterBar pct={100} delay={0.35} />
-                </div>
-                <span className="f-display font-bold absolute bottom-2 right-4 text-4xl text-[var(--metal)] opacity-[0.04] md:group-hover:opacity-[0.08] transition-opacity duration-500 select-none">
-                  02
-                </span>
-              </div>
-            </FadeUp>
-
-            {/* Projects - UI Desktop Enhance */}
-            <FadeUp delay={0.32} className="md:col-span-1">
-              <div className="ab-card h-full p-8 flex flex-col items-center justify-center text-center min-h-[210px] group md:transition-all md:duration-500 md:hover:-translate-y-1.5 md:hover:shadow-[0_15px_40px_-10px_rgba(244,240,232,0.1)]">
-                <div className="ab-film" />
-                <div className="ab-sheen md:group-hover:opacity-100" />
-                <div className="ab-screw" style={{ top: 12, left: 12 }} />
-                <div className="ab-screw" style={{ top: 12, right: 12 }} />
-                <div className="ab-reg ab-tl" />
-                <div className="ab-reg ab-tr" />
-                <div className="ab-reg ab-bl" />
-                <div className="ab-reg ab-br" />
-
-                <span className="f-display text-6xl md:text-7xl font-bold text-[var(--bone)] mb-2 drop-shadow-[0_0_15px_rgba(244,240,232,0.12)] md:group-hover:scale-105 transition-transform duration-500">
-                  10+
-                </span>
-                <span className="f-mono text-[0.58rem] tracking-[0.28em] uppercase text-[rgba(154,148,138,0.92)] mt-2">
-                  Projects / Completed
-                </span>
-                <div className="w-16 mt-5">
-                  <MeterBar pct={100} color="var(--rust)" delay={0.42} />
-                </div>
-                <span className="f-display font-bold absolute bottom-2 right-4 text-4xl text-[var(--metal)] opacity-[0.04] md:group-hover:opacity-[0.08] transition-opacity duration-500 select-none">
-                  03
-                </span>
-              </div>
-            </FadeUp>
-
-            {/* Terminal - UI Desktop Enhance */}
-            <FadeUp delay={0.42} className="md:col-span-2">
-              <div className="ab-card h-full p-6 md:p-8 group md:transition-all md:duration-500 md:hover:-translate-y-1.5 md:hover:shadow-[0_15px_40px_-10px_rgba(214,178,94,0.15)] md:hover:border-[rgba(214,178,94,0.3)]">
-                <div className="ab-film" />
-                <div className="ab-sheen" />
-                <div className="ab-screw" style={{ top: 12, left: 12 }} />
-                <div className="ab-screw" style={{ top: 12, right: 12 }} />
-                <div className="ab-reg ab-tl" />
-                <div className="ab-reg ab-tr" />
-                <div className="ab-reg ab-bl" />
-                <div className="ab-reg ab-br" />
-
-                <span className="f-display font-bold absolute bottom-2 right-4 text-5xl text-[var(--metal)] opacity-[0.04] md:group-hover:opacity-[0.08] transition-opacity duration-500 select-none z-0">
-                  04
-                </span>
-
-                <div className="flex items-center justify-between mb-6 pb-4 border-b border-[rgba(214,178,94,0.18)] relative z-10">
-                  <div className="flex gap-2">
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#ff6b6b] opacity-80 md:group-hover:opacity-100 md:group-hover:scale-110 transition-all" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#f2d89a] opacity-80 md:group-hover:opacity-100 md:group-hover:scale-110 transition-all delay-75" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#14b8a6] opacity-80 md:group-hover:opacity-100 md:group-hover:scale-110 transition-all delay-150" />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--metal)] animate-pulse" />
-                    <span className="f-mono text-[0.56rem] tracking-[0.2em] text-[rgba(154,148,138,0.95)] uppercase">
-                      philosophy.ts
-                    </span>
-                  </div>
-                </div>
-
-                <div className="f-mono text-[0.72rem] md:text-[0.8rem] text-[rgba(244,240,232,0.82)] leading-[2.2] relative z-10">
-                  <p>
-                    <span style={{ color: "var(--metal)" }}>const</span>{" "}
-                    <span style={{ color: "var(--bone)" }}>philosophy</span> ={" "}
-                    {"{"}
-                  </p>
-                  <p className="pl-6">
-                    quality:{" "}
-                    <span style={{ color: "var(--haze)" }}>
-                      "uncompromised"
-                    </span>
-                    ,
-                  </p>
-                  <p className="pl-6">
-                    efficiency:{" "}
-                    <span style={{ color: "var(--rust)" }}>true</span>,
-                  </p>
-                  <p className="pl-6">
-                    userFirst:{" "}
-                    <span style={{ color: "var(--rust)" }}>true</span>,
-                  </p>
-                  <p>
-                    {"}"};{" "}
-                    <span
-                      className="animate-pulse"
-                      style={{ color: "var(--metal)" }}
-                    >
-                      _
-                    </span>
-                  </p>
-                </div>
-
-                <Code2 className="absolute bottom-6 right-8 w-12 h-12 text-[var(--bone)] opacity-[0.05] md:group-hover:text-[var(--metal)] md:group-hover:opacity-[0.15] md:group-hover:scale-110 md:group-hover:-rotate-6 transition-all duration-500 z-0" />
-              </div>
-            </FadeUp>
-
-            {/* Design - UI Desktop Enhance */}
-            <FadeUp delay={0.52} className="md:col-span-1 lg:col-span-1">
-              <div className="ab-card h-full p-6 md:p-8 flex flex-col justify-between min-h-[270px] group md:transition-all md:duration-500 md:hover:-translate-y-1.5 md:hover:shadow-[0_15px_40px_-10px_rgba(214,178,94,0.1)] md:hover:border-[rgba(214,178,94,0.3)]">
-                <div className="ab-film" />
-                <div className="ab-sheen" />
-                <div className="ab-reg ab-tl" />
-                <div className="ab-reg ab-tr" />
-                <div className="ab-reg ab-bl" />
-                <div className="ab-reg ab-br" />
-
-                <span className="f-display font-bold absolute bottom-2 right-4 text-5xl text-[var(--metal)] opacity-[0.04] md:group-hover:opacity-[0.08] transition-opacity duration-500 select-none">
-                  05
-                </span>
-
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="w-10 h-10 border border-[rgba(214,178,94,0.22)] bg-[rgba(255,255,255,0.02)] flex items-center justify-center rounded-xl md:group-hover:bg-[rgba(214,178,94,0.1)] md:group-hover:rotate-6 transition-all duration-500">
-                      <PenTool className="w-4 h-4 text-[var(--metal)]" />
-                    </div>
-                    <span className="f-mono text-[0.5rem] tracking-[0.2em] text-[var(--metal)] uppercase bg-[rgba(214,178,94,0.10)] px-3 py-1.5 border border-[rgba(214,178,94,0.22)] rounded-full">
-                      User-Centric
-                    </span>
-                  </div>
-
-                  <h4 className="f-display text-2xl font-semibold italic mb-1 text-[var(--bone)]">
-                    Design
-                  </h4>
-                  <p className="f-mono text-[0.6rem] text-[rgba(154,148,138,0.9)] mb-8 uppercase tracking-[0.22em]">
-                    insight → impact
-                  </p>
-                </div>
-
-                <div className="space-y-5 relative z-10">
-                  <div className="group/meter">
-                    <div className="flex justify-between text-[0.56rem] f-mono tracking-[0.18em] mb-2 uppercase">
-                      <span className="text-[rgba(244,240,232,0.85)] md:group-hover/meter:text-[var(--bone)] transition-colors">
-                        Figma
-                      </span>
-                      <span className="text-[var(--metal)] font-bold">95%</span>
-                    </div>
-                    <MeterBar pct={95} delay={0.28} />
-                  </div>
-
-                  <div className="group/meter">
-                    <div className="flex justify-between text-[0.56rem] f-mono tracking-[0.18em] mb-2 uppercase">
-                      <span className="text-[rgba(244,240,232,0.85)] md:group-hover/meter:text-[var(--bone)] transition-colors">
-                        Canva
-                      </span>
-                      <span className="text-[var(--metal)] font-bold">80%</span>
-                    </div>
-                    <MeterBar pct={80} delay={0.36} />
-                  </div>
-                </div>
-              </div>
-            </FadeUp>
-
-            {/* Frontend - UI Desktop Enhance */}
-            <FadeUp delay={0.62} className="md:col-span-1 lg:col-span-1">
-              <div className="ab-card h-full p-6 md:p-8 flex flex-col justify-between min-h-[270px] group md:transition-all md:duration-500 md:hover:-translate-y-1.5 md:hover:shadow-[0_15px_40px_-10px_rgba(53,208,255,0.15)] md:hover:border-[rgba(53,208,255,0.3)]">
-                <div className="ab-film" />
-                <div className="ab-sheen" />
-                <div className="ab-reg ab-tl" />
-                <div className="ab-reg ab-tr" />
-                <div className="ab-reg ab-bl" />
-                <div className="ab-reg ab-br" />
-
-                <span className="f-display font-bold absolute bottom-2 right-4 text-5xl text-[#35d0ff] opacity-[0.03] md:group-hover:opacity-[0.08] transition-opacity duration-500 select-none">
-                  06
-                </span>
-
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="w-10 h-10 border border-[rgba(53,208,255,0.22)] bg-[rgba(255,255,255,0.02)] flex items-center justify-center rounded-xl md:group-hover:bg-[rgba(53,208,255,0.1)] md:group-hover:-rotate-6 transition-all duration-500">
-                      <Code2 className="w-4 h-4 text-[#35d0ff]" />
-                    </div>
-                    <span className="f-mono text-[0.5rem] tracking-[0.2em] text-[#35d0ff] uppercase bg-[rgba(53,208,255,0.10)] px-3 py-1.5 border border-[rgba(53,208,255,0.22)] rounded-full">
-                      Dev Stack
-                    </span>
-                  </div>
-
-                  <h4 className="f-display text-2xl font-semibold italic mb-1 text-[var(--bone)]">
-                    Frontend
-                  </h4>
-                  <p className="f-mono text-[0.6rem] text-[rgba(154,148,138,0.9)] mb-8 uppercase tracking-[0.22em]">
-                    concept → code
-                  </p>
-                </div>
-
-                <div className="space-y-5 relative z-10">
-                  <div className="group/meter">
-                    <div className="flex justify-between text-[0.56rem] f-mono tracking-[0.18em] mb-2 uppercase">
-                      <span className="text-[rgba(244,240,232,0.85)] md:group-hover/meter:text-[var(--bone)] transition-colors">
-                        React.js
-                      </span>
-                      <span className="text-[#35d0ff] font-bold">90%</span>
-                    </div>
-                    <MeterBar pct={90} color="#35d0ff" delay={0.33} />
-                  </div>
-
-                  <div className="group/meter">
-                    <div className="flex justify-between text-[0.56rem] f-mono tracking-[0.18em] mb-2 uppercase">
-                      <span className="text-[rgba(244,240,232,0.85)] md:group-hover/meter:text-[var(--bone)] transition-colors">
-                        JavaScript
-                      </span>
-                      <span className="text-[#35d0ff] font-bold">85%</span>
-                    </div>
-                    <MeterBar pct={85} color="#35d0ff" delay={0.41} />
-                  </div>
-                </div>
-              </div>
-            </FadeUp>
-
-            {/* Spec Sheet - UI Desktop Enhance */}
-            <FadeUp delay={0.72} className="md:col-span-2 lg:col-span-4">
-              <div className="ab-card p-6 md:p-10 group md:transition-all md:duration-500 md:hover:-translate-y-1 md:hover:shadow-[0_15px_40px_-10px_rgba(214,178,94,0.15)] md:hover:border-[rgba(214,178,94,0.3)]">
-                <div className="ab-film" />
-                <div className="ab-sheen" />
-                <div className="ab-reg ab-tl" />
-                <div className="ab-reg ab-tr" />
-                <div className="ab-reg ab-bl" />
-                <div className="ab-reg ab-br" />
-
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-[rgba(214,178,94,0.18)]">
-                  <div className="flex items-center gap-4">
-                    <Layers className="w-5 h-5 text-[var(--metal)] md:group-hover:rotate-180 transition-transform duration-700" />
-                    <span className="f-mono text-xs tracking-[0.2em] text-[var(--bone)] uppercase font-semibold">
-                      design-system.tokens
-                    </span>
-                  </div>
-                  <span className="f-mono text-[0.55rem] tracking-[0.25em] border border-[rgba(214,178,94,0.22)] px-4 py-2 text-[var(--metal)] uppercase bg-[rgba(214,178,94,0.08)] rounded-full">
-                    Status: maintained
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-10">
+                  <span className="text-[0.6rem] tracking-[0.3em] text-[#D6B25E] uppercase font-mono bg-[#D6B25E]/10 px-3 py-1 rounded-full border border-[#D6B25E]/20">
+                    Intro
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0 md:divide-x md:divide-[rgba(214,178,94,0.14)]">
-                  <div className="md:pr-8">
-                    <p className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-[rgba(154,148,138,0.95)] mb-5">
-                      Color Tokens
-                    </p>
-                    <div className="flex gap-3 mb-4">
-                      {[
-                        "#07070a",
-                        "#D6B25E",
-                        "#D45D3A",
-                        "#14B8A6",
-                        "#7C3AED",
-                        "#F4F0E8",
-                      ].map((c) => (
-                        <div
-                          key={c}
-                          className="w-8 h-8 border border-[rgba(255,255,255,0.18)] shadow-[inset_0_0_10px_rgba(0,0,0,0.5)] rounded-xl md:hover:scale-110 md:hover:-translate-y-1 transition-transform cursor-crosshair"
-                          style={{ background: c }}
-                        />
-                      ))}
-                    </div>
-                    <p className="f-mono text-[0.55rem] text-[rgba(154,148,138,0.9)] tracking-[0.24em] uppercase">
-                      ink · metal · rust · haze · plum · bone
-                    </p>
-                  </div>
+                <h3 className="text-3xl md:text-5xl font-semibold italic text-white/90 mb-6 leading-[1.1]">
+                  Hi, I'm Brandon.
+                </h3>
 
-                  <div className="md:px-8">
-                    <p className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-[rgba(154,148,138,0.95)] mb-5">
-                      Type Pairing
-                    </p>
-                    <div className="border-l-2 border-[var(--metal)] pl-5 md:group-hover:border-[var(--bone)] transition-colors duration-500">
-                      <h4 className="f-display text-4xl font-semibold italic text-[var(--bone)] leading-none">
-                        Aa Display
-                      </h4>
-                      <p className="f-sans text-[0.7rem] text-[rgba(244,240,232,0.85)] mt-3 tracking-wide">
-                        Fraunces × Manrope × IBM Plex Mono
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="md:pl-8 flex flex-col justify-center relative">
-                    <p className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-[rgba(154,148,138,0.95)] mb-5">
-                      Components
-                    </p>
-                    <div className="flex gap-4">
-                      <button className="px-6 py-3 bg-[var(--metal)] text-[var(--bg)] f-mono text-[0.55rem] font-bold tracking-[0.2em] uppercase hover:bg-[var(--bone)] md:hover:scale-105 transition-all rounded-full">
-                        Primary
-                      </button>
-                      <button className="px-6 py-3 border border-[rgba(214,178,94,0.22)] text-[rgba(244,240,232,0.95)] f-mono text-[0.55rem] font-bold tracking-[0.2em] uppercase hover:bg-[rgba(255,255,255,0.05)] md:hover:border-[rgba(214,178,94,0.5)] md:hover:scale-105 transition-all rounded-full">
-                        Ghost
-                      </button>
-                    </div>
-                    <MousePointer2 className="absolute bottom-[-15px] right-8 w-6 h-6 text-[var(--bone)] opacity-60 -rotate-12 md:group-hover:animate-bounce" />
-                  </div>
+                <div className="space-y-4 text-sm md:text-base text-white/60 leading-relaxed max-w-md font-light">
+                  <p>
+                    A product designer from Indonesia turning ideas into{" "}
+                    <span className="text-white font-medium">simple</span>,{" "}
+                    <span className="text-white font-medium">elegant</span>, and{" "}
+                    <span className="text-[#D6B25E] font-medium">
+                      fun-to-use
+                    </span>{" "}
+                    digital experiences.
+                  </p>
+                  <p>
+                    I work where design meets code — making interfaces feel
+                    intentional and alive.
+                  </p>
                 </div>
               </div>
-            </FadeUp>
-          </div>
 
-          {/* Divider */}
-          <div className="flex items-center gap-6 mb-16 md:mb-24 opacity-90">
-            <div className="flex-1 h-px bg-[rgba(214,178,94,0.18)]" />
-            <span className="f-mono text-[0.6rem] tracking-[0.3em] uppercase text-[rgba(214,178,94,0.92)]">
-              Academic Pathway
-            </span>
-            <div className="flex-1 h-px bg-[rgba(214,178,94,0.18)]" />
-          </div>
-
-          {/* Timeline Header */}
-          <FadeUp className="text-center mb-16 md:mb-24">
-            <h3 className="f-display text-[clamp(2.5rem,5vw,4.5rem)] font-light italic text-[var(--bone)] leading-none mb-4">
-              Educational{" "}
-              <span className="font-bold not-italic text-[var(--metal2)] drop-shadow-[0_0_15px_rgba(242,216,154,0.18)]">
-                Journey.
-              </span>
-            </h3>
-            <p className="f-sans text-[0.8rem] text-[rgba(154,148,138,0.95)] max-w-md mx-auto leading-relaxed">
-              Shaping technical skills and creative thinking through structured
-              learning.
-            </p>
+              <div className="flex flex-wrap gap-3 mt-12 relative z-10">
+                {introTags.map((t) => (
+                  <span
+                    key={t}
+                    className="text-[0.6rem] tracking-[0.2em] uppercase px-4 py-2 rounded-full border border-white/10 bg-white/5 hover:bg-[#D6B25E] hover:text-black hover:border-[#D6B25E] transition-all duration-300 font-mono font-semibold cursor-default"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
           </FadeUp>
 
-          {/* Timeline */}
-          <div className="relative max-w-4xl mx-auto px-4 md:px-0">
-            <div className="absolute left-[38px] md:left-1/2 top-0 bottom-0 w-px bg-[rgba(214,178,94,0.16)] md:-translate-x-1/2 z-0" />
-            <motion.div
-              initial={{ scaleY: 0 }}
-              whileInView={{ scaleY: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.8, ease: "easeOut" }}
-              className="absolute left-[38px] md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[var(--metal)] to-transparent md:-translate-x-1/2 z-0 origin-top opacity-70 transform-gpu"
-            />
+          {/* Experience */}
+          <FadeUp delay={0.2} className="md:col-span-1">
+            <div className="h-full p-8 flex flex-col items-center justify-center text-center min-h-[220px] rounded-3xl bg-gradient-to-br from-white/[0.03] to-transparent border border-white/[0.05] hover:border-[#D6B25E]/30 transition-all duration-500 group relative overflow-hidden backdrop-blur-md">
+              <Sparkles className="absolute top-4 right-4 w-4 h-4 text-[#D6B25E] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <span className="text-6xl md:text-7xl font-bold italic text-transparent bg-clip-text bg-gradient-to-b from-[#D6B25E] to-[#A38543] mb-3 group-hover:scale-110 transition-transform duration-500">
+                2+
+              </span>
+              <span className="text-[0.6rem] tracking-[0.3em] uppercase text-white/50 font-mono">
+                Years Exp.
+              </span>
+            </div>
+          </FadeUp>
 
-            <div className="space-y-16 md:space-y-24">
-              {educationData.map((item, i) => {
-                const isLeft = i % 2 === 0;
-                const isCurrent = item.status === "current";
+          {/* Projects */}
+          <FadeUp delay={0.3} className="md:col-span-1">
+            <div className="h-full p-8 flex flex-col items-center justify-center text-center min-h-[220px] rounded-3xl bg-gradient-to-bl from-white/[0.03] to-transparent border border-white/[0.05] hover:border-[#D45D3A]/30 transition-all duration-500 group relative overflow-hidden backdrop-blur-md">
+              <span className="text-6xl md:text-7xl font-bold text-white/90 mb-3 group-hover:scale-110 transition-transform duration-500">
+                10+
+              </span>
+              <span className="text-[0.6rem] tracking-[0.3em] uppercase text-white/50 font-mono">
+                Projects Done
+              </span>
+            </div>
+          </FadeUp>
 
-                return (
-                  <div
-                    key={item.id}
-                    className={`relative flex flex-col md:flex-row items-start ${isLeft ? "md:justify-start" : "md:justify-end"}`}
-                  >
-                    {/* Node (rounded) */}
-                    <div className="absolute left-[38px] md:left-1/2 top-6 md:top-10 -translate-x-1/2 z-10 flex flex-col items-center">
-                      <div
-                        className={`w-12 h-12 rounded-2xl border bg-[rgba(7,7,10,0.88)] backdrop-blur-md flex items-center justify-center shadow-[0_0_20px_rgba(0,0,0,0.5)] md:hover:scale-110 transition-transform ${
-                          isCurrent
-                            ? "border-[rgba(214,178,94,0.55)]"
-                            : "border-[rgba(214,178,94,0.22)]"
-                        }`}
-                      >
-                        <div
-                          className={`w-3 h-3 rounded-full ${
-                            isCurrent
-                              ? "bg-[#3DDC84] shadow-[0_0_15px_rgba(61,220,132,0.85)]"
-                              : "bg-[rgba(154,148,138,0.7)]"
-                          }`}
-                        />
-                      </div>
-                      <span
-                        className={`f-mono text-[0.55rem] tracking-[0.28em] mt-4 font-bold ${isCurrent ? "text-[var(--metal)]" : "text-[rgba(154,148,138,0.9)]"}`}
-                      >
-                        {item.index}
-                      </span>
-                    </div>
+          {/* Terminal */}
+          <FadeUp delay={0.4} className="md:col-span-2">
+            <div className="h-full p-6 md:p-8 rounded-3xl bg-[#0a0a0f] border border-white/[0.08] hover:border-white/[0.15] transition-all duration-500 group relative shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
+              <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/[0.05]">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-[#FF5F56] shadow-[0_0_10px_rgba(255,95,86,0.5)]" />
+                  <div className="w-3 h-3 rounded-full bg-[#FFBD2E] shadow-[0_0_10px_rgba(255,189,46,0.5)]" />
+                  <div className="w-3 h-3 rounded-full bg-[#27C93F] shadow-[0_0_10px_rgba(39,201,63,0.5)]" />
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[0.6rem] tracking-[0.2em] text-white/40 uppercase font-mono">
+                    philosophy.ts
+                  </span>
+                </div>
+              </div>
 
-                    {/* Content card - UI Desktop Enhance */}
-                    <FadeUp
-                      delay={0.12}
-                      className={`w-full pl-24 md:pl-0 md:w-[45%] ${isLeft ? "md:pr-20" : "md:pl-20"}`}
+              <div className="font-mono text-[0.75rem] md:text-[0.85rem] leading-[2] text-white/70">
+                <p>
+                  <span className="text-[#C678DD]">const</span>{" "}
+                  <span className="text-[#E5C07B]">philosophy</span>{" "}
+                  <span className="text-[#56B6C2]">=</span> {"{"}
+                </p>
+                <p className="pl-6">
+                  <span className="text-[#E06C75]">quality</span>:{" "}
+                  <span className="text-[#98C379]">"uncompromised"</span>,
+                </p>
+                <p className="pl-6">
+                  <span className="text-[#E06C75]">efficiency</span>:{" "}
+                  <span className="text-[#D19A66]">true</span>,
+                </p>
+                <p className="pl-6">
+                  <span className="text-[#E06C75]">userFirst</span>:{" "}
+                  <span className="text-[#D19A66]">true</span>,
+                </p>
+                <p>
+                  {"}"}; <span className="animate-pulse text-[#61AFEF]">_</span>
+                </p>
+              </div>
+              <Code2 className="absolute bottom-6 right-6 w-16 h-16 text-white/[0.02] group-hover:text-white/[0.05] transition-colors duration-500 pointer-events-none" />
+            </div>
+          </FadeUp>
+
+          {/* Design Skills */}
+          <FadeUp delay={0.5} className="md:col-span-1 lg:col-span-1">
+            <div className="h-full p-6 md:p-8 flex flex-col justify-between min-h-[280px] rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-[#D6B25E]/30 transition-all duration-500 group relative backdrop-blur-md">
+              <div className="relative z-10">
+                <div className="w-12 h-12 rounded-2xl bg-[#D6B25E]/10 border border-[#D6B25E]/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#D6B25E] group-hover:rotate-6 transition-all duration-500">
+                  <PenTool className="w-5 h-5 text-[#D6B25E] group-hover:text-black transition-colors" />
+                </div>
+                <h4 className="text-2xl font-semibold italic text-white/90 mb-1">
+                  Design
+                </h4>
+                <p className="text-[0.6rem] text-white/50 uppercase tracking-[0.2em] font-mono mb-8">
+                  insight → impact
+                </p>
+              </div>
+
+              <div className="space-y-6 relative z-10">
+                <div>
+                  <div className="flex justify-between text-[0.6rem] font-mono tracking-[0.15em] mb-3 uppercase">
+                    <span className="text-white/60">Figma</span>
+                    <span className="text-[#D6B25E] font-bold">95%</span>
+                  </div>
+                  <MeterBar pct={95} color="#D6B25E" delay={0.2} />
+                </div>
+                <div>
+                  <div className="flex justify-between text-[0.6rem] font-mono tracking-[0.15em] mb-3 uppercase">
+                    <span className="text-white/60">Canva</span>
+                    <span className="text-[#D6B25E] font-bold">80%</span>
+                  </div>
+                  <MeterBar pct={80} color="#D6B25E" delay={0.3} />
+                </div>
+              </div>
+            </div>
+          </FadeUp>
+
+          {/* Frontend Skills */}
+          <FadeUp delay={0.6} className="md:col-span-1 lg:col-span-1">
+            <div className="h-full p-6 md:p-8 flex flex-col justify-between min-h-[280px] rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-[#35d0ff]/30 transition-all duration-500 group relative backdrop-blur-md">
+              <div className="relative z-10">
+                <div className="w-12 h-12 rounded-2xl bg-[#35d0ff]/10 border border-[#35d0ff]/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#35d0ff] group-hover:-rotate-6 transition-all duration-500">
+                  <Code2 className="w-5 h-5 text-[#35d0ff] group-hover:text-black transition-colors" />
+                </div>
+                <h4 className="text-2xl font-semibold italic text-white/90 mb-1">
+                  Frontend
+                </h4>
+                <p className="text-[0.6rem] text-white/50 uppercase tracking-[0.2em] font-mono mb-8">
+                  concept → code
+                </p>
+              </div>
+
+              <div className="space-y-6 relative z-10">
+                <div>
+                  <div className="flex justify-between text-[0.6rem] font-mono tracking-[0.15em] mb-3 uppercase">
+                    <span className="text-white/60">React.js</span>
+                    <span className="text-[#35d0ff] font-bold">90%</span>
+                  </div>
+                  <MeterBar pct={90} color="#35d0ff" delay={0.3} />
+                </div>
+                <div>
+                  <div className="flex justify-between text-[0.6rem] font-mono tracking-[0.15em] mb-3 uppercase">
+                    <span className="text-white/60">JavaScript</span>
+                    <span className="text-[#35d0ff] font-bold">85%</span>
+                  </div>
+                  <MeterBar pct={85} color="#35d0ff" delay={0.4} />
+                </div>
+              </div>
+            </div>
+          </FadeUp>
+        </div>
+
+        {/* Divider */}
+        <div className="flex items-center gap-6 mb-20 opacity-80">
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[#D6B25E]/30 to-[#D6B25E]/30" />
+          <span className="text-[0.65rem] tracking-[0.3em] uppercase text-[#D6B25E] font-mono font-semibold">
+            Academic Pathway
+          </span>
+          <div className="flex-1 h-px bg-gradient-to-l from-transparent via-[#D6B25E]/30 to-[#D6B25E]/30" />
+        </div>
+
+        {/* Timeline Header */}
+        <FadeUp className="text-center mb-20">
+          <h3 className="text-[clamp(2.5rem,5vw,4.5rem)] font-light italic text-white/90 leading-tight mb-4">
+            Educational{" "}
+            <span className="font-bold not-italic text-transparent bg-clip-text bg-gradient-to-r from-[#D6B25E] to-[#A38543]">
+              Journey.
+            </span>
+          </h3>
+          <p className="text-sm md:text-base text-white/50 max-w-lg mx-auto leading-relaxed font-light">
+            Shaping technical skills and creative thinking through structured
+            learning.
+          </p>
+        </FadeUp>
+
+        {/* Timeline */}
+        <div className="relative max-w-5xl mx-auto px-4 md:px-0 pb-10">
+          {/* Main Line */}
+          <div className="absolute left-[39px] md:left-1/2 top-0 bottom-0 w-px bg-white/10 md:-translate-x-1/2 z-0" />
+          <motion.div
+            initial={{ scaleY: 0 }}
+            whileInView={{ scaleY: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="absolute left-[38px] md:left-1/2 top-0 bottom-0 w-[3px] bg-gradient-to-b from-[#D6B25E] via-[#D6B25E]/50 to-transparent md:-translate-x-1/2 z-0 origin-top shadow-[0_0_15px_rgba(214,178,94,0.5)]"
+          />
+
+          <div className="space-y-20 md:space-y-32">
+            {educationData.map((item, i) => {
+              const isLeft = i % 2 === 0;
+              const isCurrent = item.status === "current";
+
+              return (
+                <div
+                  key={item.id}
+                  className={`relative flex flex-col md:flex-row items-start ${isLeft ? "md:justify-start" : "md:justify-end"}`}
+                >
+                  {/* Node */}
+                  <div className="absolute left-[39px] md:left-1/2 top-8 md:top-12 -translate-x-1/2 z-10 flex flex-col items-center">
+                    <div
+                      className={`w-14 h-14 rounded-full bg-[#0a0a0f] flex items-center justify-center border-4 shadow-xl transition-transform duration-500 hover:scale-110 ${
+                        isCurrent
+                          ? "border-[#D6B25E] shadow-[0_0_20px_rgba(214,178,94,0.4)]"
+                          : "border-white/10"
+                      }`}
                     >
-                      <div className="ab-card p-6 md:p-10 group relative md:transition-all md:duration-500 md:hover:-translate-y-2 md:hover:shadow-[0_20px_40px_-15px_rgba(214,178,94,0.2)] md:hover:border-[rgba(214,178,94,0.3)]">
-                        <div className="ab-film" />
-                        <div className="ab-sheen" />
-                        <div className="ab-halftone" />
-                        <div
-                          className="ab-screw"
-                          style={{ top: 12, left: 12 }}
-                        />
-                        <div
-                          className="ab-screw"
-                          style={{ top: 12, right: 12 }}
-                        />
-                        <div className="ab-reg ab-tl" />
-                        <div className="ab-reg ab-tr" />
-                        <div className="ab-reg ab-bl" />
-                        <div className="ab-reg ab-br" />
+                      <div
+                        className={`w-4 h-4 rounded-full ${
+                          isCurrent
+                            ? "bg-[#D6B25E] animate-pulse"
+                            : "bg-white/30"
+                        }`}
+                      />
+                    </div>
+                  </div>
 
-                        <div
-                          className={`absolute top-0 bottom-0 w-[3px] bg-[var(--metal)] opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 ${isLeft ? "right-0" : "left-0"}`}
-                        />
+                  {/* Content card */}
+                  <FadeUp
+                    delay={0.1}
+                    className={`w-full pl-28 md:pl-0 md:w-[42%] ${isLeft ? "md:pr-24" : "md:pl-24"}`}
+                  >
+                    <div className="p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-[#D6B25E]/30 transition-all duration-500 hover:-translate-y-2 hover:bg-white/[0.04] backdrop-blur-md relative overflow-hidden group">
+                      {/* Subtle hover gradient inside card */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#D6B25E]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                        <div className="relative z-10 flex items-center gap-4 mb-6">
+                      <div className="relative z-10">
+                        <div className="flex items-center gap-3 mb-6">
                           <div
-                            className={`flex items-center gap-2 px-4 py-2 rounded-full border f-mono text-[0.55rem] tracking-[0.2em] font-semibold uppercase ${
+                            className={`flex items-center gap-2 px-4 py-1.5 rounded-full border text-[0.6rem] tracking-[0.2em] font-semibold uppercase font-mono ${
                               isCurrent
-                                ? "border-[rgba(214,178,94,0.45)] text-[var(--metal)] bg-[rgba(214,178,94,0.10)]"
-                                : "border-[rgba(214,178,94,0.20)] text-[rgba(244,240,232,0.9)] bg-[rgba(255,255,255,0.02)]"
+                                ? "border-[#D6B25E]/40 text-[#D6B25E] bg-[#D6B25E]/10"
+                                : "border-white/10 text-white/60 bg-white/5"
                             }`}
                           >
-                            <Calendar className="w-3.5 h-3.5" />
+                            <Calendar className="w-3 h-3" />
                             {item.period}
                           </div>
-
                           {isCurrent && (
-                            <div className="relative flex h-2.5 w-2.5">
-                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#3DDC84] opacity-75" />
-                              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#3DDC84]" />
+                            <div className="relative flex h-2 w-2">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D6B25E] opacity-75" />
+                              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#D6B25E]" />
                             </div>
                           )}
                         </div>
 
-                        <h4
-                          className={`relative z-10 f-display text-2xl md:text-3xl mb-3 leading-snug ${isCurrent ? "font-semibold italic text-[var(--bone)]" : "text-[rgba(244,240,232,0.92)] md:group-hover:text-[var(--bone)] transition-colors"}`}
-                        >
+                        <h4 className="text-2xl md:text-3xl font-semibold mb-2 text-white/90 leading-tight">
                           {item.school}
                         </h4>
 
-                        <p className="relative z-10 f-mono text-[0.65rem] tracking-[0.26em] uppercase text-[var(--metal)] mb-6 font-bold opacity-90">
+                        <p className="text-[0.65rem] tracking-[0.2em] uppercase text-[#D6B25E] mb-6 font-mono font-bold">
                           {item.role}
                         </p>
 
-                        <div className="relative z-10 w-12 h-[2px] bg-[rgba(214,178,94,0.28)] mb-6 md:group-hover:w-24 md:group-hover:bg-[rgba(214,178,94,0.6)] transition-all duration-500" />
-
-                        <p className="relative z-10 f-sans text-[0.82rem] text-[rgba(244,240,232,0.86)] leading-[1.85]">
+                        <p className="text-sm text-white/60 leading-relaxed font-light">
                           {item.desc}
                         </p>
                       </div>
-                    </FadeUp>
-                  </div>
-                );
-              })}
-            </div>
+                    </div>
+                  </FadeUp>
+                </div>
+              );
+            })}
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
 

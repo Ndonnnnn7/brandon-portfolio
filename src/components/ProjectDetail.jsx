@@ -280,7 +280,7 @@ const ProjectDetail = () => {
             <motion.button
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
-              onClick={() => navigate(-1)}
+              onClick={() => navigate("/#project")}
               className="group flex items-center gap-3 text-[rgba(154,148,138,0.95)] md:hover:text-[var(--metal)] transition-colors mb-12"
             >
               <div className="p-2 rounded-full border border-[rgba(214,178,94,0.20)] bg-[rgba(255,255,255,0.03)] md:group-hover:bg-[rgba(214,178,94,0.15)] md:group-hover:border-[rgba(214,178,94,0.4)] transition-all">
@@ -301,11 +301,6 @@ const ProjectDetail = () => {
                 <span className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[rgba(244,240,232,0.8)] flex items-center gap-2 backdrop-blur-md md:hover:bg-white/10 md:hover:text-white transition-colors cursor-default">
                   <Calendar className="w-4 h-4 text-[rgba(154,148,138,0.95)]" />
                   <span className="f-mono text-[0.6rem] tracking-[0.22em] uppercase">{project.year}</span>
-                </span>
-
-                <span className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[rgba(244,240,232,0.8)] flex items-center gap-2 backdrop-blur-md md:hover:bg-white/10 md:hover:border-[var(--haze)] transition-colors cursor-default">
-                  <Sparkles className="w-4 h-4 text-[var(--haze)]" />
-                  <span className="f-mono text-[0.6rem] tracking-[0.22em] uppercase">Case Study</span>
                 </span>
               </motion.div>
 
