@@ -16,6 +16,19 @@ const FadeUp = ({ children, delay = 0, className = "" }) => (
   </motion.div>
 );
 
+const staggerRow = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (index) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.65,
+      delay: index * 0.05,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  }),
+};
+
 /* ─── MAIN COMPONENT ────────────────────────────────────────────── */
 const Achievements = () => {
   const sectionRef = useRef(null);
@@ -102,7 +115,13 @@ const Achievements = () => {
 
               {/* Data Status Block */}
               <div className="w-full lg:w-auto mt-8 lg:mt-0">
-                <div className="bg-white text-black p-6 border-2 border-black transform md:rotate-2 shadow-[8px_8px_0px_rgba(204,255,0,0.5)]">
+                <motion.div
+                  initial={{ opacity: 0, y: 24, rotate: 1.5 }}
+                  whileInView={{ opacity: 1, y: 0, rotate: 2 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                  className="bg-white text-black p-6 border-2 border-black transform md:rotate-2 shadow-[8px_8px_0px_rgba(204,255,0,0.5)]"
+                >
                   <div className="flex justify-between items-center border-b border-black/20 pb-2 mb-4">
                      <span className="font-mono text-[10px] font-bold uppercase">Total Awards</span>
                      <span className="font-black text-2xl text-[#FF3355]">{competitions.length}</span>
@@ -111,7 +130,7 @@ const Achievements = () => {
                      <span className="font-mono text-[10px] font-bold uppercase">Licenses</span>
                      <span className="font-black text-2xl">{certifications.length}</span>
                   </div>
-                </div>
+                </motion.div>
               </div>
 
             </div>
@@ -137,7 +156,14 @@ const Achievements = () => {
 
             return (
               <FadeUp key={item.id} delay={idx * 0.05}>
-                <div className={`relative border-b border-white/10 transition-colors duration-300 ${isActive ? "bg-white/[0.03]" : ""}`}>
+                <motion.div
+                  custom={idx}
+                  variants={staggerRow}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-60px" }}
+                  className={`relative border-b border-white/10 transition-colors duration-300 ${isActive ? "bg-white/[0.03]" : ""}`}
+                >
                   
                   {/* ROW HEADER (Clickable) */}
                   <div 
@@ -211,7 +237,7 @@ const Achievements = () => {
                     )}
                   </AnimatePresence>
 
-                </div>
+                </motion.div>
               </FadeUp>
             );
           })}
