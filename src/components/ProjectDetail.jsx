@@ -1,221 +1,78 @@
-import React, { useEffect, useRef, useMemo } from "react";
+import React, { useEffect, useRef, useMemo, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { motion, useScroll, useTransform } from "framer-motion";
-import {
-  ArrowLeft,
-  Github,
-  ArrowUpRight,
-  ExternalLink,
-  Layers,
-  Calendar,
-  ImageIcon,
-  Sparkles,
-  Code2,
-  CornerDownRight,
-} from "lucide-react";
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
+import { ArrowLeft, Github, ArrowUpRight, ExternalLink, Camera, Database } from "lucide-react";
 import { FaFigma } from "react-icons/fa";
+import { projectsData } from "../data/projects";
 
-const projectsData = [
-  {
-    id: 1,
-    title: "InterStellar",
-    category: "Front End",
-    image: "/img/Interstellar.png",
-    gallery: ["/img/projects/InterStellar1.png", "/img/projects/InterStellar2.png"],
-    description: "Website to explore everything from tiny particles to the universe with AI.",
-    fullDescription:
-      "InterStellar is an educational platform designed to bridge the gap between complex scientific data and students. Using Three.js for immersive 3D visualizations and OpenAI's API to generate explanations, users can zoom from the atomic level out to the observable universe. The main challenge was optimizing the 3D rendering to run smoothly on average devices while maintaining high-fidelity visuals.",
-    tech: ["Three.js", "OpenAI API", "React", "TailwindCSS"],
-    role: "Front End Developer",
-    year: "2025",
-    links: {
-      demo: "https://interstellar-phi-beryl.vercel.app/",
-      github: "https://github.com/SakaGintoki/Interstellar",
-      figma: "#",
-    },
-  },
-  {
-    id: 2,
-    title: "Masakin Application",
-    category: "Front End",
-    image: "/img/Masakin1.png",
-    description: "Application with a chatbot to check calories, get recipes, and buy ingredients instantly.",
-    fullDescription:
-      "Masakin is a comprehensive culinary companion app designed to simplify meal planning. It integrates a smart chatbot that suggests recipes based on available ingredients and dietary restrictions. The app also features a calorie tracker and an instant ingredient purchasing system connected to local vendors.",
-    tech: ["Kotlin", "Jetpack Compose", "Firebase", "Figma"],
-    role: "Mobile Developer & UI/UX Designer",
-    year: "2025",
-    links: { demo: "#", github: "#", figma: "#" },
-  },
-  {
-    id: 3,
-    title: "Hack.id",
-    category: "Front End",
-    image: "/img/Hack.id.png",
-    description: "AI-powered website that helps you discover hackathon events from around the world.",
-    fullDescription:
-      "Hack.id aggregates hackathon events globally, providing a centralized platform for developers to find competitions. The AI component personalizes recommendations based on the user's tech stack and interests, ensuring they find the most relevant events to boost their skills.",
-    tech: ["Figma", "Prototyping", "User Testing"],
-    role: "Front End Developer",
-    year: "2024",
-    links: { demo: "#", github: "https://github.com/DarveshAziz/Hack.id", figma: "#" },
-  },
-  {
-    id: 4,
-    title: "DeafSpace",
-    category: "UI/UX",
-    image: "/img/DeafSpace.png",
-    description: "App that allows deaf individuals to easily order sign language interpreters.",
-    fullDescription:
-      "DeafSpace addresses the communication barrier faced by the deaf community. This app provides an on-demand service to book certified sign language interpreters for various needs. The design focuses on high accessibility and visual clarity.",
-    tech: ["Figma", "Prototyping", "User Testing"],
-    role: "UI/UX Designer",
-    year: "2024",
-    links: { demo: "#", github: "#", figma: "#" },
-  },
-  {
-    id: 5,
-    title: "Kiddora",
-    category: "UI/UX",
-    image: "/img/Kiddora.png",
-    gallery: ["/img/projects/Kiddora1.png", "/img/projects/Kiddora2.png"],
-    description: "A platform that helps families find dependable babysitters to ensure quality care for their little ones.",
-    fullDescription:
-      "Kiddora was born from the need to provide parents with a safe, transparent way to find childcare. We focused heavily on the trust factor—implementing rigorous verification badges in the UI and creating a soothing, trustworthy color palette.",
-    tech: ["Figma", "Prototyping", "User Testing"],
-    role: "UI/UX Designer",
-    year: "2025",
-    links: { demo: "#", github: "#", figma: "#" },
-  },
-  {
-    id: 6,
-    title: "Furever Pet Care",
-    category: "UI/UX",
-    image: "/img/Furever.png",
-    gallery: ["/img/projects/Furever1.png"],
-    description: "App for pet services, providing care and support to ensure the well-being of animals.",
-    fullDescription:
-      "Furever Pet Care creates an ecosystem for pet owners, connecting them with vets, groomers, and pet sitters. The project emphasized creating a friendly, calming user interface that reduces the stress often associated with finding emergency pet care.",
-    tech: ["Figma", "Prototyping", "User Testing"],
-    role: "UI/UX Designer",
-    year: "2024",
-    links: { demo: "#", github: "#", figma: "#" },
-  },
-  {
-    id: 7,
-    title: "Infotional",
-    category: "UI/UX",
-    image: "/img/Infotional.png",
-    description: "App that helps students access scholarships, mentorship, and various educational resources.",
-    fullDescription:
-      "Infotional is designed to democratize access to educational opportunities. By aggregating scholarships and mentorship programs, it helps students find the support they need.",
-    tech: ["Figma", "Prototyping", "User Testing"],
-    role: "UI/UX Designer",
-    year: "2024",
-    links: { demo: "#", github: "#", figma: "#" },
-  },
-  {
-    id: 8,
-    title: "LittleSteps",
-    category: "Front End",
-    image: "/img/LittleKids.png",
-    gallery: ["/img/projects/LittleSteps1.png", "/img/projects/LittleSteps2.png"],
-    description: "App that helps parents find trusted babysitters, ensuring quality care.",
-    fullDescription:
-      "LittleSteps translates the UI/UX concepts of childcare into a functional frontend application. The focus was on building responsive layouts and ensuring the booking flow was seamless on mobile devices.",
-    tech: ["Figma", "Prototyping", "User Testing"],
-    role: "UI/UX Designer",
-    year: "2024",
-    links: { demo: "#", github: "https://github.com/SakaGintoki/LittleSteps", figma: "#" },
-  },
-  {
-    id: 9,
-    title: "WeCare",
-    category: "UI/UX",
-    image: "/img/WeCare.png",
-    description: "App that enables victims of sexual harassment to quickly contact the police or authorities.",
-    fullDescription:
-      "WeCare is a critical safety application designed with a panic button feature. The UI is designed to be accessible under high-stress situations, with large, clear interactions and a stealth mode for user safety.",
-    tech: ["Figma", "Prototyping", "User Testing"],
-    role: "UI/UX Designer",
-    year: "2024",
-    links: { demo: "#", github: "#", figma: "#" },
-  },
-  {
-    id: 10,
-    title: "Bundaku",
-    category: "UI/UX",
-    image: "/img/Bundaku.png",
-    gallery: ["/img/projects/Bundaku1.png"],
-    description: "App for moms and babies, for pregnancy monitoring and stunting prevention.",
-    fullDescription:
-      "Bundaku focuses on maternal and child health in Indonesia. It provides tracking tools for pregnancy and child growth to prevent stunting.",
-    tech: ["Figma", "Prototyping", "User Testing"],
-    role: "UI/UX Designer",
-    year: "2024",
-    links: { demo: "#", github: "#", figma: "#" },
-  },
-  {
-    id: 11,
-    title: "Legana",
-    category: "UI/UX",
-    image: "/img/Legana.png",
-    gallery: ["/img/projects/Legana1.png", "/img/projects/Legana2.png"],
-    description: "App that analyzes legal documents or issues from photos or text and suggests relevant laws.",
-    fullDescription:
-      "Legana simplifies legal literacy. By allowing users to upload documents or describe issues, the app suggests relevant laws and actions.",
-    tech: ["Figma", "Prototyping", "User Testing"],
-    role: "UI/UX Designer",
-    year: "2025",
-    links: { demo: "#", github: "#", figma: "#" },
-  },
-  {
-    id: 12,
-    title: "Sehat Mental UB",
-    category: "UI/UX",
-    image: "/img/Sehatmental.png",
-    description: "A platform designed to help students access emotional and psychological support.",
-    fullDescription:
-      "Sehat Mental UB connects students with counselors and self-help resources. The design prioritizes privacy, calmness, and ease of access to emergency hotlines.",
-    tech: ["Figma", "Prototyping", "User Testing"],
-    role: "UI/UX Designer",
-    year: "2025",
-    links: { demo: "#", github: "#", figma: "#" },
-  },
-  {
-    id: 13,
-    title: "Detection License Plate",
-    category: "Data",
-    image: "/img/plate.avif",
-    description: "Using a YOLOv8 model to detect vehicle license plates and EasyOCR to read the plate text.",
-    fullDescription:
-      "Automated number plate recognition (ANPR). YOLOv8 detects plates in real-time. EasyOCR extracts alphanumeric characters for parking/traffic monitoring.",
-    tech: ["Python", "YOLOv8", "EasyOCR", "Computer Vision"],
-    role: "AI Engineer",
-    year: "2025",
-    links: { demo: "#", github: "#", figma: "#" },
-  },
-  {
-    id: 14,
-    title: "Senggreng Tourism Website",
-    category: "Front End",
-    image: "/img/desasenggreng.png",
-    description: "A tourism website for Senggreng Village, showcasing tourist attractions and restaurants.",
-    fullDescription:
-      "Digital portal for Senggreng Village tourism. Showcases attractions, culinary spots, and homestays. Built with React, responsive layouts, and maps to guide tourists.",
-    tech: ["Three.js", "API", "React"],
-    role: "Front End Developer",
-    year: "2025",
-    links: { demo: "https://desa-senggreng.vercel.app/home", github: "https://github.com/Weedanta/Desa-Senggreng", figma: "#" },
-  },
-];
+const BrutalistCursor = () => {
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
+  const springConfig = { damping: 25, stiffness: 400, mass: 0.5 };
+  const cursorXSpring = useSpring(cursorX, springConfig);
+  const cursorYSpring = useSpring(cursorY, springConfig);
+  const [isHovering, setIsHovering] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+
+    const moveCursor = (e) => {
+      cursorX.set(e.clientX - 16);
+      cursorY.set(e.clientY - 16);
+    };
+
+    const handleMouseOver = (e) => {
+      const tagName = e.target.tagName.toLowerCase();
+      setIsHovering(tagName === "a" || tagName === "button");
+    };
+
+    window.addEventListener("mousemove", moveCursor);
+    window.addEventListener("mouseover", handleMouseOver);
+    return () => {
+      window.removeEventListener("mousemove", moveCursor);
+      window.removeEventListener("mouseover", handleMouseOver);
+    };
+  }, [cursorX, cursorY]);
+
+  return (
+    <motion.div
+      className="hidden md:flex fixed top-0 left-0 w-8 h-8 pointer-events-none z-[9999] mix-blend-difference items-center justify-center border-2 border-white"
+      style={{ x: cursorXSpring, y: cursorYSpring }}
+      animate={{
+        scale: isHovering ? 2.5 : 1,
+        backgroundColor: isHovering ? "white" : "transparent",
+        borderRadius: isHovering ? "0%" : "50%",
+      }}
+      transition={{ type: "spring", stiffness: 200, damping: 20 }}
+    >
+      <motion.span
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isHovering ? 1 : 0 }}
+        className="text-[4px] text-black font-black uppercase tracking-widest mix-blend-normal"
+      >
+        ACT
+      </motion.span>
+    </motion.div>
+  );
+};
+
+const FadeUp = ({ children, delay = 0, className = "" }) => (
+  <motion.div
+    className={className}
+    initial={{ opacity: 0, y: 40 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-50px" }}
+    transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay }}
+  >
+    {children}
+  </motion.div>
+);
 
 const ProjectDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const containerRef = useRef(null);
 
-  // Semua HOOKS dideklarasikan di sini sebelum kondisi apapun
   const project = useMemo(
     () => projectsData.find((p) => p.id === parseInt(id, 10)),
     [id]
@@ -223,8 +80,10 @@ const ProjectDetail = () => {
 
   const next = useMemo(() => {
     if (!project) return null;
-    const nextId = project.id === projectsData.length ? 1 : project.id + 1;
-    return projectsData.find((p) => p.id === nextId);
+    const visibleProjects = projectsData.filter((item) => item.showInGrid !== false);
+    const currentIndex = visibleProjects.findIndex((item) => item.id === project.id);
+    const nextIndex = currentIndex === visibleProjects.length - 1 ? 0 : currentIndex + 1;
+    return visibleProjects[nextIndex] ?? null;
   }, [project]);
 
   useEffect(() => {
@@ -232,388 +91,252 @@ const ProjectDetail = () => {
   }, [id]);
 
   const { scrollYProgress } = useScroll();
-  const yParallax = useTransform(scrollYProgress, [0, 0.35], ["0%", "10%"]);
-  const titleY = useTransform(scrollYProgress, [0, 0.22], ["0px", "22px"]);
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.22], [1, 0.72]);
+  const yParallax = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
 
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 26 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
-  };
-
-  const scaleIn = {
-    hidden: { opacity: 0, scale: 0.975 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 1.05, ease: [0.22, 1, 0.36, 1] },
-    },
-  };
-
-  const stagger = {
-    visible: { transition: { staggerChildren: 0.12 } },
-  };
-
-  // ✅ PERBAIKAN: Tidak ada early return yang mengacaukan siklus Hooks
   return (
     <>
       {!project ? (
-        <div className="min-h-screen flex flex-col gap-4 items-center justify-center text-[var(--bone)] bg-[var(--bg)]">
-          <p className="text-xl text-[rgba(244,240,232,0.7)]">Project not found.</p>
+        <div className="min-h-screen flex flex-col gap-4 items-center justify-center text-white bg-[#050505] font-mono">
+          <p className="text-xl text-[#FF3355]">[ ERROR: NODE NOT FOUND ]</p>
           <button
             onClick={() => navigate("/")}
-            className="px-6 py-2 rounded-full border border-[rgba(214,178,94,0.3)] bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition-colors"
+            className="px-6 py-3 border-2 border-white transition-colors uppercase tracking-widest text-xs font-bold"
           >
-            Go Back Home
+            RETURN_TO_BASE
           </button>
         </div>
       ) : (
         <article
           ref={containerRef}
-          className="min-h-screen w-full text-[var(--bone)] relative overflow-hidden selection:bg-[rgba(124,58,237,0.35)] pd-bg pd-grain"
+          className="min-h-screen w-full bg-[#050505] text-white relative overflow-hidden font-sans selection:bg-[#CCFF00] selection:text-black pt-24 pb-32"
         >
-          <div className="pd-blueprint" />
-          <div className="pd-topo" />
-          <div className="pd-vignette" />
+          <BrutalistCursor />
 
-          <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-8 py-12 md:py-20">
+          <div
+            className="absolute inset-0 z-0 pointer-events-none opacity-[0.04]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+              backgroundSize: "60px 60px",
+            }}
+          />
+
+          <div className="relative z-10 max-w-[1600px] mx-auto px-6 md:px-12">
             <motion.button
-              initial={{ opacity: 0, x: -10 }}
+              initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              onClick={() => navigate("/#project")}
-              className="group flex items-center gap-3 text-[rgba(154,148,138,0.95)] md:hover:text-[var(--metal)] transition-colors mb-12"
+              onClick={() => navigate("/#projects")}
+              className="flex items-center gap-4 text-white/50 transition-colors mb-16 md:mb-24"
             >
-              <div className="p-2 rounded-full border border-[rgba(214,178,94,0.20)] bg-[rgba(255,255,255,0.03)] md:group-hover:bg-[rgba(214,178,94,0.15)] md:group-hover:border-[rgba(214,178,94,0.4)] transition-all">
-                <ArrowLeft className="w-5 h-5 md:group-hover:-translate-x-1.5 transition-transform duration-300" />
+              <div className="w-10 h-10 border-2 border-white/20 flex items-center justify-center transition-colors">
+                <ArrowLeft className="w-5 h-5" />
               </div>
-              <span className="f-mono text-[0.62rem] font-medium tracking-[0.28em] uppercase">
-                Back to Projects
+              <span className="font-mono text-xs font-bold tracking-[0.2em] uppercase">
+                Abort Mission
               </span>
             </motion.button>
 
-            <motion.div initial="hidden" animate="visible" variants={stagger} className="mb-16 md:mb-24">
-              <motion.div variants={fadeInUp} className="flex flex-wrap items-center gap-3 mb-6">
-                <span className="px-4 py-2 rounded-full border border-[rgba(214,178,94,0.22)] bg-[rgba(255,255,255,0.03)] text-[var(--metal2)] flex items-center gap-2 backdrop-blur-md md:hover:bg-[rgba(214,178,94,0.1)] transition-colors cursor-default">
-                  <Layers className="w-4 h-4" />
-                  <span className="f-mono text-[0.6rem] tracking-[0.22em] uppercase">{project.category}</span>
-                </span>
-
-                <span className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[rgba(244,240,232,0.8)] flex items-center gap-2 backdrop-blur-md md:hover:bg-white/10 md:hover:text-white transition-colors cursor-default">
-                  <Calendar className="w-4 h-4 text-[rgba(154,148,138,0.95)]" />
-                  <span className="f-mono text-[0.6rem] tracking-[0.22em] uppercase">{project.year}</span>
-                </span>
-              </motion.div>
-
-              <motion.div style={{ y: titleY, opacity: titleOpacity }}>
-                <motion.h1
-                  variants={fadeInUp}
-                  className="f-display text-[clamp(3.2rem,7.2vw,6.6rem)] leading-[0.92] tracking-tight mb-6"
-                >
-                  <span className="italic">{project.title}</span>{" "}
-                  <span className="outlineText font-black not-italic drop-shadow-[0_0_15px_rgba(214,178,94,0.3)]">.</span>
-                </motion.h1>
-
-                <motion.p
-                  variants={fadeInUp}
-                  className="f-sans text-[1.05rem] md:text-[1.25rem] text-[rgba(244,240,232,0.72)] max-w-3xl leading-relaxed mb-10"
-                >
-                  {project.description}
-                </motion.p>
-              </motion.div>
-
-              <motion.div variants={scaleIn} className="artifact heroWrap md:hover:shadow-[0_20px_50px_-15px_rgba(214,178,94,0.2)] md:transition-shadow duration-700">
-                <div className="sheen md:group-hover:opacity-100" />
-                <span className="screw" style={{ top: 14, left: 14 }} />
-                <span className="screw" style={{ top: 14, right: 14 }} />
-                <span className="screw" style={{ bottom: 14, left: 14 }} />
-                <span className="screw" style={{ bottom: 14, right: 14 }} />
-
-                <div className="relative w-full aspect-video md:aspect-[21/9] rounded-[26px] overflow-hidden group transform-gpu">
-                  <motion.div style={{ y: yParallax }} className="w-full h-full">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover scale-[1.12] transition-transform duration-[1100ms] ease-[cubic-bezier(.22,1,.36,1)] md:group-hover:scale-[1.05] transform-gpu"
-                    />
-                  </motion.div>
-
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#07070a] via-transparent to-transparent opacity-70 pointer-events-none md:group-hover:opacity-40 transition-opacity duration-700" />
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(214,178,94,0.15),transparent_55%),radial-gradient(circle_at_85%_20%,rgba(124,58,237,0.15),transparent_55%)] opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-                  <div className="scanline opacity-30 md:group-hover:opacity-60 transition-opacity" />
-
-                  <div className="absolute top-5 left-5 z-10 flex items-center gap-2 px-3 py-2 rounded-full border border-white/15 bg-black/35 backdrop-blur-md md:group-hover:bg-black/60 transition-colors duration-500">
-                    <Code2 className="w-4 h-4 text-[var(--metal2)]" />
-                    <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-white/85">
-                      Featured
+            <FadeUp>
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b-2 border-white/10 pb-8 mb-12">
+                <div className="max-w-4xl">
+                  <div className="flex items-center gap-4 mb-6 font-mono text-[10px] tracking-widest font-bold uppercase">
+                    <span className="bg-white/10 px-3 py-1 border border-white/20 text-[#CCFF00]">
+                      {project.category}
                     </span>
+                    <span className="text-white/50">DEPLOYED: {project.year}</span>
                   </div>
 
-                  <div className="absolute top-5 right-5 z-10 px-3 py-2 rounded-full border border-white/15 bg-black/35 backdrop-blur-md md:group-hover:bg-black/60 transition-colors duration-500">
-                    <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-white/75">
-                      ID / {String(project.id).padStart(2, "0")}
-                    </span>
-                  </div>
+                  <h1 className="text-[clamp(3.5rem,8vw,7rem)] font-black uppercase leading-[0.85] tracking-tighter text-white mb-6">
+                    {project.title}
+                  </h1>
 
-                  <div className="absolute bottom-5 left-5 right-5 z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                      <span className="w-2 h-2 rounded-full bg-[var(--rust)] opacity-80 md:group-hover:animate-pulse" />
-                      <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-white/80 md:group-hover:text-white transition-colors">
-                        Scroll for details
-                      </span>
+                  <p className="font-mono text-xs md:text-sm text-gray-400 uppercase leading-relaxed max-w-2xl border-l-2 border-[#CCFF00] pl-4">
+                    {project.description}
+                  </p>
+                </div>
+
+                <div className="w-full md:w-auto">
+                  <span className="font-black text-6xl md:text-8xl text-white/5 tracking-tighter select-none">
+                    ID-{String(project.id).padStart(2, "0")}
+                  </span>
+                </div>
+              </div>
+            </FadeUp>
+
+            <FadeUp delay={0.2}>
+              <div className="relative w-full aspect-video border-2 border-white/10 bg-black transition-colors duration-500 overflow-hidden mb-16 md:mb-32">
+                <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-white/30 z-20 transition-colors" />
+                <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-white/30 z-20 transition-colors" />
+
+                <motion.div style={{ y: yParallax }} className="w-full h-[120%] -top-[10%] relative origin-center">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover contrast-125"
+                  />
+                </motion.div>
+
+                <div className="absolute bottom-0 left-0 w-full bg-[#050505] border-t border-white/10 p-2 flex justify-between font-mono text-[8px] uppercase tracking-widest text-white/40">
+                  <span>CAMERA_01 // MAIN_FEED</span>
+                  <span>STATUS: SECURE</span>
+                </div>
+              </div>
+            </FadeUp>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 border-b-2 border-white/10 pb-16 md:pb-32 mb-16 md:mb-32">
+              <div className="lg:col-span-8 flex flex-col gap-8">
+                <FadeUp>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-10 h-10 bg-[#0A0A0A] border border-white/20 flex items-center justify-center">
+                      <Database className="w-5 h-5 text-white/50" />
                     </div>
+                    <h3 className="text-3xl font-black uppercase tracking-tighter">System Overview</h3>
+                  </div>
+                  <p className="font-mono text-sm md:text-base leading-loose text-white/70 uppercase">
+                    {project.fullDescription || project.description}
+                  </p>
+                </FadeUp>
+              </div>
 
-                    {project.links.demo && project.links.demo !== "#" && (
+              <div className="lg:col-span-4 flex flex-col gap-12">
+                <FadeUp>
+                  <div className="border border-white/10 bg-[#0A0A0A] p-6">
+                    <h3 className="font-mono text-[10px] tracking-widest uppercase text-white/40 mb-4 border-b border-white/10 pb-2">
+                      Role Designation
+                    </h3>
+                    <p className="font-black text-xl md:text-2xl uppercase tracking-tighter text-[#CCFF00]">
+                      {project.role}
+                    </p>
+                  </div>
+                </FadeUp>
+
+                <FadeUp delay={0.1}>
+                  <div className="border border-white/10 bg-[#0A0A0A] p-6">
+                    <h3 className="font-mono text-[10px] tracking-widest uppercase text-white/40 mb-4 border-b border-white/10 pb-2">
+                      Tech Stack
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {(project.detailTech || project.tech).map((tech, idx) => (
+                        <span
+                          key={idx}
+                          className="font-mono text-[10px] uppercase tracking-widest font-bold border border-white/20 px-3 py-2 text-white transition-colors cursor-default"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </FadeUp>
+
+                <FadeUp delay={0.2} className="flex flex-col gap-4">
+                  {project.links.demo && project.links.demo !== "#" && (
+                    <a
+                      href={project.links.demo}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-full py-4 border-2 border-white transition-colors flex items-center justify-center gap-4"
+                    >
+                      <span className="font-mono text-xs tracking-[0.2em] uppercase font-bold">
+                        Deploy Live Link
+                      </span>
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  )}
+
+                  <div className="flex gap-4">
+                    {project.links.github && project.links.github !== "#" && (
                       <a
-                        href={project.links.demo}
+                        href={project.links.github}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[rgba(214,178,94,0.26)] bg-[rgba(255,255,255,0.03)] md:hover:bg-[var(--metal)] md:hover:border-[var(--metal)] transition-all duration-500 group/btn"
+                        className="flex-1 py-3 border border-white/20 transition-colors flex items-center justify-center gap-2"
                       >
-                        <ExternalLink className="w-4 h-4 text-[var(--metal2)] md:group-hover/btn:text-black transition-colors" />
-                        <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-white/85 md:group-hover/btn:text-black md:group-hover/btn:font-bold transition-all">
-                          Open live
+                        <Github className="w-4 h-4" />
+                        <span className="font-mono text-[10px] tracking-widest uppercase font-bold">
+                          Source Code
+                        </span>
+                      </a>
+                    )}
+                    {project.links.figma && project.links.figma !== "#" && (
+                      <a
+                        href={project.links.figma}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex-1 py-3 border border-white/20 transition-colors flex items-center justify-center gap-2"
+                      >
+                        <FaFigma className="w-4 h-4" />
+                        <span className="font-mono text-[10px] tracking-widest uppercase font-bold">
+                          Design File
                         </span>
                       </a>
                     )}
                   </div>
-                </div>
-              </motion.div>
-            </motion.div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-              <div className="lg:col-span-8 flex flex-col gap-18">
-                <motion.section
-                  initial={{ opacity: 0, y: 26 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="w-10 h-10 rounded-xl border border-[rgba(214,178,94,0.25)] bg-[rgba(255,255,255,0.03)] flex items-center justify-center">
-                      <Layers className="w-5 h-5 text-[var(--metal2)]" />
-                    </div>
-                    <h3 className="f-display text-3xl md:text-4xl font-semibold italic">
-                      Overview <span className="meshText not-italic">/</span>
-                    </h3>
-                  </div>
-
-                  <div className="artifact p-7 md:p-9 md:hover:shadow-[0_15px_30px_-10px_rgba(214,178,94,0.05)] md:hover:border-[rgba(214,178,94,0.15)] transition-all duration-500">
-                    <div className="sheen" />
-                    <span className="screw" style={{ top: 14, left: 14 }} />
-                    <span className="screw" style={{ top: 14, right: 14 }} />
-                    <span className="screw" style={{ bottom: 14, left: 14 }} />
-                    <span className="screw" style={{ bottom: 14, right: 14 }} />
-
-                    <div className="flex items-start gap-4 md:gap-6">
-                      <div className="hidden md:block w-1.5 min-h-[120px] rounded-full bg-gradient-to-b from-[rgba(214,178,94,0.55)] via-[rgba(124,58,237,0.22)] to-transparent" />
-                      <p className="f-sans text-[1rem] md:text-[1.05rem] leading-loose text-[rgba(244,240,232,0.75)]">
-                        {project.fullDescription || project.description}
-                      </p>
-                    </div>
-
-                    <div className="mt-6 flex items-center gap-2 text-[rgba(154,148,138,0.95)]">
-                      <CornerDownRight className="w-4 h-4" />
-                      <span className="f-mono text-[0.55rem] tracking-[0.24em] uppercase">
-                        role:{" "}
-                        <span className="text-[rgba(244,240,232,0.85)]">{project.role}</span>
-                      </span>
-                    </div>
-                  </div>
-                </motion.section>
-
-                <motion.section
-                  initial={{ opacity: 0, y: 26 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.85, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-                  className="pt-10 border-t border-white/5"
-                >
-                  <div className="flex items-center justify-between gap-6 mb-8">
-                    <h3 className="f-display text-2xl md:text-3xl font-semibold italic flex items-center gap-3">
-                      <ImageIcon className="w-6 h-6 text-[var(--haze)]" />
-                      Snapshots
-                    </h3>
-                    <span className="hidden md:inline-flex px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
-                      <span className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-[rgba(244,240,232,0.75)]">
-                        gallery / {project.gallery?.length ?? 0}
-                      </span>
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-                    {project.gallery && project.gallery.length > 0 ? (
-                      project.gallery.map((img, index) => (
-                        <motion.div
-                          key={index}
-                          className="tile overflow-hidden rounded-[20px] md:hover:-translate-y-2 md:hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.8)] transition-all duration-500 transform-gpu group"
-                          initial={{ opacity: 0, y: 18 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.7, delay: index * 0.08 }}
-                        >
-                          <img
-                            src={img}
-                            loading="lazy"
-                            alt={`${project.title} screenshot ${index + 1}`}
-                            className="w-full h-full object-cover aspect-video transition-transform duration-[900ms] ease-[cubic-bezier(.22,1,.36,1)] md:group-hover:scale-[1.08] transform-gpu"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-70 pointer-events-none md:group-hover:opacity-40 transition-opacity duration-500" />
-                          <div className="absolute bottom-4 left-4 px-3 py-2 rounded-full border border-white/15 bg-black/35 backdrop-blur-md md:group-hover:bg-black/60 transition-colors duration-300">
-                            <span className="f-mono text-[0.52rem] tracking-[0.26em] uppercase text-white/80">
-                              Shot {String(index + 1).padStart(2, "0")}
-                            </span>
-                          </div>
-                        </motion.div>
-                      ))
-                    ) : (
-                      <p className="text-gray-500 italic">No snapshots available.</p>
-                    )}
-                  </div>
-                </motion.section>
-              </div>
-
-              <div className="lg:col-span-4">
-                <div className="sticky top-24 space-y-8">
-                  <div className="artifact p-7 md:hover:shadow-[0_15px_30px_-10px_rgba(214,178,94,0.05)] md:hover:border-[rgba(214,178,94,0.15)] transition-all duration-500">
-                    <div className="sheen" />
-                    <span className="screw" style={{ top: 14, left: 14 }} />
-                    <span className="screw" style={{ top: 14, right: 14 }} />
-
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="w-10 h-10 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
-                        <Sparkles className="w-5 h-5 text-[var(--metal2)]" />
-                      </div>
-                      <div>
-                        <p className="f-mono text-[0.55rem] tracking-[0.26em] uppercase text-[rgba(154,148,138,0.95)]">
-                          project card
-                        </p>
-                        <p className="f-display text-xl font-semibold italic leading-tight">
-                          {project.title}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="mb-7">
-                      <h3 className="f-mono text-[0.55rem] font-medium text-[rgba(154,148,138,0.95)] uppercase tracking-[0.26em] mb-3 flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-[var(--rust)]" />
-                        Role
-                      </h3>
-                      <p className="f-sans text-lg font-semibold text-[rgba(244,240,232,0.90)]">
-                        {project.role}
-                      </p>
-                    </div>
-
-                    <div className="mb-8">
-                      <h3 className="f-mono text-[0.55rem] font-medium text-[rgba(154,148,138,0.95)] uppercase tracking-[0.26em] mb-3 flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-[var(--haze)]" />
-                        Tech Stack
-                      </h3>
-                      <div className="flex flex-wrap gap-2">
-                        {project.tech.map((tech, idx) => (
-                          <span
-                            key={idx}
-                            className="px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[0.8rem] text-[rgba(244,240,232,0.78)] cursor-default md:hover:bg-[rgba(214,178,94,0.1)] md:hover:border-[rgba(214,178,94,0.3)] md:hover:text-[var(--bone)] transition-colors f-sans"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="h-px w-full bg-gradient-to-r from-[rgba(214,178,94,0.32)] to-transparent my-7" />
-
-                    <div className="flex flex-col gap-4">
-                      {project.links.demo && project.links.demo !== "#" && (
-                        <a
-                          href={project.links.demo}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="group w-full py-4 rounded-2xl text-center md:transition-all flex items-center justify-center gap-3 relative overflow-hidden border border-[rgba(214,178,94,0.28)] bg-[rgba(255,255,255,0.03)] md:hover:bg-[rgba(214,178,94,0.1)] md:hover:border-[var(--metal)] md:hover:shadow-[0_0_20px_rgba(214,178,94,0.15)]"
-                        >
-                          <span className="absolute inset-0 opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                            style={{
-                              background:
-                                "radial-gradient(circle at 20% 30%, rgba(214,178,94,0.18), transparent 55%), radial-gradient(circle at 80% 20%, rgba(124,58,237,0.16), transparent 52%)",
-                            }}
-                          />
-                          <ExternalLink className="w-5 h-5 text-[var(--metal2)] relative z-10 md:group-hover:text-[var(--bone)] transition-colors" />
-                          <span className="f-mono text-[0.62rem] tracking-[0.26em] uppercase text-[rgba(244,240,232,0.9)] relative z-10 md:group-hover:text-[var(--bone)] transition-colors">
-                            Live Demo
-                          </span>
-                          <ArrowUpRight className="w-5 h-5 text-[rgba(244,240,232,0.75)] relative z-10 md:group-hover:translate-x-1 md:group-hover:-translate-y-1 md:group-hover:text-[var(--metal)] transition-all duration-300" />
-                        </a>
-                      )}
-
-                      <div className="flex gap-3">
-                        {project.links.github && project.links.github !== "#" && (
-                          <a
-                            href={project.links.github}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="flex-1 py-3 rounded-2xl border border-white/10 bg-white/5 md:hover:bg-[rgba(255,255,255,0.1)] md:hover:border-[rgba(255,255,255,0.3)] transition-all flex items-center justify-center gap-2 group/btn"
-                          >
-                            <Github className="w-5 h-5 text-[rgba(244,240,232,0.85)] md:group-hover/btn:scale-110 transition-transform" />
-                            <span className="f-mono text-[0.58rem] tracking-[0.24em] uppercase text-[rgba(244,240,232,0.82)] md:group-hover/btn:text-white transition-colors">
-                              Code
-                            </span>
-                          </a>
-                        )}
-
-                        {project.links.figma && project.links.figma !== "#" && (
-                          <a
-                            href={project.links.figma}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="flex-1 py-3 rounded-2xl border border-white/10 bg-white/5 md:hover:bg-[rgba(255,107,107,0.1)] md:hover:border-[#ff6b6b]/40 md:hover:text-[#ff6b6b] transition-all flex items-center justify-center gap-2 group/btn"
-                          >
-                            <FaFigma className="w-5 h-5 text-[rgba(244,240,232,0.85)] md:group-hover/btn:text-[#ff6b6b] md:group-hover/btn:scale-110 transition-all" />
-                            <span className="f-mono text-[0.58rem] tracking-[0.24em] uppercase text-[rgba(244,240,232,0.82)] md:group-hover/btn:text-[#ff6b6b] transition-colors">
-                              Design
-                            </span>
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  {next && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 18 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.1 }}
-                      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                      className="artifact p-7 md:transition-all md:duration-500 md:hover:shadow-[0_15px_30px_-10px_rgba(214,178,94,0.1)] md:hover:border-[rgba(214,178,94,0.3)] group/next"
-                    >
-                      <div className="sheen" />
-                      <span className="screw md:group-hover/next:rotate-90 transition-transform duration-700" style={{ top: 14, left: 14 }} />
-                      <span className="screw md:group-hover/next:-rotate-90 transition-transform duration-700" style={{ top: 14, right: 14 }} />
-
-                      <p className="f-mono text-[0.55rem] tracking-[0.28em] uppercase text-[rgba(154,148,138,0.95)] mb-3 md:group-hover/next:text-[var(--metal)] transition-colors">
-                        Next Project
-                      </p>
-
-                      <h3 className="f-display text-2xl md:text-3xl font-semibold italic leading-tight">
-                        <span className="meshText md:group-hover/next:brightness-125 transition-all">{next.title}</span>
-                      </h3>
-
-                      <p className="f-sans text-sm text-[rgba(244,240,232,0.68)] mt-3 line-clamp-2 md:group-hover/next:text-[rgba(244,240,232,0.9)] transition-colors">
-                        {next.description}
-                      </p>
-
-                      <button
-                        onClick={() => navigate(`/project/${next.id}`)}
-                        className="mt-6 w-full py-3 rounded-2xl border border-[rgba(214,178,94,0.26)] bg-[rgba(255,255,255,0.03)] md:group-hover/next:bg-[rgba(214,178,94,0.15)] md:group-hover/next:border-[var(--metal)] transition-all flex items-center justify-center gap-2"
-                      >
-                        <span className="f-mono text-[0.58rem] tracking-[0.26em] uppercase text-[rgba(244,240,232,0.88)] md:group-hover/next:text-[var(--bone)] md:group-hover/next:font-bold transition-all">
-                          Next
-                        </span>
-                        <ArrowUpRight className="w-5 h-5 text-[rgba(244,240,232,0.80)] md:group-hover/next:translate-x-1 md:group-hover/next:-translate-y-1 md:group-hover/next:text-[var(--metal2)] transition-all duration-300" />
-                      </button>
-                    </motion.div>
-                  )}
-                </div>
+                </FadeUp>
               </div>
             </div>
+
+            <div className="mb-24 md:mb-32">
+              <FadeUp>
+                <div className="flex items-center justify-between gap-6 mb-12 border-b border-white/10 pb-4">
+                  <h3 className="text-2xl md:text-4xl font-black uppercase tracking-tighter flex items-center gap-4">
+                    <Camera className="w-6 h-6 text-[#FF3355]" />
+                    Surveillance Log
+                  </h3>
+                  <span className="font-mono text-[10px] tracking-widest uppercase text-[#FF3355] border border-[#FF3355] px-3 py-1">
+                    FILES: {project.gallery?.length ?? 0}
+                  </span>
+                </div>
+              </FadeUp>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+                {project.gallery && project.gallery.length > 0 ? (
+                  project.gallery.map((img, index) => (
+                    <FadeUp key={index} delay={index * 0.1}>
+                      <div className="relative border border-white/10 bg-[#0A0A0A] p-2 transition-colors">
+                        <img
+                          src={img}
+                          loading="lazy"
+                          alt={`Snapshot ${index + 1}`}
+                          className="w-full aspect-video object-cover"
+                        />
+                        <div className="absolute top-4 left-4 font-mono text-[8px] bg-black/60 px-2 py-1 text-white/50 backdrop-blur-md border border-white/10">
+                          CAM_0{index + 2}
+                        </div>
+                      </div>
+                    </FadeUp>
+                  ))
+                ) : (
+                  <p className="font-mono text-sm text-white/30 uppercase tracking-widest col-span-2">
+                    [ NO SURVEILLANCE DATA FOUND ]
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {next && (
+              <FadeUp>
+                <div className="border-t-2 border-white/10 pt-16 md:pt-24 mb-12">
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+                    <div>
+                      <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/40 mb-4">
+                        // NEXT_DIRECTIVE
+                      </p>
+                      <h3 className="text-[clamp(2.5rem,6vw,4rem)] font-black uppercase tracking-tighter leading-none">
+                        {next.title}
+                      </h3>
+                    </div>
+
+                    <button
+                      onClick={() => navigate(`/project/${next.id}`)}
+                      className="w-full md:w-auto px-8 py-4 bg-[#CCFF00] text-black font-black uppercase tracking-widest text-sm transition-colors flex items-center justify-center gap-4"
+                    >
+                      PROCEED
+                      <ArrowUpRight className="w-5 h-5" />
+                    </button>
+                  </div>
+                </div>
+              </FadeUp>
+            )}
           </div>
         </article>
       )}

@@ -1,291 +1,330 @@
-import React, { useRef, useCallback } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { FaReact, FaJs, FaHtml5, FaGitAlt, FaFigma } from "react-icons/fa";
 import { SiTailwindcss, SiNextdotjs } from "react-icons/si";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
-const FadeUp = ({ children, delay = 0, className = "" }) => (
-  <motion.div
-    className={className}
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-50px" }}
-    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay }}
-  >
-    {children}
-  </motion.div>
-);
+/* ─── TERMINAL LOGIC ────────────────────────────────────────────── */
+const TerminalLogs = () => {
+  const [logs, setLogs] = useState(["> Initializing core modules..."]);
+  const allLogs = [
+    "> Mounting React DOM...",
+    "> Fetching state from store...",
+    "> Hydrating Next.js chunks...",
+    "> Compiling Tailwind utility classes...",
+    "> SUCCESS: Module bundler ready.",
+    "> Rendering spatial geometries...",
+    "> Awaiting user interaction...",
+  ];
 
-const BlueprintBar = ({ pct, color, delay = 0.18 }) => (
-  <div className="relative w-full h-1.5 mt-2 overflow-hidden rounded-full bg-white/5 backdrop-blur-sm border border-white/10">
-    <div className="absolute inset-0 opacity-[0.2] bg-[linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:10px_100%]" />
-    <motion.div
-      initial={{ width: 0 }}
-      whileInView={{ width: `${pct}%` }}
-      viewport={{ once: true }}
-      transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay }}
-      className="absolute left-0 top-0 bottom-0 rounded-full"
-      style={{
-        background: color,
-        boxShadow: `0 0 15px ${color}80, 0 0 5px ${color}`,
-      }}
-    />
+  useEffect(() => {
+    let index = 0;
+    const interval = setInterval(() => {
+      setLogs((prev) => {
+        const newLogs = [...prev, allLogs[index % allLogs.length]];
+        return newLogs.length > 5 ? newLogs.slice(1) : newLogs;
+      });
+      index++;
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="font-mono text-[10px] md:text-xs text-[#61DAFB]/70 mt-6 h-20 md:h-24 overflow-hidden flex flex-col justify-end">
+      {logs.map((log, i) => (
+        <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="mb-1 truncate">
+          {log}
+        </motion.div>
+      ))}
+      <div className="animate-pulse w-2 h-3 bg-[#61DAFB] mt-1" />
+    </div>
+  );
+};
+
+/* ─── DATA BAR BRUTAL ───────────────────────────────────────────── */
+const BrutalMeter = ({ label, pct, color }) => (
+  <div className="w-full flex flex-col gap-1 mb-4">
+    <div className="flex justify-between items-end">
+      <span className="font-mono text-[9px] md:text-[10px] tracking-widest uppercase text-white font-bold">{label}</span>
+      <span className="font-black text-lg md:text-xl tracking-tighter" style={{ color }}>{pct}%</span>
+    </div>
+    <div className="w-full h-2 bg-white/10 flex">
+      <motion.div
+        initial={{ width: 0 }}
+        whileInView={{ width: `${pct}%` }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+        className="h-full relative overflow-hidden"
+        style={{ background: color }}
+      >
+        <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_2px,rgba(0,0,0,0.3)_2px,rgba(0,0,0,0.3)_4px)]" />
+      </motion.div>
+    </div>
   </div>
 );
 
-const TechSquares = ({ level, color }) => (
-  <div className="flex gap-1.5 mt-2">
-    {[1, 2, 3, 4, 5].map((i) => (
-      <div
-        key={i}
-        className="w-1.5 h-1.5 rounded-sm transition-all duration-500"
-        style={{
-          backgroundColor: i <= level ? color : "rgba(255,255,255,0.05)",
-          boxShadow: i <= level ? `0 0 8px ${color}80` : "none",
-        }}
-      />
-    ))}
-  </div>
-);
-
+/* ─── MAIN SKILLS SECTION ───────────────────────────────────────── */
 const Skills = () => {
   const sectionRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
 
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+  
+  // Scroll tracking
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end start"],
+    offset: ["start 80%", "end 20%"],
   });
 
-  const watermarkY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
-  const headY = useTransform(scrollYProgress, [0, 1], ["0px", "-50px"]);
+  const fastProgress = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
 
-  // Spotlight Effect Logic
-  const handleMouseMove = useCallback((e) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    card.style.setProperty("--mouse-x", `${x}px`);
-    card.style.setProperty("--mouse-y", `${y}px`);
-  }, []);
+  // SVG Pathway Draw Effect
+  const pathLength = useSpring(fastProgress, {
+    stiffness: 400,
+    damping: 40,
+    restDelta: 0.001
+  });
+
+  // Adaptive Kinetic Typography (Kurangi jarak geser di Mobile agar tidak tembus layar)
+  const headerLeftX = useTransform(scrollYProgress, [0, 1], isMobile ? [0, -50] : [0, -300]);
+  const headerRightX = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 50] : [0, 300]);
+  
+  // Parallax untuk Desktop (Dinonaktifkan di mobile agar tidak bertumpuk)
+  const floatY1 = useTransform(scrollYProgress, [0, 1], [30, -30]);
+  const floatY2 = useTransform(scrollYProgress, [0, 1], [-20, 20]);
+  const floatY3 = useTransform(scrollYProgress, [0, 1], [40, -40]);
+  const floatY4 = useTransform(scrollYProgress, [0, 1], [-30, 30]);
 
   return (
     <section
       id="skills"
       ref={sectionRef}
-      className="relative w-full overflow-hidden bg-[#07070a] pt-24 pb-20 md:pt-32 md:pb-32"
+      className="relative w-full min-h-[120vh] bg-[#050505] text-white selection:bg-[#CCFF00] selection:text-black pt-24 md:pt-32 pb-24 md:pb-40 overflow-hidden"
     >
-      {/* Background Grids */}
-      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 mix-blend-overlay pointer-events-none" />
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
+      {/* Target Crosshair Background */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03]">
+        <div className="absolute top-1/2 left-0 w-full h-[1px] bg-white" />
+        <div className="absolute top-0 left-1/2 w-[1px] h-full bg-white" />
+      </div>
 
-      {/* Watermark */}
-      <motion.div
-        style={{ y: watermarkY }}
-        className="absolute top-[8%] left-0 right-0 z-0 pointer-events-none flex justify-center overflow-hidden opacity-40 select-none"
-      >
-        <span className="text-[clamp(6rem,20vw,20rem)] font-black italic leading-none whitespace-nowrap text-white/[0.02] tracking-tighter">
-          TOOLKIT
-        </span>
-      </motion.div>
+      <div className="relative z-10 max-w-[1800px] mx-auto px-5 md:px-12 w-full h-full flex flex-col">
+        
+        {/* ── KINETIC HEADER ── */}
+        <div className="mb-20 md:mb-32 relative z-20 pointer-events-none">
+          <div className="flex items-center gap-4 mb-4">
+            <span className="font-mono text-[9px] md:text-[10px] tracking-[0.5em] text-[#CCFF00] uppercase">
+              [ 03 ] System Arsenal
+            </span>
+            <div className="flex-1 h-[1px] bg-gradient-to-r from-[#CCFF00]/50 to-transparent" />
+          </div>
+          
+          <div className="flex flex-col whitespace-nowrap overflow-visible">
+            <motion.h2 
+              className="text-[clamp(3.5rem,12vw,12rem)] font-black uppercase leading-[0.85] tracking-tighter"
+              style={{ x: headerLeftX }}
+            >
+              INSTRUMENTS
+            </motion.h2>
+            <motion.h2 
+              className="text-[clamp(3.5rem,12vw,12rem)] font-black uppercase leading-[0.85] tracking-tighter text-transparent pl-[5vw] md:pl-[20vw]"
+              style={{ WebkitTextStroke: "2px white", x: headerRightX }}
+            >
+              OF CREATION.
+            </motion.h2>
+          </div>
+        </div>
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12">
-        {/* Header Section */}
-        <FadeUp>
-          <motion.div
-            style={{ y: headY }}
-            className="mb-20 md:mb-24 flex flex-col lg:flex-row lg:items-end justify-between gap-8"
+        {/* ── MAIN SPATIAL WORKSPACE (The Blueprint Area) ── */}
+        <div className="relative w-full flex flex-col md:flex-row gap-12 md:gap-8 md:min-h-[800px]">
+          
+          {/* LEFT: THE REACT TERMINAL */}
+          <motion.div 
+            className="relative w-full md:w-[45%] lg:w-[40%] bg-[#080808] border border-white/10 z-20 shadow-[10px_10px_0px_rgba(97,218,251,0.05)] md:shadow-[20px_20px_0px_rgba(97,218,251,0.05)]"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
           >
-            <div>
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-[2px] bg-[#D6B25E] opacity-80" />
-                <span className="text-[0.65rem] tracking-[0.35em] uppercase text-[#D6B25E] font-mono font-semibold">
-                  Vol. 03 — Arsenal
-                </span>
+            <div className="flex justify-between items-center border-b border-white/10 p-3 md:p-4 bg-white/5">
+              <span className="font-mono text-[9px] md:text-[10px] tracking-widest uppercase text-[#61DAFB]">
+                process: React_Eco.exe
+              </span>
+              <div className="flex gap-2">
+                <div className="w-2 h-2 bg-[#61DAFB]" />
+                <div className="w-2 h-2 bg-white/20" />
+                <div className="w-2 h-2 bg-white/20" />
               </div>
-              <h2 className="text-[clamp(3.5rem,6vw,6.5rem)] font-light italic leading-[1] tracking-tight text-white/90 mb-2">
-                Instruments of
-              </h2>
-              <h2 className="text-[clamp(3.5rem,6vw,6.5rem)] font-extrabold uppercase leading-[1] tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-[#D6B25E] to-[#E5C98A]">
-                Creation.
-              </h2>
             </div>
-            <div className="lg:max-w-xs border-l-2 border-[#D6B25E]/50 pl-6 py-2 text-white/60 hover:border-[#D6B25E] transition-colors duration-500">
-              <p className="font-light text-sm leading-relaxed">
-                A curated set of tools I use to craft systems, interfaces, and
-                production-ready experiences.
+
+            <div className="p-6 md:p-12 relative overflow-hidden">
+              <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(0,0,0,0)_50%,rgba(97,218,251,0.05)_50%)] bg-[length:100%_4px] z-10" />
+
+              <h3 className="text-[clamp(2.5rem,5vw,4.5rem)] font-black uppercase tracking-tighter leading-[0.9] mb-4 md:mb-6 relative z-20">
+                Front-End<br/>
+                <span className="text-transparent" style={{ WebkitTextStroke: "1px #61DAFB" }}>Architecture</span>
+              </h3>
+              <p className="font-mono text-[9px] md:text-[10px] text-white/50 leading-relaxed uppercase max-w-sm mb-8 md:mb-12 relative z-20">
+                Engineering scalable web applications leveraging modern React methodologies and server-side rendering.
               </p>
+
+              <div className="relative z-20">
+                <BrutalMeter label="React.js / Hooks" pct={95} color="#61DAFB" />
+                <BrutalMeter label="Next.js / SSR" pct={88} color="#ffffff" />
+              </div>
+
+              <TerminalLogs />
             </div>
           </motion.div>
-        </FadeUp>
 
-        {/* Bento Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 lg:gap-6">
-          
-          {/* Figma Card */}
-          <FadeUp delay={0.1} className="md:col-span-12 lg:col-span-7">
-            <div
-              onMouseMove={handleMouseMove}
-              className="group relative h-full p-8 md:p-12 min-h-[380px] rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-[#ff6b6b]/30 transition-colors duration-500 overflow-hidden backdrop-blur-md shadow-2xl"
+          {/* RIGHT: FLOATING CONSTELLATION NODES */}
+          <div className="relative w-full md:w-[55%] lg:w-[60%] flex flex-col gap-6 md:block mt-4 md:mt-0">
+            
+            {/* THE DYNAMIC PATHWAY SVG (Desktop Only) */}
+            <svg className="hidden md:block absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 1000 800" preserveAspectRatio="none">
+              <circle cx="0" cy="400" r="600" stroke="rgba(255,255,255,0.04)" strokeWidth="2" fill="none" strokeDasharray="10 15" />
+              <circle cx="0" cy="400" r="15" fill="white" />
+
+              <path d="M 0 400 C 150 400, 200 150, 450 150" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeDasharray="4 4" />
+              <path d="M 0 400 C 250 400, 400 350, 750 350" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeDasharray="4 4" />
+              <path d="M 0 400 C 150 400, 300 650, 550 650" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeDasharray="4 4" />
+              <path d="M 0 400 C 200 400, 450 850, 750 800" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeDasharray="4 4" />
+
+              <motion.path d="M 0 400 C 150 400, 200 150, 450 150" fill="none" stroke="#C2B227" strokeWidth="2" style={{ pathLength }} />
+              <motion.path d="M 0 400 C 250 400, 400 350, 750 350" fill="none" stroke="#38B2AC" strokeWidth="2" style={{ pathLength }} />
+              <motion.path d="M 0 400 C 150 400, 300 650, 550 650" fill="none" stroke="#E34F26" strokeWidth="2" style={{ pathLength }} />
+              <motion.path d="M 0 400 C 200 400, 450 850, 750 800" fill="none" stroke="#F05032" strokeWidth="2" style={{ pathLength }} />
+            </svg>
+
+            {/* Mobile Vertical Pathway Line (Spine) */}
+            <div className="md:hidden absolute left-[28px] top-0 bottom-0 w-[2px] bg-white/10 z-0" />
+            <motion.div 
+              className="md:hidden absolute left-[28px] top-0 bottom-0 w-[2px] bg-[#CCFF00] z-0 origin-top" 
+              style={{ scaleY: pathLength }} 
+            />
+
+            {/* NODE 1: JavaScript */}
+            <motion.div 
+              className="relative md:absolute md:top-[12%] md:left-[45%] md:-translate-x-1/2 bg-[#C2B227] p-5 flex flex-row items-center gap-4 z-10 w-[85%] ml-auto md:ml-0 md:w-auto shadow-[6px_6px_0px_rgba(0,0,0,0.5)] border border-[#C2B227]"
+              style={{ y: isMobile ? 0 : floatY1 }}
             >
-              {/* Hover Spotlight */}
-              <div
-                className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{
-                  background: `radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,107,107,0.1), transparent 40%)`,
-                }}
-              />
-
-              <div className="absolute -right-16 -top-16 opacity-[0.03] group-hover:opacity-[0.08] group-hover:scale-110 group-hover:-rotate-6 transition-all duration-700 pointer-events-none z-0">
-                <FaFigma className="w-80 h-80 text-[#ff6b6b]" />
+              <div className="absolute top-1/2 right-[100%] w-6 md:w-0 h-[2px] bg-white/20 md:hidden" />
+              <div className="w-10 h-10 border border-white/30 flex items-center justify-center shrink-0">
+                <span className="font-black text-xl text-white">JS</span>
               </div>
-
-              <div className="relative z-10 flex justify-between items-start mb-12">
-                <div className="w-16 h-16 border border-white/10 bg-white/5 rounded-2xl flex items-center justify-center shadow-xl group-hover:bg-[#ff6b6b]/10 group-hover:border-[#ff6b6b]/30 group-hover:scale-110 transition-all duration-500">
-                  <FaFigma className="w-7 h-7 text-[#ff6b6b]" />
-                </div>
-                <span className="text-[0.6rem] tracking-[0.25em] text-white/50 uppercase border border-white/10 px-4 py-2 rounded-full bg-white/5 group-hover:border-[#ff6b6b]/30 group-hover:text-[#ff6b6b] transition-all duration-500 font-mono">
-                  01 / Primary
-                </span>
+              <div className="overflow-hidden">
+                <h4 className="font-black uppercase text-lg md:text-xl text-white tracking-tight leading-none mb-1">JavaScript</h4>
+                <p className="font-mono text-[8px] md:text-[9px] text-white/80 uppercase truncate">ES6+ / Async Logic</p>
               </div>
+            </motion.div>
 
-              <div className="relative z-10">
-                <h3 className="text-4xl md:text-5xl font-semibold italic text-white/90 mb-4 leading-none">
-                  Figma
-                </h3>
-                <p className="font-light text-sm leading-relaxed max-w-sm mb-10 text-white/60">
-                  My core environment for architecting UI systems, component
-                  libraries, and prototypes.
-                </p>
-                <div className="space-y-6 max-w-md">
-                  {[
-                    { label: "UI/UX System Design", pct: 95, color: "#ff6b6b", lvl: 5 },
-                    { label: "Interactive Prototyping", pct: 88, color: "#D6B25E", lvl: 4 },
-                  ].map((m, i) => (
-                    <div key={m.label} className="group/item">
-                      <div className="flex justify-between items-end mb-2">
-                        <div className="flex flex-col gap-1.5">
-                          <span className="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-white/60 group-hover/item:text-white transition-colors">
-                            {m.label}
-                          </span>
-                          <TechSquares level={m.lvl} color={m.color} />
-                        </div>
-                        <span
-                          className="font-mono text-[0.6rem] tracking-[0.2em] font-bold"
-                          style={{ color: m.color }}
-                        >
-                          {m.pct}%
-                        </span>
-                      </div>
-                      <BlueprintBar pct={m.pct} color={m.color} delay={0.2 + i * 0.15} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </FadeUp>
-
-          {/* React Eco Card */}
-          <FadeUp delay={0.2} className="md:col-span-12 lg:col-span-5">
-            <div
-              onMouseMove={handleMouseMove}
-              className="group relative h-full p-8 md:p-10 min-h-[380px] rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-[#35d0ff]/30 transition-colors duration-500 overflow-hidden backdrop-blur-md shadow-2xl"
+            {/* NODE 2: Tailwind */}
+            <motion.div 
+              className="relative md:absolute md:top-[40%] md:left-[75%] md:-translate-x-1/2 bg-[#050505] border border-[#38B2AC]/40 p-5 flex flex-row items-center gap-4 z-10 w-[85%] ml-auto md:ml-0 md:w-auto"
+              style={{ y: isMobile ? 0 : floatY2 }}
             >
-              {/* Hover Spotlight */}
-              <div
-                className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{
-                  background: `radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(53,208,255,0.1), transparent 40%)`,
-                }}
-              />
-
-              <FaReact className="absolute -bottom-12 -right-12 w-72 h-72 text-[#35d0ff] opacity-[0.03] group-hover:opacity-[0.08] transition-all duration-700 group-hover:rotate-12 group-hover:scale-110 z-0" />
-
-              <div className="relative z-10 flex justify-between items-start mb-12">
-                <div className="flex -space-x-3 group-hover:space-x-2 transition-all duration-500">
-                  <div className="w-14 h-14 border border-white/10 bg-[#07070a] rounded-2xl flex items-center justify-center shadow-xl relative z-20 group-hover:bg-[#35d0ff]/10 group-hover:border-[#35d0ff]/30 transition-colors duration-500">
-                    <FaReact className="w-7 h-7 text-[#35d0ff]" />
-                  </div>
-                  <div className="w-14 h-14 border border-white/10 bg-[#07070a] rounded-2xl flex items-center justify-center shadow-xl relative z-10 group-hover:bg-white/10 group-hover:border-white/30 transition-colors duration-500">
-                    <SiNextdotjs className="w-6 h-6 text-white/90" />
-                  </div>
-                </div>
-                <span className="text-[0.6rem] tracking-[0.25em] text-white/50 uppercase border border-white/10 px-4 py-2 rounded-full bg-white/5 group-hover:border-[#35d0ff]/30 group-hover:text-[#35d0ff] transition-all duration-500 font-mono">
-                  02 / Engine
-                </span>
+              <div className="absolute top-1/2 right-[100%] w-6 md:w-0 h-[2px] bg-white/20 md:hidden" />
+              <SiTailwindcss className="w-8 h-8 text-[#38B2AC] shrink-0" />
+              <div className="overflow-hidden">
+                <h4 className="font-black uppercase text-lg md:text-xl text-white tracking-tight leading-none mb-1">Tailwind</h4>
+                <p className="font-mono text-[8px] md:text-[9px] text-[#38B2AC] uppercase truncate">Atomic Styling</p>
               </div>
+            </motion.div>
 
-              <div className="relative z-10">
-                <h3 className="text-4xl font-semibold italic text-white/90 mb-4 leading-none">
-                  React Eco
-                </h3>
-                <p className="font-light text-sm leading-relaxed mb-12 text-white/60">
-                  Building scalable, performant apps with modern patterns and
-                  Next.js framework.
-                </p>
-                <div className="space-y-6">
-                  <div className="group/item">
-                    <div className="flex justify-between items-end mb-2">
-                      <div className="flex flex-col gap-1.5">
-                        <span className="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-white/60 group-hover/item:text-white transition-colors">
-                          React.js / Next.js
-                        </span>
-                        <TechSquares level={5} color="#35d0ff" />
-                      </div>
-                      <span className="font-mono text-[0.6rem] tracking-[0.2em] font-bold text-[#35d0ff]">
-                        92%
-                      </span>
-                    </div>
-                    <BlueprintBar pct={92} color="#35d0ff" delay={0.3} />
-                  </div>
-                </div>
+            {/* NODE 3: HTML5 */}
+            <motion.div 
+              className="relative md:absolute md:top-[75%] md:left-[55%] md:-translate-x-1/2 bg-[#050505] border border-[#E34F26]/40 p-5 flex flex-row items-center gap-4 z-10 w-[85%] ml-auto md:ml-0 md:w-auto"
+              style={{ y: isMobile ? 0 : floatY3 }}
+            >
+              <div className="absolute top-1/2 right-[100%] w-6 md:w-0 h-[2px] bg-white/20 md:hidden" />
+              <FaHtml5 className="w-8 h-8 text-[#E34F26] shrink-0" />
+              <div className="overflow-hidden">
+                <h4 className="font-black uppercase text-lg md:text-xl text-white tracking-tight leading-none mb-1">HTML5</h4>
+                <p className="font-mono text-[8px] md:text-[9px] text-[#E34F26] uppercase truncate">Semantic DOM</p>
               </div>
-            </div>
-          </FadeUp>
+            </motion.div>
 
-          {/* Tools Grid */}
-          <FadeUp delay={0.3} className="md:col-span-12">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
-              {[
-                { id: "03", icon: FaJs, name: "JavaScript", type: "Logic", color: "#F7DF1E" },
-                { id: "04", icon: SiTailwindcss, name: "Tailwind", type: "Styling", color: "#38B2AC" },
-                { id: "05", icon: FaHtml5, name: "HTML5", type: "Markup", color: "#E34F26" },
-                { id: "06", icon: FaGitAlt, name: "Git", type: "Version", color: "#F05032" },
-              ].map((it) => (
-                <div
-                  key={it.id}
-                  onMouseMove={handleMouseMove}
-                  className="group relative p-6 flex flex-col items-center justify-center text-center min-h-[190px] rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-white/10 transition-all duration-500 hover:-translate-y-1.5 overflow-hidden backdrop-blur-md"
-                >
-                  {/* Subtle Hover Gradient Logic based on Tool Color */}
-                  <div
-                    className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                    style={{
-                      background: `radial-gradient(300px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), ${it.color}15, transparent 50%)`,
-                    }}
-                  />
+            {/* NODE 4: Git */}
+            <motion.div 
+              className="relative md:absolute md:top-[90%] md:left-[75%] md:-translate-x-1/2 bg-[#050505] border border-[#F05032]/40 p-5 flex flex-row items-center gap-4 z-10 w-[85%] ml-auto md:ml-0 md:w-auto"
+              style={{ y: isMobile ? 0 : floatY4 }}
+            >
+              <div className="absolute top-1/2 right-[100%] w-6 md:w-0 h-[2px] bg-white/20 md:hidden" />
+              <FaGitAlt className="w-8 h-8 text-[#F05032] shrink-0" />
+              <div className="overflow-hidden">
+                <h4 className="font-black uppercase text-lg md:text-xl text-white tracking-tight leading-none mb-1">Git</h4>
+                <p className="font-mono text-[8px] md:text-[9px] text-[#F05032] uppercase truncate">Version Control</p>
+              </div>
+            </motion.div>
 
-                  <span className="absolute top-6 left-6 font-mono text-[0.55rem] tracking-[0.25em] text-white/30 group-hover:text-white/80 transition-colors duration-500">
-                    {it.id}
-                  </span>
-
-                  <div className="w-14 h-14 border border-white/10 bg-white/5 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-500 relative z-10 shadow-lg">
-                    <it.icon
-                      className="w-7 h-7 opacity-90 transition-colors duration-500 group-hover:opacity-100"
-                      style={{ color: it.color }}
-                    />
-                  </div>
-
-                  <h4 className="text-xl font-semibold italic text-white/90 mb-1 relative z-10">
-                    {it.name}
-                  </h4>
-                  <span className="font-mono text-[0.55rem] tracking-[0.25em] uppercase text-white/40 group-hover:text-white/80 transition-colors duration-500 relative z-10">
-                    {it.type}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </FadeUp>
+          </div>
         </div>
+
+        {/* ── BOTTOM: CAD BLUEPRINT (FIGMA) ── */}
+        <motion.div 
+          className="mt-16 md:mt-32 relative w-full bg-[#E5E5E5] text-black border-2 border-black p-6 sm:p-8 md:p-16 overflow-hidden"
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          {/* Blueprint Grid Background */}
+          <div className="absolute inset-0 opacity-20 pointer-events-none bg-[linear-gradient(#000_1px,transparent_1px),linear-gradient(90deg,#000_1px,transparent_1px)] bg-[size:15px_15px] md:bg-[size:20px_20px]" />
+          
+          <div className="hidden sm:flex absolute top-4 left-0 w-full border-t border-black/30 justify-between px-4 font-mono text-[8px]">
+            <span>| 0.00</span>
+            <span>WIDTH: 100% |</span>
+          </div>
+
+          <div className="relative z-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 md:gap-12">
+            
+            {/* Text & Title */}
+            <div className="flex-1 w-full">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-black text-white flex items-center justify-center shrink-0">
+                  <FaFigma className="w-5 h-5 md:w-6 md:h-6" />
+                </div>
+                <div className="font-mono text-[9px] md:text-[10px] font-bold uppercase border border-black px-3 py-1">
+                  Drafting // Prototyping
+                </div>
+              </div>
+              
+              <h3 className="text-[clamp(2.5rem,6vw,5rem)] font-black uppercase tracking-tighter leading-none mb-4 md:mb-6">
+                Visual <br className="hidden sm:block"/> Architecture.
+              </h3>
+              
+              <p className="font-mono text-[10px] md:text-xs uppercase leading-relaxed max-w-md font-bold text-black/60">
+                Translating raw concepts into precise, mathematically sound UI components and interactive high-fidelity prototypes.
+              </p>
+            </div>
+
+            {/* Stats */}
+            <div className="flex-1 w-full lg:w-auto">
+              <div className="border-2 border-black p-5 md:p-6 bg-white shadow-[6px_6px_0px_rgba(255,51,85,1)] md:shadow-[10px_10px_0px_rgba(255,51,85,1)]">
+                <div className="flex justify-between items-end mb-2 border-b border-black/20 pb-2">
+                  <span className="font-mono text-[10px] md:text-xs font-black uppercase">UI/UX Systems</span>
+                  <span className="font-black text-2xl md:text-3xl text-[#FF3355]">95%</span>
+                </div>
+                <div className="w-full h-3 md:h-4 border border-black mt-2 flex">
+                  <div className="w-[95%] h-full bg-[#FF3355]" />
+                </div>
+
+                <div className="flex justify-between items-end mb-2 border-b border-black/20 pb-2 mt-6 md:mt-8">
+                  <span className="font-mono text-[10px] md:text-xs font-black uppercase">Prototyping</span>
+                  <span className="font-black text-2xl md:text-3xl text-black">88%</span>
+                </div>
+                <div className="w-full h-3 md:h-4 border border-black mt-2 flex">
+                  <div className="w-[88%] h-full bg-black bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,white_4px,white_8px)]" />
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </motion.div>
+
       </div>
     </section>
   );

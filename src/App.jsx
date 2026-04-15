@@ -9,7 +9,7 @@ import Skills from "./components/Skills";
 import Projects from "./components/Projects";
 import Achievements from "./components/Achievements";
 import Contact from "./components/Contact";
-import Footer from "./components/Footer";
+
 import GlobalBackground from "./components/GlobalBackground";
 import ProjectDetail from "./components/ProjectDetail";
 
@@ -57,8 +57,6 @@ const Home = () => {
         <section id="contact">
           <Contact />
         </section>
-
-        <Footer />
       </main>
     </>
   );
