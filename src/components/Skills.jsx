@@ -152,7 +152,7 @@ const skillNodes = [
     bg: "#050505",
     border: "#F05032",
     text: "#F05032",
-    desktop: "md:top-[90%] md:left-[75%] md:-translate-x-1/2",
+    desktop: "md:top-[58%] md:left-[75%] md:-translate-x-1/2",
     mobileFloat: "ml-auto",
   },
 ];
@@ -324,13 +324,13 @@ const Skills = () => {
 
               <path d="M 0 400 C 150 400, 200 150, 450 150" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeDasharray="4 4" />
               <path d="M 0 400 C 250 400, 400 350, 750 350" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeDasharray="4 4" />
-              <path d="M 0 400 C 150 400, 300 650, 550 650" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeDasharray="4 4" />
-              <path d="M 0 400 C 200 400, 450 850, 750 800" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeDasharray="4 4" />
+              <path d="M 0 400 C 150 400, 300 650, 700 650" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeDasharray="4 4" />
+              <path d="M 0 400 C 220 400, 430 540, 760 540" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeDasharray="4 4" />
 
               <motion.path d="M 0 400 C 150 400, 200 150, 450 150" fill="none" stroke="#C2B227" strokeWidth="2" style={{ pathLength }} />
               <motion.path d="M 0 400 C 250 400, 400 350, 750 350" fill="none" stroke="#38B2AC" strokeWidth="2" style={{ pathLength }} />
-              <motion.path d="M 0 400 C 150 400, 300 650, 550 650" fill="none" stroke="#E34F26" strokeWidth="2" style={{ pathLength }} />
-              <motion.path d="M 0 400 C 200 400, 450 850, 750 800" fill="none" stroke="#F05032" strokeWidth="2" style={{ pathLength }} />
+              <motion.path d="M 0 400 C 150 400, 300 650, 700 650" fill="none" stroke="#E34F26" strokeWidth="2" style={{ pathLength }} />
+              <motion.path d="M 0 400 C 220 400, 430 540, 760 540" fill="none" stroke="#F05032" strokeWidth="2" style={{ pathLength }} />
             </svg>
 
             <div className="md:hidden absolute left-[28px] top-0 bottom-0 w-[2px] bg-white/10 z-0" />

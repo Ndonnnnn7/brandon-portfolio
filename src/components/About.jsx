@@ -116,7 +116,7 @@ const BrutalTimeline = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8, delay: i * 0.15 }}
-          className={`static md:absolute w-full pl-10 sm:pl-12 md:pl-0 md:w-[45vw] md:px-6 ${
+          className={`static md:absolute w-full pl-10 bsm:pl-12 md:pl-0 md:w-[45vw] md:px-6 ${
             node.align === "left" ? "md:left-0 md:text-right md:pr-20" : "md:right-0 md:text-left md:pl-20"
           }`}
           style={{ top: node.deskTop }}
@@ -124,7 +124,11 @@ const BrutalTimeline = () => {
           <div className="md:hidden absolute left-[0.9rem] w-3 h-3 bg-[#FF3355] rounded-full translate-y-2 z-10 shadow-[0_0_15px_#FF3355]" />
 
           <div className="inline-block w-full">
-            <h4 className="text-[clamp(2.2rem,8vw,5vw)] font-black leading-none tracking-tighter uppercase">
+            <h4
+              className={`text-[clamp(2.2rem,8vw,5vw)] font-black leading-none tracking-tighter uppercase text-[#CCFF00] ${
+                node.align === "left" ? "md:ml-auto" : "md:mr-auto"
+              }`}
+            >
               {node.title}
             </h4>
             <div className="flex flex-col gap-2 mt-4">

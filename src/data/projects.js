@@ -240,7 +240,7 @@ export const projectsData = [
   {
     id: 15,
     title: "Zagrex Website",
-    category: "UI/UX Design",
+    category: "UI/UX",
     image: "/img/Zagrex.png",
     description:
       "A website for Zagrex, a company specializing in digital solutions, showcasing their services and portfolio.",
