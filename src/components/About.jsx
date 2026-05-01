@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 const educationData = [
   {
     id: 1,
-    year: "2020",
+    year: "2020-2023",
     title: "ST. ALBERTUS",
     role: "SCIENCE MAJOR",
     desc: "Analytical foundation & systematic problem-solving.",
@@ -13,7 +13,7 @@ const educationData = [
   },
   {
     id: 2,
-    year: "2023",
+    year: "2023-Present",
     title: "BRAWIJAYA",
     role: "INFORMATICS ENG.",
     desc: "Front-End Dev, UI/UX, & Modern Web Architecture.",
@@ -22,10 +22,10 @@ const educationData = [
   },
   {
     id: 3,
-    year: "NOW",
-    title: "MALANG, ID",
-    role: "CREATIVE DEV",
-    desc: "Building digital experiences that defy gravity.",
+    year: "2026-Present",
+    title: "DOT INDONESIA",
+    role: "FRONT-END DEV INTERN",
+    desc: "Crafting dynamic interfaces, optimizing performance, and collaborating on innovative web solutions.",
     align: "left",
     deskTop: "75%",
   },
@@ -132,7 +132,7 @@ const BrutalTimeline = () => {
               {node.title}
             </h4>
             <div className="flex flex-col gap-2 mt-4">
-              <span className="font-mono text-xs md:text-sm tracking-widest text-[#FF3355]">
+              <span className="font-mono text-xs md:text-sm tracking-widest text-[#CCFF00]">
                 [{node.year}] - {node.role}
               </span>
               <p
@@ -155,9 +155,8 @@ const About = () => {
 
   return (
     <section
-      id="about"
       ref={containerRef}
-      className="relative w-full bg-[#0a0a0a] text-white overflow-hidden font-sans selection:bg-[#FF3355] selection:text-white"
+      className="relative min-h-[100svh] w-full bg-[#0a0a0a] text-white overflow-hidden font-sans selection:bg-[#FF3355] selection:text-white"
     >
       <div
         className="absolute inset-0 z-0 opacity-[0.15] pointer-events-none mix-blend-overlay"
@@ -167,66 +166,67 @@ const About = () => {
         }}
       />
 
-      <div className="relative z-10 w-full pt-20 md:pt-32 pb-28 md:pb-40 max-w-[1800px] mx-auto">
-        <div className="px-4 md:px-12 mb-16 md:mb-32">
-          <p className="font-mono text-[#CCFF00] tracking-widest mb-6 md:mb-8 text-[10px] md:text-sm uppercase">
-            (01) The Architect Behind The Code
-          </p>
-          <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_minmax(320px,420px)] gap-8 xl:gap-12 items-end">
-            <div className="flex flex-col uppercase leading-[0.85] md:leading-[0.8] min-w-0">
-              <motion.h1
-                initial={{ x: -50, opacity: 0 }}
-                whileInView={{ x: 0, opacity: 1 }}
-                transition={{ duration: 1, ease: "circOut" }}
-                className="text-[clamp(3.4rem,15vw,12rem)] font-black tracking-tighter"
-              >
-                BRANDON
-              </motion.h1>
-              <motion.h1
-                initial={{ x: 50, opacity: 0 }}
-                whileInView={{ x: 0, opacity: 1 }}
-                transition={{ duration: 1, ease: "circOut", delay: 0.1 }}
-                className="text-[clamp(3.4rem,15vw,12rem)] font-black tracking-tighter text-transparent"
-                style={{ WebkitTextStroke: "2px white" }}
-              >
-                GERALDO
-              </motion.h1>
-              <motion.h1
+      <div className="relative z-10 w-full pb-28 md:pb-40">
+        <div className="flex min-h-[100svh] w-full flex-col justify-center gap-10 pt-24 md:gap-14 md:pt-28">
+          <div className="mx-auto w-full max-w-[1800px] px-4 md:px-12">
+            <p className="font-mono text-[#CCFF00] tracking-widest mb-6 md:mb-8 text-[10px] md:text-sm uppercase">
+              About Me
+            </p>
+            <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_minmax(320px,420px)] gap-8 xl:gap-12 items-end">
+              <div className="flex flex-col uppercase leading-[0.85] md:leading-[0.8] min-w-0">
+                <motion.h1
+                  initial={{ x: -50, opacity: 0 }}
+                  whileInView={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 1, ease: "circOut" }}
+                  className="text-[clamp(3.4rem,15vw,12rem)] font-black tracking-tighter"
+                >
+                  BRANDON
+                </motion.h1>
+                <motion.h1
+                  initial={{ x: 50, opacity: 0 }}
+                  whileInView={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 1, ease: "circOut", delay: 0.1 }}
+                  className="text-[clamp(3.4rem,15vw,12rem)] font-black tracking-tighter text-transparent"
+                  style={{ WebkitTextStroke: "2px white" }}
+                >
+                  GERALDO
+                </motion.h1>
+                <motion.h1
+                  initial={{ y: 50, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 1, ease: "circOut", delay: 0.2 }}
+                  className="text-[clamp(3.4rem,15vw,12rem)] font-black tracking-tighter text-[#FF3355]"
+                >
+                  ADJI.
+                </motion.h1>
+              </div>
+
+              <motion.div
                 initial={{ y: 50, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
-                transition={{ duration: 1, ease: "circOut", delay: 0.2 }}
-                className="text-[clamp(3.4rem,15vw,12rem)] font-black tracking-tighter text-[#FF3355]"
+                transition={{ duration: 1, ease: "circOut", delay: 0.25 }}
+                className="w-full xl:justify-self-end"
               >
-                ADJI.
-              </motion.h1>
-            </div>
-
-            <motion.div
-              initial={{ y: 50, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 1, ease: "circOut", delay: 0.25 }}
-              className="w-full xl:justify-self-end"
-            >
-              <div className="bg-white text-black p-4 sm:p-5 md:p-8 w-full max-w-[420px] xl:ml-auto xl:rotate-3 shadow-2xl">
-                <p className="font-bold text-base md:text-xl leading-tight">
-                  I don't just write React components. I engineer brutal, spatial, and hyper-functional experiences.
-                </p>
-                <div className="mt-4 md:mt-6 border-t border-black/20 pt-3 flex justify-between font-mono text-[10px] md:text-xs font-bold">
-                  <span>UX + DEV</span>
-                  <span>BASED IN ID</span>
+                <div className="bg-white text-black p-4 sm:p-5 md:p-8 w-full w-full xl:justify-self-end xl:-translate-y-24 ">
+                  <p className="font-bold text-base md:text-xl leading-tight">
+                    I bridge the gap between design and code, crafting digital products that are not only beautiful, but built to perform.
+                  </p>
+                  <div className="mt-4 md:mt-6 border-t border-black/20 pt-3 flex justify-between font-mono text-[10px] md:text-xs font-bold">
+                    <span>UI/UX & FRONT END DEV</span>
+                    <span>BASED IN ID</span>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
           </div>
-        </div>
 
-        <div className="py-10 md:py-20 bg-white text-black transform -skew-y-2 md:-skew-y-3 overflow-hidden">
-          <div className="mb-4 px-4 md:px-6 font-mono font-bold tracking-widest text-[10px] md:text-sm flex justify-between gap-4 border-b-2 border-black/10 pb-4">
-            <span>// ARSENAL</span>
-            <span>SCROLL VELOCITY MAPPED</span>
+          <div className="py-6 md:py-10 bg-white text-black transform -skew-y-2 md:-skew-y-3 overflow-hidden">
+            <div className="mb-4 px-4 md:px-6 font-mono font-bold tracking-widest text-[10px] md:text-sm flex justify-between gap-4 border-b-2 border-black/10 pb-4">
+              <span>// SKILLS</span>
+            </div>
+            <MarqueeItem text={SKILLS_1} direction={1} speed={1.2} />
+            <MarqueeItem text={SKILLS_2} direction={-1} speed={1.5} />
           </div>
-          <MarqueeItem text={SKILLS_1} direction={1} speed={1.2} />
-          <MarqueeItem text={SKILLS_2} direction={-1} speed={1.5} />
         </div>
 
         <div className="px-4 md:px-12 mt-20 md:mt-40 max-w-[1600px] mx-auto">
@@ -238,7 +238,7 @@ const About = () => {
               </span>
             </h2>
             <span className="font-mono text-[10px] md:text-xs tracking-widest text-gray-500 md:mb-2">
-              002 / TIMELINE
+              Education
             </span>
           </div>
           <BrutalTimeline />

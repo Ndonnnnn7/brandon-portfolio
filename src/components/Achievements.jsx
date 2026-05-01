@@ -99,7 +99,7 @@ const Achievements = () => {
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-12 h-[2px] bg-[#CCFF00]" />
                   <span className="text-[10px] tracking-[0.4em] uppercase text-[#CCFF00] font-mono font-bold">
-                    Vol. 05 — Milestones
+                    Achievements
                   </span>
                 </div>
 

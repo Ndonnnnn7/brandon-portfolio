@@ -88,7 +88,7 @@ const Hero = () => {
           >
             <div className="w-12 h-[2px] bg-[#CCFF00]" />
             <span className="font-mono text-xs md:text-sm tracking-[0.3em] uppercase text-white/70">
-              System Active // Vol. 01
+              Portfolio
             </span>
           </motion.div>
 
@@ -122,10 +122,10 @@ const Hero = () => {
                   </div>
                 </div>
                 <h3 className="font-bold text-xl md:text-2xl leading-none uppercase tracking-tight mb-2">
-                  Digital Product Designer
+                  Designer by eye. Developer by hand.
                 </h3>
                 <p className="text-sm font-medium text-black/70 leading-relaxed">
-                  I specialize in crafting high-end, brutalist interfaces and seamless React experiences.
+                 Designing with intent. Building with precision. Turning complex problems into experiences that feel effortless.
                 </p>
               </div>
             </motion.div>

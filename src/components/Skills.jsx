@@ -218,7 +218,7 @@ const Skills = () => {
         <FadeUp className="mb-20 md:mb-32 relative z-20 pointer-events-none">
           <div className="flex items-center gap-4 mb-4">
             <span className="font-mono text-[9px] md:text-[10px] tracking-[0.5em] text-[#CCFF00] uppercase">
-              [ 03 ] System Arsenal
+              Skills
             </span>
             <motion.div
               initial={{ scaleX: 0, opacity: 0 }}

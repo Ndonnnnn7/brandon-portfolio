@@ -88,8 +88,8 @@ const Navbar = () => {
               <span className="font-black text-black text-xl leading-none">B</span>
             </div>
             <div className="hidden sm:flex flex-col">
-              <span className="font-black text-lg uppercase leading-none tracking-tighter text-white">Brandon G.</span>
-              <span className="font-mono text-[8px] tracking-[0.2em] uppercase text-[#CCFF00]">System_Architect</span>
+              <span className="font-black text-lg uppercase leading-none tracking-tighter text-white">Brandon</span>
+              <span className="font-mono text-[8px] tracking-[0.2em] uppercase text-[#CCFF00]">Profile</span>
             </div>
           </div>
 

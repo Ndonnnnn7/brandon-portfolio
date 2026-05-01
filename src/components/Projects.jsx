@@ -165,7 +165,7 @@ const Projects = () => {
               <div className="mb-6 flex items-center gap-4">
                 <div className="h-[2px] w-12 bg-[#CCFF00]" />
                 <span className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-[#CCFF00]">
-                  Vol. 04 - Deployment Log
+                  Projects
                 </span>
               </div>
 
