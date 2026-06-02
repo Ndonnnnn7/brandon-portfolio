@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { ExternalLink } from "lucide-react";
+import { storageImageUrl } from "../lib/storage";
 
 /* ─── CUSTOM MAGNETIC CURSOR ────────────────────────────────────── */
 /* ─── ANIMATION WRAPPER ─────────────────────────────────────────── */
@@ -46,15 +47,15 @@ const Achievements = () => {
 
   // --- DATA ---
   const competitions = [
-    { id: 1, title: "Awardee Bakti Champions Scholarship 2025", location: "Bank Central Asia (BCA)", image: "img/Bca.jpeg", badge: "SCHOLARSHIP" },
-    { id: 2, title: "1st Place I/O Fest Business Plan", location: "Tarumanagara University", image: "img/Untar.jpeg", badge: "WINNER" },
-    { id: 3, title: "1st Place Bizznovation Business Plan", location: "Pradita University", image: "img/Bizzno.jpg", badge: "WINNER" },
-    { id: 4, title: "2nd Place Business Plan Recursion", location: "University of Hasanuddin", image: "img/Recursion.jpg", badge: "WINNER" },
-    { id: 5, title: "2nd Place Business Plan ITCC", location: "University of Udayana", image: "img/Udayana.jpg", badge: "WINNER" },
-    { id: 6, title: "1st Place Business Plan TechX", location: "President University", image: "img/President.jpg", badge: "WINNER" },
-    { id: 7, title: "1st Place Business Plan IT Convert", location: "University of Jember", image: "img/ITC.jpg", badge: "WINNER" },
-    { id: 8, title: "1st Place Business Plan SEMET", location: "University of Gadjah Mada", image: "img/UGM.jpg", badge: "WINNER" },
-    { id: 9, title: "2nd Place Business Idea Proposal", location: "UPN Veteran", image: "img/Ilpol.jpg", badge: "WINNER" },
+    { id: 1, title: "Awardee Bakti Champions Scholarship 2025", location: "Bank Central Asia (BCA)", image: storageImageUrl("img/Bca.jpeg"), badge: "SCHOLARSHIP" },
+    { id: 2, title: "1st Place I/O Fest Business Plan", location: "Tarumanagara University", image: storageImageUrl("img/Untar.jpeg"), badge: "WINNER" },
+    { id: 3, title: "1st Place Bizznovation Business Plan", location: "Pradita University", image: storageImageUrl("img/Bizzno.jpg"), badge: "WINNER" },
+    { id: 4, title: "2nd Place Business Plan Recursion", location: "University of Hasanuddin", image: storageImageUrl("img/Recursion.jpg"), badge: "WINNER" },
+    { id: 5, title: "2nd Place Business Plan ITCC", location: "University of Udayana", image: storageImageUrl("img/Udayana.jpg"), badge: "WINNER" },
+    { id: 6, title: "1st Place Business Plan TechX", location: "President University", image: storageImageUrl("img/President.jpg"), badge: "WINNER" },
+    { id: 7, title: "1st Place Business Plan IT Convert", location: "University of Jember", image: storageImageUrl("img/ITC.jpg"), badge: "WINNER" },
+    { id: 8, title: "1st Place Business Plan SEMET", location: "University of Gadjah Mada", image: storageImageUrl("img/UGM.jpg"), badge: "WINNER" },
+    { id: 9, title: "2nd Place Business Idea Proposal", location: "UPN Veteran", image: storageImageUrl("img/Ilpol.jpg"), badge: "WINNER" },
   ];
 
   const certifications = [

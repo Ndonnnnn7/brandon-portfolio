@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { storageImageUrl } from "../lib/storage";
 
 const Hero = () => {
-  const profileImage = "img/profile.svg";
+  const profileImage = storageImageUrl("img/profile.svg");
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {

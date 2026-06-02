@@ -207,7 +207,7 @@ const About = () => {
                 transition={{ duration: 1, ease: "circOut", delay: 0.25 }}
                 className="w-full xl:justify-self-end"
               >
-                <div className="bg-white text-black p-4 sm:p-5 md:p-8 w-full w-full xl:justify-self-end xl:-translate-y-24 ">
+                <div className="bg-white text-black p-4 sm:p-5 md:p-8 w-full xl:justify-self-end xl:-translate-y-24 ">
                   <p className="font-bold text-base md:text-xl leading-tight">
                     I bridge the gap between design and code, crafting digital products that are not only beautiful, but built to perform.
                   </p>
