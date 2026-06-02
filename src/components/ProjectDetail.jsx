@@ -94,13 +94,13 @@ const ProjectDetail = () => {
   const { scrollYProgress } = useScroll();
   const yParallax = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
   const heroImageSrc = project?.image
-    ? storageImageTransformUrl(project.image, { width: 1600, quality: 82, resize: "cover" })
+    ? storageImageTransformUrl(project.image, { width: 1600, quality: 82 })
     : "";
   const heroImageSrcSet = project?.image
     ? [
-        `${storageImageTransformUrl(project.image, { width: 900, quality: 78, resize: "cover" })} 900w`,
-        `${storageImageTransformUrl(project.image, { width: 1400, quality: 80, resize: "cover" })} 1400w`,
-        `${storageImageTransformUrl(project.image, { width: 1800, quality: 82, resize: "cover" })} 1800w`,
+        `${storageImageTransformUrl(project.image, { width: 900, quality: 78 })} 900w`,
+        `${storageImageTransformUrl(project.image, { width: 1400, quality: 80 })} 1400w`,
+        `${storageImageTransformUrl(project.image, { width: 1800, quality: 82 })} 1800w`,
       ].join(", ")
     : undefined;
 
@@ -187,7 +187,7 @@ const ProjectDetail = () => {
                     alt={project.title}
                     decoding="async"
                     fetchPriority="high"
-                    className="w-full h-full object-cover contrast-125"
+                    className="w-full h-full object-contain contrast-125 bg-black"
                   />
                 </motion.div>
 
@@ -309,17 +309,17 @@ const ProjectDetail = () => {
                     <FadeUp key={index} delay={index * 0.1}>
                       <div className="relative border border-white/10 bg-[#0A0A0A] p-2 transition-colors">
                         <img
-                          src={storageImageTransformUrl(img, { width: 1000, quality: 78, resize: "cover" })}
+                          src={storageImageTransformUrl(img, { width: 1000, quality: 78 })}
                           srcSet={[
-                            `${storageImageTransformUrl(img, { width: 640, quality: 74, resize: "cover" })} 640w`,
-                            `${storageImageTransformUrl(img, { width: 1000, quality: 78, resize: "cover" })} 1000w`,
-                            `${storageImageTransformUrl(img, { width: 1400, quality: 80, resize: "cover" })} 1400w`,
+                            `${storageImageTransformUrl(img, { width: 640, quality: 74 })} 640w`,
+                            `${storageImageTransformUrl(img, { width: 1000, quality: 78 })} 1000w`,
+                            `${storageImageTransformUrl(img, { width: 1400, quality: 80 })} 1400w`,
                           ].join(", ")}
                           sizes="(min-width: 768px) 44vw, 92vw"
                           loading="lazy"
                           decoding="async"
                           alt={`Snapshot ${index + 1}`}
-                          className="w-full aspect-video object-cover"
+                          className="w-full aspect-video object-contain bg-black"
                         />
                         <div className="absolute top-4 left-4 font-mono text-[8px] bg-black/60 px-2 py-1 text-white/50 backdrop-blur-md border border-white/10">
                           CAM_0{index + 2}

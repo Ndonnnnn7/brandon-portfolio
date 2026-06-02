@@ -217,18 +217,18 @@ const Achievements = () => {
                         className="overflow-hidden"
                       >
                         <div className="px-4 pb-8 md:pl-[5.5rem] md:pr-16">
-                          <div className="relative w-full bg-[#030303] border-2 border-[#CCFF00] p-2 md:p-3">
+                          <div className="relative w-full aspect-video max-h-[72vh] bg-[#030303] border-2 border-[#CCFF00] p-2 md:p-3">
                             
                             <img 
-                              src={storageImageTransformUrl(item.image, { width: 1200, quality: 78, resize: "cover" })}
+                              src={storageImageTransformUrl(item.image, { width: 1200, quality: 78 })}
                               srcSet={[
-                                `${storageImageTransformUrl(item.image, { width: 640, quality: 74, resize: "cover" })} 640w`,
-                                `${storageImageTransformUrl(item.image, { width: 1000, quality: 78, resize: "cover" })} 1000w`,
-                                `${storageImageTransformUrl(item.image, { width: 1400, quality: 80, resize: "cover" })} 1400w`,
+                                `${storageImageTransformUrl(item.image, { width: 640, quality: 74 })} 640w`,
+                                `${storageImageTransformUrl(item.image, { width: 1000, quality: 78 })} 1000w`,
+                                `${storageImageTransformUrl(item.image, { width: 1400, quality: 80 })} 1400w`,
                               ].join(", ")}
                               sizes="(min-width: 768px) 82vw, 92vw"
                               alt={item.title} 
-                              className="w-full h-[200px] md:h-[500px] object-cover contrast-125"
+                              className="block h-full w-full object-cover object-center contrast-125"
                               loading="lazy"
                               decoding="async"
                             />
