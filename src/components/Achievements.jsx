@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { ExternalLink } from "lucide-react";
-import { storageImageUrl } from "../lib/storage";
+import { storageImageTransformUrl, storageImageUrl } from "../lib/storage";
 
 /* ─── CUSTOM MAGNETIC CURSOR ────────────────────────────────────── */
 /* ─── ANIMATION WRAPPER ─────────────────────────────────────────── */
@@ -220,10 +220,17 @@ const Achievements = () => {
                           <div className="relative w-full bg-[#030303] border-2 border-[#CCFF00] p-2 md:p-3">
                             
                             <img 
-                              src={item.image} 
+                              src={storageImageTransformUrl(item.image, { width: 1200, quality: 78, resize: "cover" })}
+                              srcSet={[
+                                `${storageImageTransformUrl(item.image, { width: 640, quality: 74, resize: "cover" })} 640w`,
+                                `${storageImageTransformUrl(item.image, { width: 1000, quality: 78, resize: "cover" })} 1000w`,
+                                `${storageImageTransformUrl(item.image, { width: 1400, quality: 80, resize: "cover" })} 1400w`,
+                              ].join(", ")}
+                              sizes="(min-width: 768px) 82vw, 92vw"
                               alt={item.title} 
                               className="w-full h-[200px] md:h-[500px] object-cover contrast-125"
                               loading="lazy"
+                              decoding="async"
                             />
                             
                             {/* Decorative Brutalist Accents */}

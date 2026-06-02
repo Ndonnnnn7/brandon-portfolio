@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform, useSpring, useMotionValue } from "fram
 import { ArrowLeft, Github, ArrowUpRight, ExternalLink, Camera, Database } from "lucide-react";
 import { FaFigma } from "react-icons/fa";
 import { projectsData } from "../data/projects";
+import { storageImageTransformUrl } from "../lib/storage";
 
 const BrutalistCursor = () => {
   const cursorX = useMotionValue(-100);
@@ -92,6 +93,16 @@ const ProjectDetail = () => {
 
   const { scrollYProgress } = useScroll();
   const yParallax = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const heroImageSrc = project?.image
+    ? storageImageTransformUrl(project.image, { width: 1600, quality: 82, resize: "cover" })
+    : "";
+  const heroImageSrcSet = project?.image
+    ? [
+        `${storageImageTransformUrl(project.image, { width: 900, quality: 78, resize: "cover" })} 900w`,
+        `${storageImageTransformUrl(project.image, { width: 1400, quality: 80, resize: "cover" })} 1400w`,
+        `${storageImageTransformUrl(project.image, { width: 1800, quality: 82, resize: "cover" })} 1800w`,
+      ].join(", ")
+    : undefined;
 
   return (
     <>
@@ -170,8 +181,12 @@ const ProjectDetail = () => {
 
                 <motion.div style={{ y: yParallax }} className="w-full h-[120%] -top-[10%] relative origin-center">
                   <img
-                    src={project.image}
+                    src={heroImageSrc}
+                    srcSet={heroImageSrcSet}
+                    sizes="(min-width: 1024px) 92vw, 100vw"
                     alt={project.title}
+                    decoding="async"
+                    fetchPriority="high"
                     className="w-full h-full object-cover contrast-125"
                   />
                 </motion.div>
@@ -294,8 +309,15 @@ const ProjectDetail = () => {
                     <FadeUp key={index} delay={index * 0.1}>
                       <div className="relative border border-white/10 bg-[#0A0A0A] p-2 transition-colors">
                         <img
-                          src={img}
+                          src={storageImageTransformUrl(img, { width: 1000, quality: 78, resize: "cover" })}
+                          srcSet={[
+                            `${storageImageTransformUrl(img, { width: 640, quality: 74, resize: "cover" })} 640w`,
+                            `${storageImageTransformUrl(img, { width: 1000, quality: 78, resize: "cover" })} 1000w`,
+                            `${storageImageTransformUrl(img, { width: 1400, quality: 80, resize: "cover" })} 1400w`,
+                          ].join(", ")}
+                          sizes="(min-width: 768px) 44vw, 92vw"
                           loading="lazy"
+                          decoding="async"
                           alt={`Snapshot ${index + 1}`}
                           className="w-full aspect-video object-cover"
                         />

@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform, useSpring } from "framer-motion";
 
 const educationData = [
   {
@@ -36,6 +36,7 @@ const SKILLS_2 = ["REACT", "TAILWIND", "FRAMER MOTION", "TYPESCRIPT", "NEXT.JS",
 
 const MarqueeItem = ({ text, direction = 1, speed = 2 }) => {
   const containerRef = useRef(null);
+  const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
@@ -46,12 +47,12 @@ const MarqueeItem = ({ text, direction = 1, speed = 2 }) => {
     stiffness: 400,
   });
 
-  const xTransform = useTransform(scrollVelocity, [0, 1], [0, direction * -100 * speed]);
+  const xTransform = useTransform(scrollVelocity, [0, 1], [0, prefersReducedMotion ? 0 : direction * -100 * speed]);
 
   return (
     <div ref={containerRef} className="overflow-hidden whitespace-nowrap py-2 flex w-full">
       <motion.div className="flex gap-4 md:gap-8 items-center will-change-transform" style={{ x: xTransform }}>
-        {[...Array(4)].map((_, i) => (
+        {[...Array(2)].map((_, i) => (
           <div key={i} className="flex gap-4 md:gap-8 items-center shrink-0">
             {text.map((item, idx) => (
               <React.Fragment key={idx}>
@@ -70,6 +71,7 @@ const MarqueeItem = ({ text, direction = 1, speed = 2 }) => {
 
 const BrutalTimeline = () => {
   const containerRef = useRef(null);
+  const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start 80%", "end 20%"],
@@ -100,13 +102,13 @@ const BrutalTimeline = () => {
           fill="none"
           stroke="#FF3355"
           strokeWidth="3"
-          style={{ pathLength }}
+          style={{ pathLength: prefersReducedMotion ? 1 : pathLength }}
         />
       </svg>
 
       <svg className="md:hidden absolute left-[1.15rem] top-0 w-2 h-full pointer-events-none z-0" preserveAspectRatio="none">
         <line x1="1" y1="0" x2="1" y2="100%" stroke="rgba(255,255,255,0.1)" strokeWidth="2" strokeDasharray="6 6" />
-        <motion.line x1="1" y1="0" x2="1" y2="100%" stroke="#FF3355" strokeWidth="2" style={{ pathLength }} />
+        <motion.line x1="1" y1="0" x2="1" y2="100%" stroke="#FF3355" strokeWidth="2" style={{ pathLength: prefersReducedMotion ? 1 : pathLength }} />
       </svg>
 
       {educationData.map((node, i) => (

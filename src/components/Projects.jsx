@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { projectsData } from "../data/projects";
+import { storageImageTransformUrl } from "../lib/storage";
 
 const FadeUp = ({ children, delay = 0, className = "" }) => (
   <motion.div
@@ -215,6 +216,16 @@ const Projects = () => {
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, index) => {
               const cardTech = project.tech?.length ? project.tech : (project.detailTech?.slice(0, 3) ?? []);
+              const imageSrc = project.image
+                ? storageImageTransformUrl(project.image, { width: 760, quality: 72 })
+                : "";
+              const imageSrcSet = project.image
+                ? [
+                    `${storageImageTransformUrl(project.image, { width: 480, quality: 70 })} 480w`,
+                    `${storageImageTransformUrl(project.image, { width: 760, quality: 72 })} 760w`,
+                    `${storageImageTransformUrl(project.image, { width: 1040, quality: 74 })} 1040w`,
+                  ].join(", ")
+                : undefined;
 
               return (
               <motion.article
@@ -240,9 +251,12 @@ const Projects = () => {
 
                 <div className="relative aspect-[2064/1365] w-full overflow-hidden border border-white/10 bg-[#000] transition-colors duration-300 group-hover:border-[#CCFF00]/60">
                   <motion.img
-                    src={project.image}
+                    src={imageSrc}
+                    srcSet={imageSrcSet}
+                    sizes="(min-width: 1024px) 31vw, (min-width: 768px) 46vw, 92vw"
                     alt={project.title}
                     loading="lazy"
+                    decoding="async"
                     className="h-full w-full object-contain transition-transform duration-500 ease-out group-hover:scale-[1.035]"
                     initial={{ opacity: 0.92 }}
                     whileInView={{ opacity: 1 }}
