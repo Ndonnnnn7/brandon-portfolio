@@ -1,17 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 
 // Components
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import About from "./components/About";
-import Skills from "./components/Skills";
-import Projects from "./components/Projects";
-import Achievements from "./components/Achievements";
-import Contact from "./components/Contact";
-
-import GlobalBackground from "./components/GlobalBackground";
-import ProjectDetail from "./components/ProjectDetail";
+import GlobalBackground from "./global-background/GlobalBackground";
+import Home from "./home/Home";
+import ProjectDetail from "./project-detail/ProjectDetail";
 
 // --- HELPER: Scroll To Top ---
 const ScrollToTop = () => {
@@ -28,59 +21,29 @@ const ScrollToTop = () => {
   return null;
 };
 
-// --- LAYOUT HALAMAN UTAMA (Home) ---
-const Home = () => {
-  return (
-    <>
-      <Navbar /> 
-      <main className="flex flex-col gap-0 relative z-10">
-        <section id="home">
-          <Hero />
-        </section>
-
-        <section id="about">
-          <About />
-        </section>
-
-        <section id="skills">
-          <Skills />
-        </section>
-
-        <section id="projects">
-          <Projects />
-        </section>
-
-        <section id="achievements">
-          <Achievements />
-        </section>
-
-        <section id="contact">
-          <Contact />
-        </section>
-      </main>
-    </>
-  );
-};
-
-// Wrapper untuk memastikan Router Context berjalan lancar
-const AppContent = () => {
-  return (
-    <>
-      <ScrollToTop />
-      <GlobalBackground />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/project/:id" element={<ProjectDetail />} />
-      </Routes>
-    </>
-  );
-};
-
 function App() {
+  const [theme] = useState(() => {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  });
+
+  useEffect(() => {
+    const isDark = theme === "dark";
+    document.documentElement.classList.toggle("dark", isDark);
+    document.documentElement.style.colorScheme = theme;
+  }, [theme]);
+
   return (
     <Router>
-      <div className="relative min-h-screen text-white overflow-x-hidden bg-[#0a0a0a]">
-        <AppContent />
+      <div className="relative min-h-screen overflow-x-hidden bg-[#F1EFE7] text-[#050505] transition-colors duration-500 dark:bg-[#0a0a0a] dark:text-white">
+        <ScrollToTop />
+        <GlobalBackground />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/project/:id" element={<ProjectDetail />} />
+        </Routes>
       </div>
     </Router>
   );
