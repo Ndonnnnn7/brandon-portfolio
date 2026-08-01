@@ -1,12 +1,11 @@
-import React, { useRef, useState } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { ExternalLink } from "lucide-react";
-import { storageImageTransformUrl, storageImageUrl } from "../lib/storage";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { motion as Motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { Check, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 
 /* ─── CUSTOM MAGNETIC CURSOR ────────────────────────────────────── */
 /* ─── ANIMATION WRAPPER ─────────────────────────────────────────── */
 const FadeUp = ({ children, delay = 0, className = "" }) => (
-  <motion.div
+  <Motion.div
     className={className}
     initial={{ opacity: 0, y: 40 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -14,7 +13,7 @@ const FadeUp = ({ children, delay = 0, className = "" }) => (
     transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay }}
   >
     {children}
-  </motion.div>
+  </Motion.div>
 );
 
 const staggerRow = {
@@ -35,7 +34,9 @@ const Achievements = () => {
   const sectionRef = useRef(null);
 
   // Accordion State: Set item pertama terbuka secara default
-  const [activeId, setActiveId] = useState(1); 
+  const [activeId, setActiveId] = useState(1);
+  const certificateTrackRef = useRef(null);
+  const [certificateRange, setCertificateRange] = useState({ start: 0, end: 3 });
 
   // Parallax Setup
   const { scrollYProgress } = useScroll({
@@ -47,95 +48,158 @@ const Achievements = () => {
 
   // --- DATA ---
   const competitions = [
-    { id: 1, title: "Awardee Bakti Champions Scholarship 2025", location: "Bank Central Asia (BCA)", image: storageImageUrl("img/Bca.jpeg"), badge: "SCHOLARSHIP" },
-    { id: 2, title: "1st Place I/O Fest Business Plan", location: "Tarumanagara University", image: storageImageUrl("img/Untar.jpeg"), badge: "WINNER" },
-    { id: 3, title: "1st Place Bizznovation Business Plan", location: "Pradita University", image: storageImageUrl("img/Bizzno.jpg"), badge: "WINNER" },
-    { id: 4, title: "2nd Place Business Plan Recursion", location: "University of Hasanuddin", image: storageImageUrl("img/Recursion.jpg"), badge: "WINNER" },
-    { id: 5, title: "2nd Place Business Plan ITCC", location: "University of Udayana", image: storageImageUrl("img/Udayana.jpg"), badge: "WINNER" },
-    { id: 6, title: "1st Place Business Plan TechX", location: "President University", image: storageImageUrl("img/President.jpg"), badge: "WINNER" },
-    { id: 7, title: "1st Place Business Plan IT Convert", location: "University of Jember", image: storageImageUrl("img/ITC.jpg"), badge: "WINNER" },
-    { id: 8, title: "1st Place Business Plan SEMET", location: "University of Gadjah Mada", image: storageImageUrl("img/UGM.jpg"), badge: "WINNER" },
-    { id: 9, title: "2nd Place Business Idea Proposal", location: "UPN Veteran", image: storageImageUrl("img/Ilpol.jpg"), badge: "WINNER" },
+    { id: 1, title: "Awardee Bakti Champions Scholarship 2025", location: "Bank Central Asia (BCA)", image: "/img/Bca.jpeg", badge: "SCHOLARSHIP" },
+    { id: 2, title: "1st Place I/O Fest Business Plan", location: "Tarumanagara University", image: "/img/Untar.jpeg", badge: "WINNER" },
+    { id: 3, title: "1st Place Bizznovation Business Plan", location: "Pradita University", image: "/img/Bizzno.jpg", badge: "WINNER" },
+    { id: 4, title: "2nd Place Business Plan Recursion", location: "University of Hasanuddin", image: "/img/Recursion.jpg", badge: "WINNER" },
+    { id: 5, title: "2nd Place Business Plan ITCC", location: "University of Udayana", image: "/img/Udayana.jpg", badge: "WINNER" },
+    { id: 6, title: "1st Place Business Plan TechX", location: "President University", image: "/img/President.jpg", badge: "WINNER" },
+    { id: 7, title: "1st Place Business Plan IT Convert", location: "University of Jember", image: "/img/ITC.jpg", badge: "WINNER" },
+    { id: 8, title: "1st Place Business Plan SEMET", location: "University of Gadjah Mada", image: "/img/UGM.jpg", badge: "WINNER" },
+    { id: 9, title: "2nd Place Business Idea Proposal", location: "UPN Veteran", image: "/img/Ilpol.jpg", badge: "WINNER" },
   ];
 
   const certifications = [
-    { name: "Belajar Dasar AI", issuer: "Dicoding Indonesia", date: "2025", id: "53XEKYQ4KXRN" },
-    { name: "Introduction to Software Engineering", issuer: "Revou Indonesia", date: "2025", id: "SEFC210425-01-1-00018" },
-    { name: "Web Design for Beginners", issuer: "Udemy", date: "2025", id: "G-UX-25" },
+    {
+      name: "Belajar Dasar Pemrograman Web",
+      issuer: "Dicoding Indonesia",
+      issued: "April 2026",
+      id: "JMZV0DL8RXN9",
+      image: "/img/Certif1.png",
+      href: "https://www.dicoding.com/certificates/JMZV0DL8RXN9",
+    },
+    {
+      name: "Belajar Dasar AI",
+      issuer: "Dicoding Indonesia",
+      issued: "October 2025",
+      id: "53XEKYQ4KXRN",
+      image: "/img/Certif2.png",
+      href: "https://www.dicoding.com/certificates/53XEKYQ4KXRN",
+    },
+    {
+      name: "Introduction to Software Engineering",
+      issuer: "RevoU Indonesia",
+      issued: "May 2025",
+      id: "SEFC210425-01-1-00018",
+      image: "/img/Certif3.png",
+      href: "/img/Certif3.png",
+    },
+    {
+      name: "Web Design for Beginners: HTML & CSS",
+      issuer: "Udemy",
+      issued: "April 2025",
+      id: "UC-1ff77b45-e8cd-4eb4-bfe7-9a81c25be704",
+      image: "/img/Certif4.png",
+      href: "/img/Certif4.png",
+    },
+    {
+      name: "Design for Impact: Design Thinking & UI/UX",
+      issuer: "MyEduSolve",
+      issued: "April 2025",
+      id: "Certificate of Participation",
+      image: "/img/Certif5.png",
+      href: "/img/Certif5.png",
+    },
   ];
+
+  const updateCertificateRange = useCallback(() => {
+    const track = certificateTrackRef.current;
+    const card = track?.querySelector("[data-certificate-card]");
+    if (!track || !card) return;
+
+    const gap = Number.parseFloat(window.getComputedStyle(track).columnGap) || 16;
+    const step = card.getBoundingClientRect().width + gap;
+    const start = Math.min(certifications.length - 1, Math.max(0, Math.round(track.scrollLeft / step)));
+    const visibleCount = Math.max(1, Math.floor((track.clientWidth + gap) / step));
+
+    setCertificateRange({
+      start,
+      end: Math.min(certifications.length, start + visibleCount),
+    });
+  }, [certifications.length]);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(updateCertificateRange);
+    window.addEventListener("resize", updateCertificateRange);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("resize", updateCertificateRange);
+    };
+  }, [updateCertificateRange]);
+
+  const scrollCertificates = (direction) => {
+    const track = certificateTrackRef.current;
+    const card = track?.querySelector("[data-certificate-card]");
+    if (!track || !card) return;
+
+    const gap = Number.parseFloat(window.getComputedStyle(track).columnGap) || 16;
+    track.scrollBy({
+      left: direction * (card.getBoundingClientRect().width + gap),
+      behavior: "smooth",
+    });
+  };
 
   return (
     <section
       id="achievements"
       ref={sectionRef}
-      className="theme-section relative w-full overflow-hidden bg-[#F1EFE7] text-[#050505] dark:bg-[#050505] dark:text-white py-24 md:py-40 font-sans selection:bg-[#CCFF00] selection:text-black transition-colors duration-500"
+      className="theme-section relative w-full overflow-hidden bg-canvas text-ink py-24 md:py-40 font-sans selection:bg-primary selection:text-ink"
     >
-      {/* Background Blueprint Grid */}
-      <div 
-        className="absolute inset-0 z-0 pointer-events-none opacity-[0.04]"
-        style={{
-          backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-          backgroundSize: "40px 40px"
-        }}
-      />
-
       {/* Giant Parallax Watermark */}
-      <motion.div
+      <Motion.div
         style={{ y: watermarkY }}
         className="absolute top-[10%] left-0 right-0 z-0 pointer-events-none flex justify-center overflow-hidden opacity-[0.03] select-none"
       >
         <span className="text-[clamp(10rem,30vw,30rem)] font-black uppercase leading-none whitespace-nowrap tracking-tighter">
           HONORS
         </span>
-      </motion.div>
+      </Motion.div>
 
-      <div className="relative z-10 max-w-[1600px] mx-auto px-6 md:px-12 w-full">
+      <div className="relative z-10 mx-auto w-full max-w-[1800px] px-6 md:px-12">
         
         {/* ── HEADER ── */}
         <FadeUp>
-          <motion.div style={{ y: headY }} className="mb-24 md:mb-32">
-            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 border-b-2 border-white/10 pb-10">
+          <Motion.div style={{ y: headY }} className="mb-16">
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 border-b-2 border-line pb-10">
               
               <div className="max-w-3xl">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-[2px] bg-[#CCFF00]" />
-                  <span className="text-[10px] tracking-[0.4em] uppercase text-[#CCFF00] font-mono font-bold">
-                    Achievements
-                  </span>
+                  <div className="w-12 h-[2px] bg-[#8FE8F6]" />
                 </div>
 
-                <h2 className="text-[clamp(4rem,10vw,8rem)] font-black uppercase leading-[0.85] tracking-tighter text-white">
+                <h2 className="text-[clamp(4rem,10vw,8rem)] font-black uppercase leading-[0.85] tracking-tighter text-ink">
                   MOMENTS <br/>
-                  <span className="text-[#FF3355]">OF GLORY.</span>
+                  <span className="text-[#8FE8F6]">OF GLORY.</span>
                 </h2>
                 
-                <p className="font-mono text-xs md:text-sm mt-8 text-gray-400 max-w-xl uppercase tracking-widest leading-relaxed border-l-2 border-[#FF3355] pl-4">
+                <p className="font-mono text-xs md:text-sm mt-8 text-gray-400 max-w-xl uppercase tracking-widest leading-relaxed border-l-2 border-[#8FE8F6] pl-4">
                   Highlights from battlegrounds, scholarships, and technical certifications. Curated proof of work.
                 </p>
               </div>
 
               {/* Data Status Block */}
               <div className="w-full lg:w-auto mt-8 lg:mt-0">
-                <motion.div
+                <Motion.div
                   initial={{ opacity: 0, y: 24, rotate: 1.5 }}
                   whileInView={{ opacity: 1, y: 0, rotate: 2 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.7, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
-                  className="bg-white text-black p-6 border-2 border-black transform md:rotate-2 shadow-[8px_8px_0px_rgba(204,255,0,0.5)]"
+                  className="transform rounded-3xl border-2 border-black bg-white p-6 text-black shadow-[8px_8px_0px_rgba(143,232,246,0.5)] md:rotate-2"
                 >
                   <div className="flex justify-between items-center border-b border-black/20 pb-2 mb-4">
                      <span className="font-mono text-[10px] font-bold uppercase">Total Awards</span>
-                     <span className="font-black text-2xl text-[#FF3355]">{competitions.length}</span>
+                     <span className="font-black text-2xl text-[#8FE8F6]">{competitions.length}</span>
                   </div>
                   <div className="flex justify-between items-center border-b border-black/20 pb-2">
                      <span className="font-mono text-[10px] font-bold uppercase">Licenses</span>
                      <span className="font-black text-2xl">{certifications.length}</span>
                   </div>
-                </motion.div>
+                </Motion.div>
               </div>
 
             </div>
-          </motion.div>
+          </Motion.div>
         </FadeUp>
 
         {/* ── COMPETITIONS LIST (Interactive Accordion Style) ── */}
@@ -143,12 +207,8 @@ const Achievements = () => {
           
           {/* Table Header */}
           <FadeUp>
-             <div className="hidden md:flex items-center justify-between py-4 px-4 font-mono text-[10px] tracking-widest uppercase text-white/40 border-b-2 border-white/10">
-               <span className="w-16">ID</span>
-               <span className="flex-1">Title / Designation</span>
-               <span className="w-48 text-right">Location</span>
-               <span className="w-32 text-right">Status</span>
-               <span className="w-12 text-center">+/-</span>
+             <div className="hidden items-center justify-between px-4 py-4 font-mono text-[10px] uppercase tracking-widest text-muted/70 md:flex">
+               <span className="flex-1">Gallery</span>
              </div>
           </FadeUp>
 
@@ -157,27 +217,29 @@ const Achievements = () => {
 
             return (
               <FadeUp key={item.id} delay={idx * 0.05}>
-                <motion.div
+                <Motion.div
                   custom={idx}
                   variants={staggerRow}
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, margin: "-60px" }}
-                  className={`relative border-b border-white/10 transition-colors duration-300 ${isActive ? "bg-white/[0.03]" : ""}`}
+                   className={`relative mb-4 overflow-hidden rounded-3xl border border-line transition-[background-color,border-color,box-shadow] duration-300 ${
+                     isActive ? "border-primary/60 bg-secondary/25 shadow-[0_14px_36px_rgba(11,18,20,0.06)]" : "bg-white"
+                   }`}
                 >
                   
                   {/* ROW HEADER (Clickable) */}
-                  <div 
+                  <div
                     className="flex flex-col md:flex-row md:items-center justify-between py-6 md:py-8 px-4 gap-4"
                     onClick={() => setActiveId(isActive ? null : item.id)}
                   >
                     {/* ID & Title */}
                     <div className="flex items-start md:items-center gap-4 md:gap-6 flex-1">
-                      <span className={`w-8 md:w-16 font-mono text-[10px] md:text-xs font-bold tracking-widest mt-1 md:mt-0 ${isActive ? "text-[#CCFF00]" : "opacity-50"}`}>
+                      <span className={`w-8 md:w-16 font-mono text-[10px] md:text-xs font-bold tracking-widest mt-1 md:mt-0 ${isActive ? "text-[#8FE8F6]" : "opacity-50"}`}>
                         {String(idx + 1).padStart(2, "0")}
                       </span>
                       <div className="flex-1">
-                        <h3 className={`text-xl md:text-3xl font-black uppercase tracking-tighter leading-tight transition-colors duration-300 ${isActive ? "text-[#CCFF00]" : "text-white"}`}>
+                        <h3 className={`text-xl md:text-3xl font-black uppercase tracking-tighter leading-tight transition-colors duration-300 ${isActive ? "text-[#8FE8F6]" : "text-ink"}`}>
                           {item.title}
                         </h3>
                         {/* Mobile Location */}
@@ -194,13 +256,13 @@ const Achievements = () => {
                       </span>
                       
                       <div className="w-32 text-left md:text-right">
-                        <span className={`font-mono text-[9px] md:text-[10px] uppercase font-bold tracking-[0.2em] border px-3 py-1 transition-colors ${isActive ? "border-[#CCFF00] text-[#CCFF00]" : "border-white/20"}`}>
+                         <span className={`rounded-full border px-3 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.2em] transition-colors md:text-[10px] ${isActive ? "border-primary text-primaryInk" : "border-line"}`}>
                           {item.badge}
                         </span>
                       </div>
 
                       {/* Expand/Collapse Icon */}
-                      <div className={`hidden md:flex w-12 items-center justify-center font-mono text-2xl font-light transition-transform duration-300 ${isActive ? "text-[#CCFF00] rotate-180" : "text-white/30"}`}>
+                      <div className={`hidden md:flex w-12 items-center justify-center font-mono text-2xl font-light transition-transform duration-300 ${isActive ? "text-[#8FE8F6] rotate-180" : "text-muted/60"}`}>
                         {isActive ? "−" : "+"}
                       </div>
                     </div>
@@ -209,7 +271,7 @@ const Achievements = () => {
                   {/* ── EXPANDABLE IMAGE ACCORDION ── */}
                   <AnimatePresence>
                     {isActive && (
-                      <motion.div
+                      <Motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
@@ -217,103 +279,177 @@ const Achievements = () => {
                         className="overflow-hidden"
                       >
                         <div className="px-4 pb-8 md:pl-[5.5rem] md:pr-16">
-                          <div className="relative w-full aspect-video max-h-[72vh] bg-[#030303] border-2 border-[#CCFF00] p-2 md:p-3">
+                          <div className="relative aspect-video max-h-[72vh] w-full overflow-hidden rounded-2xl border-2 border-primary bg-surface-soft p-2 md:p-3">
                             
                             <img 
-                              src={storageImageTransformUrl(item.image, { width: 1200, quality: 78 })}
-                              srcSet={[
-                                `${storageImageTransformUrl(item.image, { width: 640, quality: 74 })} 640w`,
-                                `${storageImageTransformUrl(item.image, { width: 1000, quality: 78 })} 1000w`,
-                                `${storageImageTransformUrl(item.image, { width: 1400, quality: 80 })} 1400w`,
-                              ].join(", ")}
-                              sizes="(min-width: 768px) 82vw, 92vw"
+                              src={item.image}
                               alt={item.title} 
-                              className="block h-full w-full object-cover object-center contrast-125"
+                              className="block h-full w-full rounded-xl object-cover object-center contrast-125"
                               loading="lazy"
                               decoding="async"
                             />
                             
                             {/* Decorative Brutalist Accents */}
-                            <div className="absolute top-0 left-0 w-3 h-3 border-t-4 border-l-4 border-[#CCFF00]" />
-                            <div className="absolute bottom-0 right-0 w-3 h-3 border-b-4 border-r-4 border-[#CCFF00]" />
+                            <div className="absolute top-0 left-0 w-3 h-3 border-t-4 border-l-4 border-[#8FE8F6]" />
+                            <div className="absolute bottom-0 right-0 w-3 h-3 border-b-4 border-r-4 border-[#8FE8F6]" />
                             
                             {/* Scanline Effect */}
-                            <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(0,0,0,0)_50%,rgba(204,255,0,0.05)_50%)] bg-[length:100%_4px] mix-blend-overlay" />
+                            <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(0,0,0,0)_50%,rgba(143,232,246,0.05)_50%)] bg-[length:100%_4px] mix-blend-overlay" />
                           </div>
                         </div>
-                      </motion.div>
+                      </Motion.div>
                     )}
                   </AnimatePresence>
 
-                </motion.div>
+                </Motion.div>
               </FadeUp>
             );
           })}
         </div>
 
         {/* ── CERTIFICATIONS (Barcode Tickets) ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start relative z-10">
-          
-          {/* Left Title */}
-          <FadeUp className="lg:col-span-4 sticky top-32">
-            <h3 className="text-[clamp(3rem,5vw,4.5rem)] font-black uppercase tracking-tighter leading-[0.9] mb-6">
-              Licenses & <br/> <span className="text-[#CCFF00]">Certificates.</span>
-            </h3>
-            <p className="font-mono text-xs text-white/50 leading-relaxed uppercase border-l-2 border-[#CCFF00] pl-4">
-              Continuous learning is the edge. These credentials validate foundations and technical growth.
-            </p>
-          </FadeUp>
+        <FadeUp>
+          <section
+            id="credentials"
+            aria-labelledby="credentials-heading"
+            className="relative z-10 overflow-hidden rounded-[2rem] border border-line bg-surface-soft px-5 py-12 sm:px-8 md:py-16 lg:px-16"
+          >
+            <div aria-hidden="true" className="pointer-events-none absolute -left-20 top-8 h-56 w-56 rounded-full border border-primary/50" />
+            <div aria-hidden="true" className="pointer-events-none absolute -right-24 bottom-0 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
 
-          {/* Right Tickets */}
-          <div className="lg:col-span-8 grid gap-8">
-            {certifications.map((cert, i) => (
-              <FadeUp key={i} delay={i * 0.1}>
-                <div className="relative bg-[#0A0A0A] border border-white/20 p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center overflow-hidden">
-                  
-                  {/* Giant Background Number */}
-                  <span className="absolute -right-4 -bottom-8 text-[120px] font-black text-white/[0.03] z-0 select-none">
-                    {cert.date}
-                  </span>
+            <div className="relative mx-auto max-w-3xl text-center">
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-primaryInk">
+                Continuous learning
+              </p>
+              <h3 id="credentials-heading" className="mt-4 text-[clamp(2.5rem,5vw,4.75rem)] font-black leading-[0.95] tracking-tighter text-ink">
+                Credentials that strengthen the practice.
+              </h3>
+              <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted md:text-lg">
+                Focused learning across software engineering, artificial intelligence, web development, and product design—applied directly in project work.
+              </p>
+            </div>
 
-                  {/* Left: Info */}
-                  <div className="relative z-10 flex-1 w-full md:w-auto mb-6 md:mb-0">
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="w-2 h-2 bg-[#FF3355] animate-pulse" />
-                      <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-white/50">
-                        {cert.issuer}
+            <div className="relative mt-12 md:mt-16">
+              <button
+                type="button"
+                onClick={() => scrollCertificates(-1)}
+                disabled={certificateRange.start === 0}
+                className="absolute -left-11 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-line bg-white text-ink shadow-[0_4px_14px_rgba(11,18,20,0.08)] transition-colors duration-200 hover:border-primary hover:bg-primary disabled:cursor-not-allowed disabled:opacity-35 md:grid lg:-left-14"
+                aria-label="Show previous certificates"
+              >
+                <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+              </button>
+
+              <div
+                ref={certificateTrackRef}
+                onScroll={updateCertificateRange}
+                onKeyDown={(event) => {
+                  if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+                    event.preventDefault();
+                    scrollCertificates(event.key === "ArrowLeft" ? -1 : 1);
+                  }
+                }}
+                className="flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden scroll-smooth px-0 pb-5 sm:px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                role="region"
+                aria-label="Certificate gallery"
+                tabIndex={0}
+              >
+                {certifications.map((cert, index) => (
+                  <Motion.article
+                    key={cert.id}
+                    data-certificate-card
+                    className="group flex w-full shrink-0 snap-start flex-col overflow-hidden rounded-3xl border border-line bg-white shadow-[0_4px_14px_rgba(11,18,20,0.05)] transition-[border-color,box-shadow] duration-300 hover:border-primary hover:shadow-[0_20px_48px_rgba(11,18,20,0.1)] sm:w-[calc((100%_-_1rem)/2)] lg:w-[calc((100%_-_2rem)/3)]"
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.5, delay: Math.min(index * 0.06, 0.24) }}
+                  >
+                    <div className="relative aspect-[4/3] overflow-hidden border-b border-line bg-white p-2 sm:p-3">
+                      <img
+                        src={cert.image}
+                        alt={`${cert.name} certificate issued by ${cert.issuer}`}
+                        className="h-full w-full rounded-2xl object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <span className="absolute right-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-line bg-white/95 px-3 py-1.5 font-mono text-[9px] font-bold uppercase tracking-wider text-secondaryInk shadow-[0_4px_14px_rgba(11,18,20,0.06)] backdrop-blur-sm">
+                        <Check className="h-3 w-3" aria-hidden="true" />
+                        Verified
                       </span>
                     </div>
-                    
-                    <h4 className="text-2xl md:text-3xl font-black uppercase tracking-tight leading-none mb-4">
-                      {cert.name}
-                    </h4>
 
-                    {/* Fake Barcode */}
-                    <div className="flex flex-col gap-2">
-                       <div className="h-6 w-48 bg-[repeating-linear-gradient(90deg,#fff,#fff_2px,transparent_2px,transparent_4px,#fff_4px,#fff_5px,transparent_5px,transparent_8px)] opacity-30" />
-                       <span className="font-mono text-[10px] tracking-widest text-[#CCFF00]">
-                         ID: {cert.id}
-                       </span>
+                    <div className="flex flex-1 flex-col p-5 md:p-6">
+                      <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-primaryInk">
+                        {cert.issuer}
+                      </p>
+                      <h4 className="mt-3 min-h-[3.5rem] text-xl font-black leading-tight tracking-tight text-ink md:text-2xl">
+                        {cert.name}
+                      </h4>
+
+                      <dl className="mt-5 space-y-2 border-t border-line pt-4 text-sm">
+                        <div className="flex items-start justify-between gap-4">
+                          <dt className="text-muted">Issued</dt>
+                          <dd className="text-right font-bold text-ink">{cert.issued}</dd>
+                        </div>
+                        <div className="flex items-start justify-between gap-4">
+                          <dt className="text-muted">Credential</dt>
+                          <dd className="max-w-[65%] break-all text-right font-mono text-[10px] font-bold text-ink">{cert.id}</dd>
+                        </div>
+                      </dl>
+
+                      <a
+                        href={cert.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-6 inline-flex w-fit items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-primaryInk transition-colors duration-200 hover:text-ink"
+                        aria-label={`View ${cert.name} credential`}
+                      >
+                        View credential
+                        <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                      </a>
                     </div>
-                  </div>
+                  </Motion.article>
+                ))}
+              </div>
 
-                  {/* Right: Verify Button */}
-                  <a 
-                    href="#" 
-                    className="relative z-10 w-full md:w-auto text-center font-mono text-[10px] uppercase font-bold tracking-[0.2em] border-2 border-white px-6 py-4 flex justify-center items-center gap-2"
-                  >
-                    VERIFY <ExternalLink className="w-4 h-4" />
-                  </a>
-                  
-                  {/* Brutalist Cut-out corners */}
-                  <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#050505] border-r border-white/20 rounded-full" />
-                  <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#050505] border-l border-white/20 rounded-full" />
+              <button
+                type="button"
+                onClick={() => scrollCertificates(1)}
+                disabled={certificateRange.end >= certifications.length}
+                className="absolute -right-11 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-line bg-white text-ink shadow-[0_4px_14px_rgba(11,18,20,0.08)] transition-colors duration-200 hover:border-primary hover:bg-primary disabled:cursor-not-allowed disabled:opacity-35 md:grid lg:-right-14"
+                aria-label="Show next certificates"
+              >
+                <ChevronRight className="h-5 w-5" aria-hidden="true" />
+              </button>
+            </div>
 
-                </div>
-              </FadeUp>
-            ))}
-          </div>
-        </div>
+            <div className="relative mt-2 flex items-center justify-between gap-4 md:justify-center">
+              <button
+                type="button"
+                onClick={() => scrollCertificates(-1)}
+                disabled={certificateRange.start === 0}
+                className="grid h-11 w-11 place-items-center rounded-full border border-line bg-white text-ink transition-colors duration-200 hover:border-primary hover:bg-primary disabled:cursor-not-allowed disabled:opacity-35 md:hidden"
+                aria-label="Show previous certificates"
+              >
+                <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+              </button>
+
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted" aria-live="polite">
+                {certificateRange.start + 1}–{certificateRange.end} of {certifications.length}
+              </p>
+
+              <button
+                type="button"
+                onClick={() => scrollCertificates(1)}
+                disabled={certificateRange.end >= certifications.length}
+                className="grid h-11 w-11 place-items-center rounded-full border border-line bg-white text-ink transition-colors duration-200 hover:border-primary hover:bg-primary disabled:cursor-not-allowed disabled:opacity-35 md:hidden"
+                aria-label="Show next certificates"
+              >
+                <ChevronRight className="h-5 w-5" aria-hidden="true" />
+              </button>
+            </div>
+          </section>
+        </FadeUp>
 
       </div>
     </section>

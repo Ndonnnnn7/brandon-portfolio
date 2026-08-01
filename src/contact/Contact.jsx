@@ -64,16 +64,8 @@ const Contact = () => {
   return (
     <section
       id="contact"
-      className="theme-section relative w-full overflow-hidden bg-[#F1EFE7] px-4 py-20 font-sans text-[#050505] dark:bg-[#050505] dark:text-white selection:bg-[#FF3355] selection:text-white md:px-8 md:py-28 transition-colors duration-500"
+      className="theme-section relative w-full overflow-hidden bg-canvas py-20 font-sans text-ink selection:bg-primary selection:text-ink md:py-28"
     >
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.04]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
-        }}
-      />
       <div
         className="absolute inset-0 z-0 opacity-20 pointer-events-none mix-blend-overlay"
         style={{
@@ -81,26 +73,26 @@ const Contact = () => {
             'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.85\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")',
         }}
       />
-      <div className="absolute left-1/2 top-12 h-72 w-[70vw] -translate-x-1/2 bg-[#FF3355]/10 blur-[110px] pointer-events-none" />
-      <div className="absolute bottom-0 right-0 h-80 w-80 bg-[#CCFF00]/5 blur-[120px] pointer-events-none" />
+      <div className="absolute left-1/2 top-12 h-72 w-[70vw] -translate-x-1/2 bg-[#8FE8F6]/10 blur-[110px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 h-80 w-80 bg-[#8FE8F6]/5 blur-[120px] pointer-events-none" />
 
-      <div className="relative z-10 mx-auto w-full max-w-[1320px]">
+      <div className="relative z-10 mx-auto w-full max-w-[1800px] px-6 md:px-12">
         <FadeUp>
-          <div className="relative overflow-hidden border border-white/15 rounded-lg bg-[#0A0A0A]/80 px-6 py-16 text-center shadow-[0_40px_120px_rgba(0,0,0,0.55)] sm:px-10 md:px-16 md:py-24">
-            <div className="absolute inset-x-0 top-0 h-full pointer-events-none bg-[radial-gradient(circle_at_50%_12%,rgba(255,255,255,0.08),transparent_32%),radial-gradient(circle_at_50%_78%,rgba(255,51,85,0.13),transparent_46%),radial-gradient(circle_at_50%_100%,rgba(204,255,0,0.1),transparent_48%)]" />
-            <div className="absolute left-0 top-0 h-2 w-32 bg-[#CCFF00]" />
-            <div className="absolute bottom-0 right-0 h-2 w-32 bg-[#FF3355]" />
+          <div className="relative overflow-hidden border border-line rounded-2xl bg-white/90 px-6 py-16 text-center shadow-[0_28px_70px_rgba(11,18,20,0.14)] sm:px-10 md:px-16 md:py-24">
+            <div className="absolute inset-x-0 top-0 h-full pointer-events-none bg-[radial-gradient(circle_at_50%_12%,rgba(11,18,20,0.08),transparent_32%),radial-gradient(circle_at_50%_78%,rgba(143,232,246,0.13),transparent_46%),radial-gradient(circle_at_50%_100%,rgba(143,232,246,0.1),transparent_48%)]" />
+            <div className="absolute left-0 top-0 h-2 w-32 bg-[#8FE8F6]" />
+            <div className="absolute bottom-0 right-0 h-2 w-32 bg-[#8FE8F6]" />
 
             <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center">
-              <span className="mb-6 inline-flex items-center border border-[#CCFF00]/40 bg-[#CCFF00] px-4 py-2 font-mono text-[10px] font-black uppercase tracking-[0.24em] text-black">
+              <span className="mb-6 inline-flex items-center rounded-full border border-[#8FE8F6]/40 bg-[#8FE8F6] px-4 py-2 font-mono text-[10px] font-black uppercase tracking-[0.24em] text-black">
                 Available for collaboration // {time || "MLG_IDN"}
               </span>
 
-              <h2 className="text-[clamp(2.7rem,7vw,6.5rem)] font-black uppercase leading-[0.85] tracking-tighter text-white">
-                Start Building Your <span className="text-[#FF3355]">Digital</span> Experience Today
+              <h2 className="text-[clamp(2.7rem,7vw,6.5rem)] font-black uppercase leading-[0.85] tracking-tighter text-ink">
+                Start Building Your <span className="text-[#8FE8F6]">Digital</span> Experience Today
               </h2>
 
-              <p className="mt-6 max-w-2xl border-l-2 border-[#FF3355] pl-4 text-left font-mono text-[10px] uppercase leading-relaxed tracking-widest text-white/50 md:text-xs">
+              <p className="mt-6 max-w-2xl border-l-2 border-[#8FE8F6] pl-4 text-left font-mono text-[10px] uppercase leading-relaxed tracking-widest text-ink/50 md:text-xs">
                 Let&apos;s turn ideas into sharp interfaces, reliable React systems, and portfolio-grade products
                 that feel fast from the first click.
               </p>
@@ -108,7 +100,7 @@ const Contact = () => {
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <a
                   href="mailto:brandon.geraldo28@gmail.com"
-                  className="group inline-flex h-12 items-center justify-center gap-2 border-2 border-white bg-white px-6 text-sm font-black uppercase text-black shadow-[6px_6px_0px_rgba(204,255,0,0.5)] transition hover:border-[#CCFF00] hover:bg-[#CCFF00]"
+                  className="group inline-flex h-12 items-center justify-center gap-2 rounded-full border-2 border-ink bg-white px-6 text-sm font-black uppercase text-black shadow-[6px_6px_0px_rgba(143,232,246,0.5)] transition hover:border-[#8FE8F6] hover:bg-[#8FE8F6]"
                 >
                   Start a Project
                   <ArrowUpRight className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
@@ -116,7 +108,7 @@ const Contact = () => {
                 <button
                   type="button"
                   onClick={handleCopyEmail}
-                  className="inline-flex h-12 items-center justify-center gap-2 border-2 border-white/20 bg-[#050505] px-6 font-mono text-[10px] font-black uppercase tracking-widest text-white/80 transition hover:border-[#CCFF00] hover:text-[#CCFF00]"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full border-2 border-line bg-white px-6 font-mono text-[10px] font-black uppercase tracking-widest text-ink/80 transition hover:border-[#8FE8F6] hover:text-[#8FE8F6]"
                 >
                   {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                   {copied ? "Email copied" : "Copy email"}
@@ -129,24 +121,24 @@ const Contact = () => {
         <FadeUp delay={0.12} className="grid gap-10 px-1 py-14 md:grid-cols-[1.1fr_1fr_1fr_1.2fr_0.9fr] md:gap-8 md:px-0 md:py-20">
           <div>
             <a href="#home" className="mb-6 inline-flex items-center gap-3">
-              <span className="grid h-12 w-12 place-items-center border-2 border-black bg-white text-xl font-black italic tracking-tighter text-black shadow-[5px_5px_0px_rgba(255,51,85,0.7)]">
+              <span className="grid h-12 w-12 place-items-center rounded-full border-2 border-black bg-white text-xl font-black italic tracking-tighter text-black shadow-[5px_5px_0px_rgba(143,232,246,0.7)]">
                 B.
               </span>
-              <span className="text-2xl font-black uppercase italic tracking-tighter text-white">Brandon</span>
+              <span className="text-2xl font-black uppercase italic tracking-tighter text-ink">Brandon</span>
             </a>
-            <p className="max-w-[220px] font-mono text-[10px] font-black uppercase leading-relaxed tracking-widest text-white/45">
+            <p className="max-w-[220px] font-mono text-[10px] font-black uppercase leading-relaxed tracking-widest text-muted">
               Front-end developer crafting clean interfaces with motion, clarity, and impact.
             </p>
           </div>
 
           <div>
-            <h3 className="mb-5 font-mono text-[10px] font-black uppercase tracking-[0.28em] text-white">
+            <h3 className="mb-5 font-mono text-[10px] font-black uppercase tracking-[0.28em] text-ink">
               Learn More
             </h3>
             <ul className="space-y-3">
               {navLinks.map((link) => (
                 <li key={link.href}>
-                  <a className="text-sm font-extrabold tracking-tight text-white/60 transition hover:text-[#CCFF00]" href={link.href}>
+                  <a className="text-sm font-extrabold tracking-tight text-muted transition hover:text-[#8FE8F6]" href={link.href}>
                     {link.label}
                   </a>
                 </li>
@@ -155,12 +147,12 @@ const Contact = () => {
           </div>
 
           <div>
-            <h3 className="mb-5 font-mono text-[10px] font-black uppercase tracking-[0.28em] text-white">
+            <h3 className="mb-5 font-mono text-[10px] font-black uppercase tracking-[0.28em] text-ink">
               Focus Area
             </h3>
             <ul className="space-y-3">
               {services.map((service) => (
-                <li key={service} className="text-sm font-extrabold tracking-tight text-white/60">
+                <li key={service} className="text-sm font-extrabold tracking-tight text-muted">
                   {service}
                 </li>
               ))}
@@ -168,33 +160,33 @@ const Contact = () => {
           </div>
 
           <div>
-            <h3 className="mb-5 font-mono text-[10px] font-black uppercase tracking-[0.28em] text-white">
+            <h3 className="mb-5 font-mono text-[10px] font-black uppercase tracking-[0.28em] text-ink">
               Contact Me
             </h3>
             <div className="space-y-4">
               <a
                 href="mailto:brandon.geraldo28@gmail.com"
-                className="flex items-start gap-3 text-sm font-extrabold tracking-tight text-white/60 transition hover:text-[#CCFF00]"
+                className="flex items-start gap-3 text-sm font-extrabold tracking-tight text-muted transition hover:text-[#8FE8F6]"
               >
-                <Mail className="mt-0.5 h-4 w-4 shrink-0 text-[#FF3355]" />
+                <Mail className="mt-0.5 h-4 w-4 shrink-0 text-[#8FE8F6]" />
                 <span className="break-all">brandon.geraldo28@gmail.com</span>
               </a>
               <a
                 href="https://wa.me/6285855462022"
-                className="flex items-center gap-3 text-sm font-extrabold tracking-tight text-white/60 transition hover:text-[#CCFF00]"
+                className="flex items-center gap-3 text-sm font-extrabold tracking-tight text-muted transition hover:text-[#8FE8F6]"
               >
-                <Phone className="h-4 w-4 shrink-0 text-[#FF3355]" />
+                <Phone className="h-4 w-4 shrink-0 text-[#8FE8F6]" />
                 <span>+62 858 5546 2022</span>
               </a>
-              <div className="flex items-center gap-3 text-sm font-extrabold tracking-tight text-white/60">
-                <MapPin className="h-4 w-4 shrink-0 text-[#FF3355]" />
+              <div className="flex items-center gap-3 text-sm font-extrabold tracking-tight text-muted">
+                <MapPin className="h-4 w-4 shrink-0 text-[#8FE8F6]" />
                 <span>Malang, Indonesia</span>
               </div>
             </div>
           </div>
 
           <div>
-            <h3 className="mb-5 font-mono text-[10px] font-black uppercase tracking-[0.28em] text-white">
+            <h3 className="mb-5 font-mono text-[10px] font-black uppercase tracking-[0.28em] text-ink">
               Social
             </h3>
             <div className="flex flex-wrap gap-3">
@@ -206,7 +198,7 @@ const Contact = () => {
                   rel="noreferrer"
                   aria-label={social.label}
                   title={social.label}
-                  className="grid h-10 w-10 place-items-center border border-white/20 bg-[#0A0A0A] text-white/70 transition hover:border-[#CCFF00] hover:bg-[#CCFF00] hover:text-black"
+                  className="grid h-10 w-10 place-items-center rounded-full border border-line bg-white text-muted transition hover:border-[#8FE8F6] hover:bg-[#8FE8F6] hover:text-black"
                 >
                   <social.icon className="h-4 w-4" />
                 </a>
@@ -216,12 +208,12 @@ const Contact = () => {
         </FadeUp>
 
         <FadeUp delay={0.18}>
-          <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-center font-mono text-[10px] font-black uppercase tracking-widest text-white/45 md:flex-row md:text-left">
+          <div className="flex flex-col items-center justify-between gap-4 border-t border-line pt-8 text-center font-mono text-[10px] font-black uppercase tracking-widest text-muted md:flex-row md:text-left">
             <span>(C) 2026 Brandon Geraldo Adji. All rights reserved.</span>
             <button
               type="button"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="inline-flex items-center gap-2 px-2 py-1 text-white/55 transition hover:text-[#CCFF00]"
+              className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-ink/55 transition hover:bg-primary/20 hover:text-primaryInk"
             >
               Return to top
               <ArrowUpRight className="h-4 w-4" />

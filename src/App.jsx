@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 
 // Components
@@ -8,35 +8,31 @@ import ProjectDetail from "./project-detail/ProjectDetail";
 
 // --- HELPER: Scroll To Top ---
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    // Memberikan sedikit delay 0ms agar DOM selesai ter-render sebelum scroll
-    // Ini mencegah error blank screen saat pergantian rute di Vercel
     setTimeout(() => {
+      if (hash) {
+        document.getElementById(hash.slice(1))?.scrollIntoView();
+        return;
+      }
+
       window.scrollTo(0, 0);
     }, 0);
-  }, [pathname]);
+  }, [pathname, hash]);
 
   return null;
 };
 
 function App() {
-  const [theme] = useState(() => {
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-  });
-
   useEffect(() => {
-    const isDark = theme === "dark";
-    document.documentElement.classList.toggle("dark", isDark);
-    document.documentElement.style.colorScheme = theme;
-  }, [theme]);
+    document.documentElement.classList.remove("dark");
+    document.documentElement.style.colorScheme = "light";
+  }, []);
 
   return (
     <Router>
-      <div className="relative min-h-screen overflow-x-hidden bg-[#F1EFE7] text-[#050505] transition-colors duration-500 dark:bg-[#0a0a0a] dark:text-white">
+      <div className="relative min-h-screen overflow-x-hidden bg-canvas text-ink">
         <ScrollToTop />
         <GlobalBackground />
         <Routes>

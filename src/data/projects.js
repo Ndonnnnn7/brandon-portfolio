@@ -1,15 +1,9 @@
-import { storageImageUrl } from "../lib/storage";
-
 export const projectsData = [
   {
     id: 1,
     title: "InterStellar",
     category: "Front End",
-    image: storageImageUrl("/img/Interstellar.png"),
-    gallery: [
-      storageImageUrl("/img/projects/InterStellar1.png"),
-      storageImageUrl("/img/projects/InterStellar2.png"),
-    ],
+    image: "/img/Interstellar1.png",
     description:
       "Website to explore everything from tiny particles to the universe with AI.",
     fullDescription:
@@ -28,7 +22,8 @@ export const projectsData = [
     id: 2,
     title: "Masakin Application",
     category: "Front End",
-    image: storageImageUrl("/img/Masakin1.png"),
+    image: "/img/Masakin1.png",
+    gallery: ["/img/Masakin.png", "/img/Mangan.png"],
     description:
       "Application with a chatbot to check calories, get recipes, and buy ingredients instantly.",
     fullDescription:
@@ -43,7 +38,7 @@ export const projectsData = [
     id: 3,
     title: "Hack.id",
     category: "Front End",
-    image: storageImageUrl("/img/Hack.id.png"),
+    image: "/img/Hack.id.png",
     description:
       "AI-powered website that helps you discover hackathon events from around the world.",
     fullDescription:
@@ -62,7 +57,7 @@ export const projectsData = [
     id: 4,
     title: "DeafSpace",
     category: "UI/UX",
-    image: storageImageUrl("/img/DeafSpace.png"),
+    image: "/img/DeafSpace.png",
     description:
       "App that allows deaf individuals to easily order sign language interpreters.",
     fullDescription:
@@ -77,8 +72,7 @@ export const projectsData = [
     id: 5,
     title: "Kiddora",
     category: "UI/UX",
-    image: storageImageUrl("/img/Kiddora.png"),
-    gallery: [storageImageUrl("/img/projects/Kiddora1.png"), storageImageUrl("/img/projects/Kiddora2.png")],
+    image: "/img/Kiddora.png",
     description:
       "A platform that helps families find dependable babysitters to ensure quality care for their little ones.",
     fullDescription:
@@ -93,8 +87,7 @@ export const projectsData = [
     id: 6,
     title: "Furever Pet Care",
     category: "UI/UX",
-    image: storageImageUrl("/img/Furever.png"),
-    gallery: [storageImageUrl("/img/projects/Furever1.png")],
+    image: "/img/Furever.png",
     description:
       "App for pet services, providing care and support to ensure the well-being of animals.",
     fullDescription:
@@ -109,7 +102,7 @@ export const projectsData = [
     id: 7,
     title: "Infotional",
     category: "UI/UX",
-    image: storageImageUrl("/img/Infotional.png"),
+    image: "/img/Infotional.png",
     description:
       "App that helps students access scholarships, mentorship, and various educational resources.",
     fullDescription:
@@ -124,11 +117,7 @@ export const projectsData = [
     id: 8,
     title: "LittleSteps",
     category: "Front End",
-    image: storageImageUrl("/img/LittleKids.png"),
-    gallery: [
-      storageImageUrl("/img/projects/LittleSteps1.png"),
-      storageImageUrl("/img/projects/LittleSteps2.png"),
-    ],
+    image: "/img/LittleKids.png",
     description:
       "App that helps parents find trusted babysitters, ensuring quality care.",
     fullDescription:
@@ -147,7 +136,7 @@ export const projectsData = [
     id: 9,
     title: "WeCare",
     category: "UI/UX",
-    image: storageImageUrl("/img/WeCare.png"),
+    image: "/img/WeCare.png",
     description:
       "App that enables victims of sexual harassment to quickly contact the police or authorities.",
     fullDescription:
@@ -162,8 +151,7 @@ export const projectsData = [
     id: 10,
     title: "Bundaku",
     category: "UI/UX",
-    image: storageImageUrl("/img/Bundaku.png"),
-    gallery: [storageImageUrl("/img/projects/Bundaku1.png")],
+    image: "/img/Bundaku.png",
     description:
       "App for moms and babies, for pregnancy monitoring and stunting prevention.",
     fullDescription:
@@ -178,8 +166,7 @@ export const projectsData = [
     id: 11,
     title: "Legana",
     category: "UI/UX",
-    image: storageImageUrl("/img/Legana.png"),
-    gallery: [storageImageUrl("/img/projects/Legana1.png"), storageImageUrl("/img/projects/Legana2.png")],
+    image: "/img/Legana.png",
     description:
       "App that analyzes legal documents or issues from photos or text and suggests relevant laws.",
     fullDescription:
@@ -194,7 +181,7 @@ export const projectsData = [
     id: 12,
     title: "Sehat Mental App",
     category: "UI/UX",
-    image: storageImageUrl("/img/Sehatmental.png"),
+    image: "/img/Sehatmental.png",
     description:
       "An app that provides mental health resources, self-assessment tools, and access to professional help.",
     fullDescription:
@@ -209,7 +196,7 @@ export const projectsData = [
     id: 13,
     title: "Detection License Plate",
     category: "Data",
-    image: storageImageUrl("/img/plate.avif"),
+    image: "/img/plate.avif",
     description:
       "Using a YOLOv8 model to detect vehicle license plates and EasyOCR to read the plate text.",
     fullDescription:
@@ -224,7 +211,7 @@ export const projectsData = [
     id: 14,
     title: "Senggreng Website",
     category: "Front End",
-    image: storageImageUrl("/img/desasenggreng.png"),
+    image: "/img/DesaSenggreng1.png",
     description:
       "A tourism website for Senggreng Village, showcasing tourist attractions and restaurants.",
     fullDescription:
@@ -243,7 +230,7 @@ export const projectsData = [
     id: 15,
     title: "Zagrex Website",
     category: "UI/UX",
-    image: storageImageUrl("/img/Zagrex.png"),
+    image: "/img/Zagrex.png",
     description:
       "A website for Zagrex, a company specializing in digital solutions, showcasing their services and portfolio.",
     fullDescription:
@@ -261,7 +248,7 @@ export const projectsData = [
     id: 16,
     title: "Khas Sneakers",
     category: "Front End",
-    image: "",
+    image: "/img/KhasSneakers.png",
     description:
       "An e-commerce website for a sneaker brand, featuring product listings, shopping cart, and checkout functionality.",
     fullDescription:
@@ -280,7 +267,7 @@ export const projectsData = [
     id: 17,
     title: "Garasi Papa",
     category: "Front End",
-    image: "",
+    image: "/img/GarasiPapa.png",
     description:
       "A website for Garasi Papa, a e-commerce platform, showcasing their products and contact information.",
     fullDescription:

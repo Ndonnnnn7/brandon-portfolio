@@ -1,16 +1,10 @@
 const GlobalBackground = () => {
   return (
-    <div className="fixed inset-0 -z-10 w-full h-full bg-[#F1EFE7] transition-colors duration-500 dark:bg-dark">
-      {/* 1. Grain Texture (Opsional, untuk kesan premium) */}
-      <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
-
-      {/* 2. Grid Pattern (Nyambung terus dari atas sampai bawah) */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#0505050d_1px,transparent_1px),linear-gradient(to_bottom,#0505050d_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#885cf70a_1px,transparent_1px),linear-gradient(to_bottom,#885cf70a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
-
-      {/* 3. Global Glow Orbs (Opsional) */}
-      {/* Bola cahaya ini akan diam saat discroll (fixed), atau bisa Anda hapus jika ingin bola ada di per-section */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 opacity-50"></div>
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2 opacity-50"></div>
+    <div className="fixed inset-0 -z-10 h-full w-full bg-canvas">
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(11,18,20,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(11,18,20,0.035)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_65%_55%_at_50%_0%,#000_70%,transparent_100%)]" />
+      <div className="absolute -right-32 -top-40 h-[34rem] w-[34rem] rounded-full bg-primary/20 blur-[110px]" />
+      <div className="absolute -bottom-40 -left-32 h-[32rem] w-[32rem] rounded-full bg-secondary/30 blur-[120px]" />
+      <div className="absolute bottom-[18%] right-[8%] h-72 w-72 rounded-full bg-primary/12 blur-[100px]" />
     </div>
   );
 };

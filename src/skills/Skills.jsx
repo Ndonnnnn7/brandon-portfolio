@@ -1,483 +1,209 @@
-import React, { useRef, useEffect, useState } from "react";
-import { FaGitAlt, FaFigma, FaHtml5 } from "react-icons/fa";
-import { SiTailwindcss } from "react-icons/si";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { useState } from "react";
+import { motion as Motion } from "framer-motion";
+import {
+  SiCanva,
+  SiFigma,
+  SiFramer,
+  SiGit,
+  SiHtml5,
+  SiJavascript,
+  SiNextdotjs,
+  SiReact,
+  SiTailwindcss,
+  SiTypescript,
+  SiVite,
+} from "react-icons/si";
 
-const FadeUp = ({ children, delay = 0, className = "" }) => (
-  <motion.div
-    className={className}
-    initial={{ opacity: 0, y: 32 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-60px" }}
-    transition={{ duration: 0.75, delay, ease: [0.22, 1, 0.36, 1] }}
-  >
-    {children}
-  </motion.div>
-);
-
-const TerminalLogs = () => {
-  const [logs, setLogs] = useState(["> Initializing core modules..."]);
-  const allLogs = [
-    "> Mounting React DOM...",
-    "> Fetching state from store...",
-    "> Hydrating Next.js chunks...",
-    "> Compiling Tailwind utility classes...",
-    "> SUCCESS: Module bundler ready.",
-    "> Rendering spatial geometries...",
-    "> Awaiting user interaction...",
-  ];
-
-  useEffect(() => {
-    let index = 0;
-    const interval = setInterval(() => {
-      setLogs((prev) => {
-        const newLogs = [...prev, allLogs[index % allLogs.length]];
-        return newLogs.length > 5 ? newLogs.slice(1) : newLogs;
-      });
-      index++;
-    }, 2500);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className="font-mono text-[10px] md:text-xs text-[#61DAFB]/70 mt-6 h-20 md:h-24 overflow-hidden flex flex-col justify-end">
-      {logs.map((log, i) => (
-        <motion.div
-          key={`${log}-${i}`}
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.35 }}
-          className="mb-1 truncate"
-        >
-          {log}
-        </motion.div>
-      ))}
-      <motion.div
-        animate={{ opacity: [0.4, 1, 0.4] }}
-        transition={{ repeat: Infinity, duration: 1.2 }}
-        className="w-2 h-3 bg-[#61DAFB] mt-1"
-      />
-    </div>
-  );
-};
-
-const BrutalMeter = ({ label, pct, color, delay = 0 }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5, delay }}
-    className="w-full flex flex-col gap-1 mb-4"
-  >
-    <div className="flex justify-between items-end">
-      <span className="font-mono text-[9px] md:text-[10px] tracking-widest uppercase text-white font-bold">{label}</span>
-      <motion.span
-        initial={{ opacity: 0, y: 8 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.45, delay: delay + 0.1 }}
-        className="font-black text-lg md:text-xl tracking-tighter"
-        style={{ color }}
-      >
-        {pct}%
-      </motion.span>
-    </div>
-    <div className="w-full h-2 bg-white/10 flex overflow-hidden">
-      <motion.div
-        initial={{ width: 0 }}
-        whileInView={{ width: `${pct}%` }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.2, delay: delay + 0.15, ease: [0.16, 1, 0.3, 1] }}
-        className="h-full relative overflow-hidden"
-        style={{ background: color }}
-      >
-        <motion.div
-          className="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_2px,rgba(0,0,0,0.3)_2px,rgba(0,0,0,0.3)_4px)]"
-          animate={{ x: ["0%", "18%"] }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: "linear" }}
-        />
-      </motion.div>
-    </div>
-  </motion.div>
-);
-
-const nodeVariants = {
-  hidden: { opacity: 0, scale: 0.94 },
-  visible: (index) => ({
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.55,
-      delay: index * 0.12,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  }),
-};
-
-const skillNodes = [
+const categories = [
   {
-    title: "JavaScript",
-    label: "ES6+ / Async Logic",
-    type: "js",
-    bg: "#C2B227",
-    border: "#C2B227",
-    text: "#ffffff",
-    desktop: "md:top-[12%] md:left-[45%] md:-translate-x-1/2",
-    mobileFloat: "ml-auto",
+    id: "languages",
+    index: "001",
+    title: "Languages",
+    description: "The foundations I use to structure interfaces, express logic, and build reliable experiences.",
   },
   {
-    title: "Tailwind",
-    label: "Atomic Styling",
-    type: "tailwind",
-    bg: "#050505",
-    border: "#38B2AC",
-    text: "#38B2AC",
-    desktop: "md:top-[40%] md:left-[75%] md:-translate-x-1/2",
-    mobileFloat: "ml-auto",
+    id: "frameworks",
+    index: "002",
+    title: "Frameworks",
+    description: "The systems that help me move from an interface concept to a responsive, production-ready product.",
   },
   {
-    title: "HTML5",
-    label: "Semantic DOM",
-    type: "html",
-    bg: "#050505",
-    border: "#E34F26",
-    text: "#E34F26",
-    desktop: "md:top-[75%] md:left-[55%] md:-translate-x-1/2",
-    mobileFloat: "ml-auto",
-  },
-  {
-    title: "Git",
-    label: "Version Control",
-    type: "git",
-    bg: "#050505",
-    border: "#F05032",
-    text: "#F05032",
-    desktop: "md:top-[58%] md:left-[75%] md:-translate-x-1/2",
-    mobileFloat: "ml-auto",
+    id: "tools",
+    index: "003",
+    title: "Tools",
+    description: "The creative and development workflow behind every prototype, iteration, and shipped release.",
   },
 ];
 
-const NodeIcon = ({ type, text }) => {
-  if (type === "js") {
-    return (
-      <div className="w-10 h-10 border border-white/30 flex items-center justify-center shrink-0">
-        <span className="font-black text-xl text-white">JS</span>
-      </div>
-    );
-  }
-  if (type === "tailwind") return <SiTailwindcss className="w-8 h-8 shrink-0" style={{ color: text }} />;
-  if (type === "html") return <FaHtml5 className="w-8 h-8 shrink-0" style={{ color: text }} />;
-  return <FaGitAlt className="w-8 h-8 shrink-0" style={{ color: text }} />;
-};
+const skillTools = [
+  { name: "JavaScript", category: "languages", icon: SiJavascript },
+  { name: "TypeScript", category: "languages", icon: SiTypescript },
+  { name: "HTML5", category: "languages", icon: SiHtml5 },
+  { name: "React", category: "frameworks", icon: SiReact },
+  { name: "Next.js", category: "frameworks", icon: SiNextdotjs },
+  { name: "Tailwind CSS", category: "frameworks", icon: SiTailwindcss },
+  { name: "Framer Motion", category: "frameworks", icon: SiFramer },
+  { name: "Figma", category: "tools", icon: SiFigma },
+  { name: "Git", category: "tools", icon: SiGit },
+  { name: "Vite", category: "tools", icon: SiVite },
+  { name: "Canva", category: "tools", icon: SiCanva },
+];
+
+const FadeUp = ({ children, delay = 0, className = "" }) => (
+  <Motion.div
+    className={className}
+    initial={{ opacity: 0, y: 24 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-60px" }}
+    transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+  >
+    {children}
+  </Motion.div>
+);
 
 const Skills = () => {
-  const sectionRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [hoveredCategory, setHoveredCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const activeCategory = hoveredCategory ?? selectedCategory;
+  const activeDetails = categories.find((category) => category.id === activeCategory);
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start 80%", "end 20%"],
-  });
-
-  const fastProgress = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
-
-  const pathLength = useSpring(fastProgress, {
-    stiffness: 400,
-    damping: 40,
-    restDelta: 0.001,
-  });
-
-  const headerLeftX = useTransform(scrollYProgress, [0, 1], isMobile ? [0, -50] : [0, -300]);
-  const headerRightX = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 50] : [0, 300]);
-
-  const floatY1 = useTransform(scrollYProgress, [0, 1], [30, -30]);
-  const floatY2 = useTransform(scrollYProgress, [0, 1], [-20, 20]);
-  const floatY3 = useTransform(scrollYProgress, [0, 1], [40, -40]);
-  const floatY4 = useTransform(scrollYProgress, [0, 1], [-30, 30]);
-  const floatTransforms = [floatY1, floatY2, floatY3, floatY4];
+  const handleCategoryClick = (categoryId) => {
+    setSelectedCategory((current) => (current === categoryId ? null : categoryId));
+  };
 
   return (
-    <section
-      id="skills"
-      ref={sectionRef}
-      className="theme-section relative w-full min-h-[120vh] bg-[#F1EFE7] text-[#050505] dark:bg-[#050505] dark:text-white selection:bg-[#CCFF00] selection:text-black pt-24 md:pt-32 pb-24 md:pb-40 overflow-hidden transition-colors duration-500"
-    >
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03]">
-        <div className="absolute top-1/2 left-0 w-full h-[1px] bg-white" />
-        <div className="absolute top-0 left-1/2 w-[1px] h-full bg-white" />
+    <section className="theme-section relative w-full overflow-hidden bg-canvas py-24 text-ink selection:bg-primary selection:text-ink md:py-36">
+      <div className="pointer-events-none absolute inset-0 opacity-70">
+        <div className="absolute -left-28 top-20 h-80 w-80 rounded-full bg-secondary/35 blur-[110px]" />
+        <div className="absolute -right-20 bottom-16 h-80 w-80 rounded-full bg-primary/25 blur-[110px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(11,18,20,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(11,18,20,0.025)_1px,transparent_1px)] bg-[size:4rem_4rem]" />
       </div>
 
-      <div className="relative z-10 max-w-[1800px] mx-auto px-5 md:px-12 w-full h-full flex flex-col">
-        <FadeUp className="mb-20 md:mb-32 relative z-20 pointer-events-none">
-          <div className="flex items-center gap-4 mb-4">
-            <span className="font-mono text-[9px] md:text-[10px] tracking-[0.5em] text-[#CCFF00] uppercase">
-              Skills
-            </span>
-            <motion.div
-              initial={{ scaleX: 0, opacity: 0 }}
-              whileInView={{ scaleX: 1, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.15 }}
-              className="flex-1 h-[1px] origin-left bg-gradient-to-r from-[#CCFF00]/50 to-transparent"
-            />
+      <div className="relative z-10 mx-auto w-full max-w-[1800px] px-5 md:px-12">
+        <FadeUp>
+          <div className="mb-10 flex items-center gap-4 md:mb-14">
+            <span className="h-px flex-1 bg-gradient-to-r from-primary to-transparent" />
           </div>
 
-          <div className="flex flex-col whitespace-nowrap overflow-visible">
-            <motion.h2
-              className="text-[clamp(3.5rem,12vw,12rem)] font-black uppercase leading-[0.85] tracking-tighter"
-              style={{ x: headerLeftX }}
-              initial={{ opacity: 0, x: -80 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            >
-              INSTRUMENTS
-            </motion.h2>
-            <motion.h2
-              className="text-[clamp(3.5rem,12vw,12rem)] font-black uppercase leading-[0.85] tracking-tighter text-transparent pl-[5vw] md:pl-[20vw]"
-              style={{ WebkitTextStroke: "2px white", x: headerRightX }}
-              initial={{ opacity: 0, x: 80 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.9, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-            >
-              OF CREATION.
-            </motion.h2>
-          </div>
-        </FadeUp>
-
-        <FadeUp delay={0.08} className="relative w-full flex flex-col md:flex-row gap-12 md:gap-8 md:min-h-[800px]">
-          <motion.div
-            className="relative w-full md:w-[45%] lg:w-[40%] bg-[#080808] border border-white/10 z-20 shadow-[10px_10px_0px_rgba(97,218,251,0.05)] md:shadow-[20px_20px_0px_rgba(97,218,251,0.05)]"
-            initial={{ opacity: 0, y: 30, rotate: -1.5 }}
-            whileInView={{ opacity: 1, y: 0, rotate: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div className="flex justify-between items-center border-b border-white/10 p-3 md:p-4 bg-white/5">
-              <span className="font-mono text-[9px] md:text-[10px] tracking-widest uppercase text-[#61DAFB]">
-                process: React_Eco.exe
-              </span>
-              <motion.div
-                className="flex gap-2"
-                initial={{ opacity: 0, x: 12 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.45, delay: 0.2 }}
-              >
-                <div className="w-2 h-2 bg-[#61DAFB]" />
-                <div className="w-2 h-2 bg-white/20" />
-                <div className="w-2 h-2 bg-white/20" />
-              </motion.div>
-            </div>
-
-            <div className="p-6 md:p-12 relative overflow-hidden">
-              <motion.div
-                animate={{ opacity: [0.08, 0.2, 0.08] }}
-                transition={{ duration: 2.8, repeat: Infinity }}
-                className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(0,0,0,0)_50%,rgba(97,218,251,0.05)_50%)] bg-[length:100%_4px] z-10"
-              />
-
-              <motion.h3
-                initial={{ opacity: 0, y: 28 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: 0.12 }}
-                className="text-[clamp(2.5rem,5vw,4.5rem)] font-black uppercase tracking-tighter leading-[0.9] mb-4 md:mb-6 relative z-20"
-              >
-                Front-End
+          <div className="grid items-end gap-8 border-b border-line pb-10 lg:grid-cols-12 md:pb-14">
+            <div className="lg:col-span-9">
+              <h2 className="max-w-[10ch] text-[clamp(3.3rem,8vw,8.5rem)] font-black uppercase leading-[0.82] tracking-[-0.07em]">
+                The tools
                 <br />
-                <span className="text-transparent" style={{ WebkitTextStroke: "1px #61DAFB" }}>
-                  Architecture
+                I reach <span className="relative inline-block px-2 md:px-4">
+                  <span className="absolute inset-x-0 bottom-[0.03em] top-[0.08em] -z-10 -rotate-1 bg-primary" />
+                  for.
                 </span>
-              </motion.h3>
-              <motion.p
-                initial={{ opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="font-mono text-[9px] md:text-[10px] text-white/50 leading-relaxed uppercase max-w-sm mb-8 md:mb-12 relative z-20"
-              >
-                Engineering scalable web applications leveraging modern React methodologies and server-side rendering.
-              </motion.p>
-
-              <div className="relative z-20">
-                <BrutalMeter label="React.js / Hooks" pct={95} color="#61DAFB" delay={0.1} />
-                <BrutalMeter label="Next.js / SSR" pct={88} color="#ffffff" delay={0.2} />
-              </div>
-
-              <TerminalLogs />
+              </h2>
             </div>
-          </motion.div>
-
-          <div className="relative w-full md:w-[55%] lg:w-[60%] flex flex-col gap-6 md:block mt-4 md:mt-0">
-            <svg className="hidden md:block absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 1000 800" preserveAspectRatio="none">
-              <circle cx="0" cy="400" r="600" stroke="rgba(255,255,255,0.04)" strokeWidth="2" fill="none" strokeDasharray="10 15" />
-              <circle cx="0" cy="400" r="15" fill="white" />
-
-              <path d="M 0 400 C 150 400, 200 150, 450 150" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeDasharray="4 4" />
-              <path d="M 0 400 C 250 400, 400 350, 750 350" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeDasharray="4 4" />
-              <path d="M 0 400 C 150 400, 300 650, 700 650" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeDasharray="4 4" />
-              <path d="M 0 400 C 220 400, 430 540, 760 540" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeDasharray="4 4" />
-
-              <motion.path d="M 0 400 C 150 400, 200 150, 450 150" fill="none" stroke="#C2B227" strokeWidth="2" style={{ pathLength }} />
-              <motion.path d="M 0 400 C 250 400, 400 350, 750 350" fill="none" stroke="#38B2AC" strokeWidth="2" style={{ pathLength }} />
-              <motion.path d="M 0 400 C 150 400, 300 650, 700 650" fill="none" stroke="#E34F26" strokeWidth="2" style={{ pathLength }} />
-              <motion.path d="M 0 400 C 220 400, 430 540, 760 540" fill="none" stroke="#F05032" strokeWidth="2" style={{ pathLength }} />
-            </svg>
-
-            <div className="md:hidden absolute left-[28px] top-0 bottom-0 w-[2px] bg-white/10 z-0" />
-            <motion.div className="md:hidden absolute left-[28px] top-0 bottom-0 w-[2px] bg-[#CCFF00] z-0 origin-top" style={{ scaleY: pathLength }} />
-
-            {skillNodes.map((node, index) => (
-              <motion.div
-                key={node.title}
-                custom={index}
-                variants={nodeVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-60px" }}
-                className={`relative md:absolute ${node.desktop} ${node.mobileFloat} p-5 flex flex-row items-center gap-4 z-10 w-[85%] md:w-auto shadow-[6px_6px_0px_rgba(0,0,0,0.5)]`}
-                style={{
-                  y: isMobile ? 0 : floatTransforms[index],
-                  background: node.bg,
-                  border: `1px solid ${node.border}`,
-                }}
-              >
-                <motion.div
-                  animate={isMobile ? {} : { y: [0, -4, 0] }}
-                  transition={{ duration: 2 + index * 0.3, repeat: Infinity, ease: "easeInOut" }}
-                  className="contents"
-                >
-                  <div className="absolute top-1/2 right-[100%] w-6 md:w-0 h-[2px] bg-white/20 md:hidden" />
-                  <NodeIcon type={node.type} text={node.text} />
-                  <div className="overflow-hidden">
-                    <h4 className="font-black uppercase text-lg md:text-xl text-white tracking-tight leading-none mb-1">
-                      {node.title}
-                    </h4>
-                    <p className="font-mono text-[8px] md:text-[9px] uppercase truncate" style={{ color: node.text }}>
-                      {node.label}
-                    </p>
-                  </div>
-                </motion.div>
-              </motion.div>
-            ))}
-          </div>
-        </FadeUp>
-
-        <FadeUp delay={0.14}>
-          <motion.div
-            className="mt-16 md:mt-32 relative w-full bg-[#E5E5E5] text-black border-2 border-black p-6 sm:p-8 md:p-16 overflow-hidden"
-            initial={{ opacity: 0, y: 36, scale: 0.98 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-          >
-          <motion.div
-            animate={{ opacity: [0.12, 0.2, 0.12] }}
-            transition={{ duration: 3, repeat: Infinity }}
-            className="absolute inset-0 opacity-20 pointer-events-none bg-[linear-gradient(#000_1px,transparent_1px),linear-gradient(90deg,#000_1px,transparent_1px)] bg-[size:15px_15px] md:bg-[size:20px_20px]"
-          />
-
-          <div className="hidden sm:flex absolute top-4 left-0 w-full border-t border-black/30 justify-between px-4 font-mono text-[8px]">
-            <span>| 0.00</span>
-            <span>WIDTH: 100% |</span>
-          </div>
-
-          <div className="relative z-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 md:gap-12">
-            <motion.div
-              initial={{ opacity: 0, x: -26 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.12 }}
-              className="flex-1 w-full"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <motion.div
-                  whileInView={{ rotate: [0, -8, 0] }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  className="w-10 h-10 md:w-12 md:h-12 bg-black text-white flex items-center justify-center shrink-0"
-                >
-                  <FaFigma className="w-5 h-5 md:w-6 md:h-6" />
-                </motion.div>
-                <div className="font-mono text-[9px] md:text-[10px] font-bold uppercase border border-black px-3 py-1">
-                  Drafting // Prototyping
-                </div>
-              </div>
-
-              <h3 className="text-[clamp(2.5rem,6vw,5rem)] font-black uppercase tracking-tighter leading-none mb-4 md:mb-6">
-                Visual <br className="hidden sm:block" /> Architecture.
-              </h3>
-
-              <p className="font-mono text-[10px] md:text-xs uppercase leading-relaxed max-w-md font-bold text-black/60">
-                Translating raw concepts into precise, mathematically sound UI components and interactive high-fidelity prototypes.
+            <div className="lg:col-span-3 lg:pb-2">
+              <p className="border-l-2 border-primary pl-5 text-base leading-relaxed text-muted md:text-lg">
+                A focused toolkit spanning interface design, front-end engineering, and the workflow that connects both.
               </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 26 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.22 }}
-              className="flex-1 w-full lg:w-auto"
-            >
-              <div className="border-2 border-black p-5 md:p-6 bg-white shadow-[6px_6px_0px_rgba(255,51,85,1)] md:shadow-[10px_10px_0px_rgba(255,51,85,1)]">
-                <div className="flex justify-between items-end mb-2 border-b border-black/20 pb-2">
-                  <span className="font-mono text-[10px] md:text-xs font-black uppercase">UI/UX Systems</span>
-                  <motion.span
-                    initial={{ opacity: 0, y: 8 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.45, delay: 0.28 }}
-                    className="font-black text-2xl md:text-3xl text-[#FF3355]"
-                  >
-                    95%
-                  </motion.span>
-                </div>
-                <div className="w-full h-3 md:h-4 border border-black mt-2 flex">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    whileInView={{ width: "95%" }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                    className="h-full bg-[#FF3355]"
-                  />
-                </div>
-
-                <div className="flex justify-between items-end mb-2 border-b border-black/20 pb-2 mt-6 md:mt-8">
-                  <span className="font-mono text-[10px] md:text-xs font-black uppercase">Prototyping</span>
-                  <motion.span
-                    initial={{ opacity: 0, y: 8 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.45, delay: 0.38 }}
-                    className="font-black text-2xl md:text-3xl text-black"
-                  >
-                    88%
-                  </motion.span>
-                </div>
-                <div className="w-full h-3 md:h-4 border border-black mt-2 flex">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    whileInView={{ width: "88%" }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.1, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
-                    className="h-full bg-black bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,white_4px,white_8px)]"
-                  />
-                </div>
+              <div className="mt-6 flex gap-2">
               </div>
-            </motion.div>
+            </div>
           </div>
-          </motion.div>
         </FadeUp>
+
+        <div className="mt-10 grid gap-8 xl:grid-cols-[minmax(20rem,0.8fr)_minmax(0,1.55fr)] xl:gap-12 md:mt-14">
+          <FadeUp className="min-w-0">
+            <div className="overflow-hidden rounded-3xl border border-line bg-white shadow-[0_14px_36px_rgba(11,18,20,0.06)]">
+              <div className="border-b border-line bg-[#F8FCFB] p-5 md:p-7">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-[#087F90]">Filter by discipline</span>
+                <p className="mt-2 text-sm leading-relaxed text-muted">Hover or focus a description. Tap to keep a category selected.</p>
+              </div>
+
+              <div onMouseLeave={() => setHoveredCategory(null)}>
+                {categories.map((category, index) => {
+                  const isActive = activeCategory === category.id;
+                  const count = skillTools.filter((tool) => tool.category === category.id).length;
+
+                  return (
+                    <button
+                      key={category.id}
+                      type="button"
+                      aria-controls="skills-tool-grid"
+                      aria-pressed={selectedCategory === category.id}
+                      onMouseEnter={() => setHoveredCategory(category.id)}
+                      onFocus={() => setHoveredCategory(category.id)}
+                      onBlur={() => setHoveredCategory(null)}
+                      onClick={() => handleCategoryClick(category.id)}
+                      className={`group grid w-full grid-cols-[auto_1fr_auto] gap-4 p-5 text-left transition-[background-color,color] duration-200 md:p-7 ${
+                        index < categories.length - 1 ? "border-b border-line" : ""
+                      } ${isActive ? "bg-primary/25" : "bg-white hover:bg-[#F8FCFB]"}`}
+                    >
+                      <span className={`pt-1 font-mono text-[10px] font-bold tracking-[0.16em] ${isActive ? "text-[#087F90]" : "text-muted"}`}>
+                        {category.index}
+                      </span>
+                      <span className="min-w-0">
+                        <span className={`block text-2xl font-black uppercase tracking-[-0.04em] transition-colors duration-200 md:text-3xl ${isActive ? "text-[#087F90]" : "text-ink"}`}>
+                          {category.title}
+                        </span>
+                        <span className="mt-3 block text-sm leading-relaxed text-muted md:text-base">{category.description}</span>
+                      </span>
+                      <span className={`grid h-9 min-w-9 place-items-center rounded-full border px-2 font-mono text-[10px] font-bold transition-colors duration-200 ${
+                        isActive ? "border-[#087F90] bg-primary text-ink" : "border-line bg-[#F8FCFB] text-muted"
+                      }`}>
+                        {String(count).padStart(2, "0")}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </FadeUp>
+
+          <FadeUp delay={0.06} className="min-w-0">
+            <div id="skills-tool-grid" className="grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" aria-label="Skill tools">
+              {skillTools.map((tool, index) => {
+                const Icon = tool.icon;
+                const isRelated = !activeCategory || tool.category === activeCategory;
+                const isFocused = activeCategory && tool.category === activeCategory;
+
+                return (
+                  <article
+                    key={tool.name}
+                    className={`group relative flex min-h-[10rem] flex-col justify-between bg-white p-5 transition-[filter,opacity,background-color,box-shadow] duration-300 sm:min-h-[11rem] md:p-6 ${
+                      isRelated ? "blur-0 opacity-100" : "blur-[3px] opacity-25 saturate-0"
+                    } ${isFocused ? "bg-primary/20 shadow-[inset_0_0_0_1px_#8FE8F6]" : ""}`}
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <span className={`grid h-14 w-14 place-items-center rounded-2xl border transition-colors duration-200 ${
+                        isFocused ? "border-[#087F90] bg-primary" : "border-line bg-[#F8FCFB] group-hover:border-primary group-hover:bg-primary/25"
+                      }`}>
+                        <Icon className="h-7 w-7" aria-hidden="true" />
+                      </span>
+                      <span className="font-mono text-[10px] font-bold tracking-[0.14em] text-muted">{String(index + 1).padStart(2, "0")}</span>
+                    </div>
+                    <div className="mt-8">
+                      <p className="text-lg font-black uppercase tracking-[-0.03em] md:text-xl">{tool.name}</p>
+                      <p className="mt-1 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-[#087F90]">{tool.category}</p>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+
+            <div className="mt-5 grid overflow-hidden rounded-3xl border border-line bg-white sm:grid-cols-[auto_1fr]">
+              <div className="flex min-h-28 items-center bg-primary px-6 py-5 md:px-8">
+                <span className="text-5xl font-black tracking-[-0.07em] text-ink md:text-6xl">
+                  {activeDetails ? activeDetails.index : "ALL"}
+                </span>
+              </div>
+              <div className="p-5 md:p-7">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#087F90]">
+                  {activeDetails ? `${activeDetails.title} in focus` : "Complete toolkit"}
+                </span>
+                <p className="mt-2 max-w-2xl leading-relaxed text-muted">
+                  {activeDetails
+                    ? activeDetails.description
+                    : "Move across the category descriptions to reveal how each tool fits into my design and development process."}
+                </p>
+              </div>
+            </div>
+          </FadeUp>
+        </div>
       </div>
     </section>
   );

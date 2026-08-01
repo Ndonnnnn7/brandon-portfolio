@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import { motion as Motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion as Motion, useReducedMotion } from "framer-motion";
+import { ArrowRight, ArrowUpRight, Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
   { id: 1, link: "home", label: "Home", index: "01" },
@@ -10,105 +11,225 @@ const NAV_LINKS = [
 ];
 
 const Navbar = () => {
-  const [nav, setNav] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const menuButtonRef = useRef(null);
+  const mobileMenuRef = useRef(null);
+  const programmaticScrollRef = useRef(false);
+  const scrollUnlockTimerRef = useRef(null);
+  const shouldReduceMotion = useReducedMotion();
 
-  /* ── SCROLL TRACKING ─────────────────────────────────────────────────── */
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-      const scrollPos = window.scrollY + 150;
+    let animationFrame = null;
 
-      NAV_LINKS.forEach(({ link }) => {
-        const el = document.getElementById(link);
-        if (
-          el &&
-          scrollPos >= el.offsetTop &&
-          scrollPos < el.offsetTop + el.offsetHeight
-        ) {
-          setActiveSection(link);
+    const handleScroll = () => {
+      if (animationFrame !== null) return;
+
+      animationFrame = window.requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 50);
+        animationFrame = null;
+      });
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (animationFrame !== null) window.cancelAnimationFrame(animationFrame);
+    };
+  }, []);
+
+  useEffect(() => {
+    const sections = [...NAV_LINKS.map(({ link }) => link), "contact"]
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+
+    if (!sections.length) return undefined;
+
+    let animationFrame = null;
+
+    const updateActiveSection = () => {
+      animationFrame = null;
+      if (programmaticScrollRef.current) return;
+
+      const activationLine = Math.min(160, window.innerHeight * 0.22);
+      let nextSection = sections[0].id;
+
+      sections.forEach((section) => {
+        if (section.getBoundingClientRect().top <= activationLine) {
+          nextSection = section.id;
         }
       });
 
-      const contactEl = document.getElementById("contact");
-      if (
-        contactEl &&
-        scrollPos >= contactEl.offsetTop &&
-        scrollPos < contactEl.offsetTop + contactEl.offsetHeight + 500
-      ) {
-        setActiveSection("contact");
+      const reachedPageEnd = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+      if (reachedPageEnd) nextSection = "contact";
+
+      setActiveSection((current) => (current === nextSection ? current : nextSection));
+    };
+
+    const requestActiveSectionUpdate = () => {
+      if (animationFrame !== null) return;
+      animationFrame = window.requestAnimationFrame(updateActiveSection);
+    };
+
+    requestActiveSectionUpdate();
+    window.addEventListener("scroll", requestActiveSectionUpdate, { passive: true });
+    window.addEventListener("resize", requestActiveSectionUpdate);
+
+    return () => {
+      window.removeEventListener("scroll", requestActiveSectionUpdate);
+      window.removeEventListener("resize", requestActiveSectionUpdate);
+      if (animationFrame !== null) window.cancelAnimationFrame(animationFrame);
+      if (scrollUnlockTimerRef.current !== null) window.clearTimeout(scrollUnlockTimerRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    const desktopQuery = window.matchMedia("(min-width: 1024px)");
+    const closeMenuOnDesktop = (event) => {
+      if (event.matches) setMenuOpen(false);
+    };
+
+    desktopQuery.addEventListener("change", closeMenuOnDesktop);
+    return () => desktopQuery.removeEventListener("change", closeMenuOnDesktop);
+  }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+
+    const menu = mobileMenuRef.current;
+    const menuButton = menuButtonRef.current;
+    const focusableElements = menu?.querySelectorAll('a[href], button:not([disabled])');
+    const firstElement = focusableElements?.[0];
+    const lastElement = focusableElements?.[focusableElements.length - 1];
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    menu?.scrollTo({ top: 0 });
+
+    const focusTimer = window.setTimeout(() => {
+      menu?.scrollTo({ top: 0 });
+      firstElement?.focus({ preventScroll: true });
+    }, 460);
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        return;
+      }
+
+      if (event.key !== "Tab" || !firstElement || !lastElement) return;
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
       }
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    document.addEventListener("keydown", handleKeyDown);
 
-  /* ── NAV CLICK ───────────────────────────────────────────────────────── */
-  const handleNavClick = (e, link) => {
-    e.preventDefault();
-    setNav(false); 
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.clearTimeout(focusTimer);
+      document.removeEventListener("keydown", handleKeyDown);
+      menuButton?.focus();
+    };
+  }, [menuOpen]);
+
+  const handleNavClick = (event, link) => {
+    event.preventDefault();
+    setMenuOpen(false);
     setActiveSection(link);
+    programmaticScrollRef.current = true;
 
-    const el = document.getElementById(link);
-    if (el) {
-      window.scrollTo({
-        top: el.getBoundingClientRect().top + window.scrollY - 80,
-        behavior: "smooth",
+    if (scrollUnlockTimerRef.current !== null) {
+      window.clearTimeout(scrollUnlockTimerRef.current);
+    }
+
+    const section = document.getElementById(link);
+    if (section) {
+      window.requestAnimationFrame(() => {
+        window.scrollTo({
+          top: section.getBoundingClientRect().top + window.scrollY - 88,
+          behavior: shouldReduceMotion ? "auto" : "smooth",
+        });
       });
+
+      scrollUnlockTimerRef.current = window.setTimeout(() => {
+        programmaticScrollRef.current = false;
+        scrollUnlockTimerRef.current = null;
+      }, shouldReduceMotion ? 0 : 1000);
+    } else {
+      programmaticScrollRef.current = false;
     }
   };
 
-  useEffect(() => {
-    if (nav) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [nav]);
-
   return (
     <>
-      {/* ── DESKTOP & MOBILE HEADER BAR ── */}
-      <Motion.nav
-        className={`fixed top-0 left-0 w-full z-[60] transition-all duration-500 border-b-2 ${
-          scrolled || nav
-            ? "bg-[#F1EFE7]/95 border-black/10 py-4 shadow-[0_8px_30px_rgba(0,0,0,0.06)] backdrop-blur-xl dark:bg-[#050505]/95 dark:border-white/10 dark:shadow-none"
-            : "bg-transparent border-transparent py-6"
+      <nav
+        aria-label="Primary navigation"
+        style={{ zIndex: 1000 }}
+        className={`fixed left-0 top-0 w-full border-b transition-[background-color,border-color,padding,box-shadow] duration-300 ${
+          menuOpen
+            ? "border-line bg-canvas py-4 shadow-none"
+            : scrolled
+            ? "border-line bg-white/95 py-4 shadow-[0_8px_30px_rgba(11,18,20,0.06)]"
+            : "border-transparent bg-white/90 py-6"
         }`}
       >
-        <div className="max-w-[1800px] mx-auto px-6 md:px-12 w-full flex items-center justify-between">
-          
-          <div className="flex items-center gap-4 cursor-pointer" onClick={(e) => handleNavClick(e, "home")}>
-            <div className="w-8 h-8 bg-[#050505] dark:bg-white flex items-center justify-center transition-colors duration-500">
-              <span className="font-black text-white dark:text-black text-xl leading-none">B</span>
-            </div>
-            <div className="hidden sm:flex flex-col">
-              <span className="font-black text-lg uppercase leading-none tracking-tighter text-[#050505] dark:text-white">Brandon</span>
-              <span className="font-mono text-[8px] tracking-[0.2em] uppercase text-[#FF3355] dark:text-[#CCFF00]">Profile</span>
-            </div>
-          </div>
+        <div className="mx-auto flex w-full max-w-[1800px] items-center justify-between px-6 md:px-12">
+          <a
+            href="#home"
+            onClick={(event) => handleNavClick(event, "home")}
+            className="flex items-center gap-4"
+            aria-label="Brandon portfolio home"
+          >
+            <span
+              className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-ink text-xl font-black leading-none text-white transition-colors duration-200"
+            >
+              B
+            </span>
+            <span className={`${menuOpen ? "hidden" : "hidden sm:flex"} flex-col`}>
+              <span className="text-lg font-black uppercase leading-none tracking-tighter text-ink">Brandon</span>
+              <span className="mt-1 font-mono text-[8px] font-bold uppercase tracking-[0.2em] text-[#087F90]">Profile</span>
+            </span>
+          </a>
 
-          <ul className="hidden lg:flex items-center gap-2">
+          <ul className="hidden items-center gap-2 lg:flex">
             {NAV_LINKS.map(({ id, link, label, index }) => {
               const isActive = activeSection === link;
+
               return (
                 <li key={id}>
                   <a
                     href={`#${link}`}
-                    onClick={(e) => handleNavClick(e, link)}
-                    className={`relative flex items-center gap-3 px-4 py-2 border-2 transition-all duration-300 font-mono text-[10px] uppercase tracking-widest font-bold ${
-                      isActive 
-                        ? "bg-[#CCFF00] border-[#CCFF00] text-black" 
-                        : "bg-transparent border-transparent text-black/50 dark:text-white/50"
+                    onClick={(event) => handleNavClick(event, link)}
+                    aria-current={isActive ? "page" : undefined}
+                    className={`relative isolate flex items-center gap-3 rounded-full border-2 px-4 py-2 font-mono text-[10px] font-bold uppercase tracking-widest transition-colors duration-200 ${
+                      isActive
+                        ? "border-transparent text-ink"
+                        : "border-transparent bg-transparent text-muted hover:border-line hover:bg-white/70 hover:text-ink"
                     }`}
                   >
-                    <span className={isActive ? "text-black/50" : "text-black/30 transition-colors dark:text-white/30"}>{index}</span>
-                    {label}
+                    {isActive && (
+                      <Motion.span
+                        layoutId="navbar-active-pill"
+                        className="absolute inset-0 -z-10 rounded-full border-2 border-primary bg-primary"
+                        transition={
+                          shouldReduceMotion
+                            ? { duration: 0 }
+                            : { type: "spring", stiffness: 360, damping: 32 }
+                        }
+                        aria-hidden="true"
+                      />
+                    )}
+                    <span className={`relative z-10 ${isActive ? "text-ink/55" : "text-muted/60"}`}>{index}</span>
+                    <span className="relative z-10">{label}</span>
                   </a>
                 </li>
               );
@@ -118,89 +239,77 @@ const Navbar = () => {
           <div className="flex items-center gap-4">
             <a
               href="#contact"
-              onClick={(e) => handleNavClick(e, "contact")}
-              className={`hidden lg:flex items-center gap-3 border-2 px-6 py-2 transition-colors duration-300 ${
+              onClick={(event) => handleNavClick(event, "contact")}
+              aria-current={activeSection === "contact" ? "page" : undefined}
+              className={`hidden h-9 items-center gap-3 rounded-full border-2 px-6 font-mono text-[10px] font-bold uppercase tracking-widest transition-colors duration-200 lg:flex ${
                 activeSection === "contact"
-                  ? "bg-[#FF3355] border-[#FF3355] text-black"
-                  : "border-black text-black dark:border-white dark:text-white"
+                  ? "border-primary bg-primary text-ink"
+                  : "border-ink bg-white/35 text-ink hover:bg-primary"
               }`}
             >
-              <span className="font-mono text-[10px] uppercase tracking-widest font-bold">Contact Me</span>
-              <span className="transform -rotate-45 font-mono text-xs">→</span>
+              Contact me
+              <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
             </a>
 
             <button
-              onClick={() => setNav(!nav)}
-              className={`lg:hidden flex flex-col justify-center gap-1.5 w-10 h-10 border-2 items-center z-[70] relative transition-colors ${
-                nav ? "border-[#CCFF00] bg-transparent" : "border-black/20 bg-white dark:border-white/20 dark:bg-[#0A0A0A]"
+              ref={menuButtonRef}
+              type="button"
+              onClick={() => setMenuOpen((current) => !current)}
+              className={`relative z-[70] grid h-11 w-11 place-items-center rounded-full border-2 transition-colors duration-200 lg:hidden ${
+                menuOpen
+                  ? "border-ink bg-primary text-ink focus-visible:outline-primaryInk focus-visible:shadow-[0_0_0_4px_rgba(143,232,246,0.5)]"
+                  : "border-ink/20 bg-white text-ink hover:border-ink hover:bg-primary"
               }`}
-              aria-label="Toggle Menu"
+              aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
             >
-              <Motion.span 
-                animate={{ rotate: nav ? 45 : 0, y: nav ? 8 : 0 }} 
-                className={`w-5 h-[2px] block origin-center transition-transform ${nav ? "bg-[#CCFF00]" : "bg-black dark:bg-white"}`} 
-              />
-              <Motion.span 
-                animate={{ opacity: nav ? 0 : 1 }} 
-                className="w-5 h-[2px] bg-black dark:bg-white block transition-opacity" 
-              />
-              <Motion.span 
-                animate={{ rotate: nav ? -45 : 0, y: nav ? -8 : 0 }} 
-                className={`w-5 h-[2px] block origin-center transition-transform ${nav ? "bg-[#CCFF00]" : "bg-black dark:bg-white"}`}
-              />
+              {menuOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
             </button>
           </div>
-
         </div>
-      </Motion.nav>
+      </nav>
 
-      {/* ── FULLSCREEN SYSTEM OVERRIDE MENU (Mobile/Tablet) ── */}
       <AnimatePresence>
-        {nav && (
+        {menuOpen && (
           <Motion.div
-            key="mobile-menu"
-            id="mobile-menu" /* <── TAMBAHKAN ID INI AGAR KURSOR BISA MENDETEKSI MENU */
+            ref={mobileMenuRef}
+            id="mobile-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile navigation"
             initial={{ y: "-100%" }}
             animate={{ y: 0 }}
             exit={{ y: "-100%" }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[55] bg-[#F1EFE7] text-[#050505] dark:bg-[#050505] dark:text-white flex flex-col justify-between pt-32 pb-12 px-6 md:px-12 overflow-hidden border-b-8 border-[#CCFF00] transition-colors duration-500"
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[55] flex min-h-[100dvh] flex-col justify-between overflow-y-auto overscroll-contain border-b-8 border-primary bg-canvas px-6 pb-12 pt-32 text-ink md:px-12 lg:hidden"
           >
-            <div 
-              className="absolute inset-0 pointer-events-none opacity-10 z-0"
-              style={{
-                backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-                backgroundSize: "40px 40px"
-              }}
-            />
-            <div className="absolute top-1/2 left-4 w-4 h-[1px] bg-black/30 dark:bg-white/30 z-0" />
-            <div className="absolute top-1/2 right-4 w-4 h-[1px] bg-black/30 dark:bg-white/30 z-0" />
+            <span aria-hidden="true" className="pointer-events-none absolute left-4 top-1/2 z-0 h-px w-4 bg-ink/30" />
+            <span aria-hidden="true" className="pointer-events-none absolute right-4 top-1/2 z-0 h-px w-4 bg-ink/30" />
 
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center z-0 pointer-events-none select-none opacity-[0.03]">
-              <span className="text-[30vw] font-black italic tracking-tighter uppercase leading-none">SYS</span>
-            </div>
-
-            <ul className="flex flex-col gap-2 relative z-10 mt-8">
-              {NAV_LINKS.map(({ id, link, label, index }, i) => {
+            <ul className="relative z-10 mt-8 flex shrink-0 flex-col gap-2">
+              {NAV_LINKS.map(({ id, link, label, index }, itemIndex) => {
                 const isActive = activeSection === link;
+
                 return (
-                  <Motion.li 
+                  <Motion.li
                     key={id}
-                    initial={{ opacity: 0, x: -30 }}
+                    initial={{ opacity: 0, x: -24 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.2 + (i * 0.1), duration: 0.5 }}
+                    transition={{ delay: 0.08 + itemIndex * 0.05, duration: 0.3 }}
                   >
                     <a
                       href={`#${link}`}
-                      onClick={(e) => handleNavClick(e, link)}
-                      className="flex items-end gap-6 py-4 border-b-2 border-black/10 dark:border-white/5 transition-colors"
+                      onClick={(event) => handleNavClick(event, link)}
+                      aria-current={isActive ? "page" : undefined}
+                      className="group flex min-h-20 items-end gap-5 border-b border-line py-4 transition-colors duration-200 focus-visible:outline-primaryInk focus-visible:shadow-[0_0_0_4px_rgba(143,232,246,0.4)] md:min-h-24 md:gap-6 md:py-5"
                     >
-                      <span className="font-mono text-sm md:text-base text-[#CCFF00] mb-2 md:mb-3">
-                        {index}
-                      </span>
-                      <span className={`text-[clamp(3rem,10vw,6rem)] font-black uppercase tracking-tighter leading-none transition-colors ${
-                        isActive ? "text-black dark:text-white" : "text-black/30 dark:text-white/30"
-                      }`}>
+                      <span className="mb-1 font-mono text-xs font-bold text-primaryInk md:mb-2 md:text-sm">{index}</span>
+                      <span
+                        className={`text-[clamp(2.625rem,12vw,4.75rem)] font-black uppercase leading-none tracking-tighter transition-colors duration-200 group-hover:text-ink ${
+                          isActive ? "text-ink" : "text-muted"
+                        }`}
+                      >
                         {label}
                       </span>
                     </a>
@@ -209,26 +318,27 @@ const Navbar = () => {
               })}
             </ul>
 
-            <Motion.div 
-              initial={{ opacity: 0, y: 30 }}
+            <Motion.div
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.5 }}
-              className="relative z-10 flex flex-col gap-8 mt-12"
+              transition={{ delay: 0.3, duration: 0.3 }}
+              className="relative z-10 mt-12 flex shrink-0 flex-col gap-8"
             >
               <a
                 href="#contact"
-                onClick={(e) => handleNavClick(e, "contact")}
-                className="w-full bg-[#CCFF00] text-black font-black text-2xl uppercase tracking-tighter py-6 text-center transition-colors"
+                onClick={(event) => handleNavClick(event, "contact")}
+                aria-label="Contact me"
+                className="flex min-h-[70px] w-full items-center justify-center gap-1 rounded-full bg-primary px-5 text-center text-xl font-black uppercase tracking-tighter text-ink transition-colors duration-200 hover:bg-secondary focus-visible:outline-primaryInk focus-visible:shadow-[0_0_0_4px_rgba(143,232,246,0.5)]"
               >
-                CONTACT ME →
+                Contactme
+                <ArrowRight className="h-5 w-5" aria-hidden="true" />
               </a>
 
-              <div className="flex justify-between items-center font-mono text-[10px] uppercase tracking-[0.2em] text-black/50 dark:text-white/40">
-                <span>STATUS: ONLINE</span>
-                <span>LAT: -7.98 // LNG: 112.62</span>
+              <div className="flex items-center justify-between gap-4 font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-muted sm:text-[10px]">
+                <span>Status: online</span>
+                <span>Lat: -7.98 // Lng: 112.62</span>
               </div>
             </Motion.div>
-
           </Motion.div>
         )}
       </AnimatePresence>
