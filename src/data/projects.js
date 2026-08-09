@@ -1,6 +1,23 @@
 export const projectsData = [
-  {
+    {
     id: 1,
+    title: "Pupuk Indonesia",
+    category: "Front End",
+    image: "/img/PupukIndonesia.png",
+    description:
+      "An internal Smart Payroll platform for Pupuk Indonesia, designed to support employee payroll management through a secure and user-friendly web application.",
+    fullDescription:
+      "A web-based Smart Payroll application developed for Pupuk Indonesia to support internal payroll operations and employee compensation management. The platform provides a secure and responsive interface for accessing payroll-related services, helping streamline internal HR and payroll workflows while maintaining an efficient and user-friendly experience.",
+    tech: ["React", "API"],
+    detailTech: ["React", "API Integration", "Responsive Design"],
+    role: "Front End Developer",
+    year: "2026",
+    links: {
+      demo: "https://smartpayroll-dev.pupuk-indonesia.com",
+    },
+  },
+  {
+    id: 2,
     title: "InterStellar",
     category: "Front End",
     image: "/img/Interstellar1.png",
@@ -19,10 +36,10 @@ export const projectsData = [
     },
   },
   {
-    id: 2,
+    id: 3,
     title: "Masakin Application",
     category: "Front End",
-    image: "/img/Masakin1.png",
+    image: "/img/Masakin.png",
     gallery: ["/img/Masakin.png", "/img/Mangan.png"],
     description:
       "Application with a chatbot to check calories, get recipes, and buy ingredients instantly.",
@@ -35,10 +52,10 @@ export const projectsData = [
     links: { demo: "#", github: "#", figma: "#" },
   },
   {
-    id: 3,
+    id: 4,
     title: "Hack.id",
     category: "Front End",
-    image: "/img/Hack.id.png",
+    image: "/img/Hackid.png",
     description:
       "AI-powered website that helps you discover hackathon events from around the world.",
     fullDescription:
@@ -54,10 +71,10 @@ export const projectsData = [
     },
   },
   {
-    id: 4,
+    id: 5,
     title: "DeafSpace",
     category: "UI/UX",
-    image: "/img/DeafSpace.png",
+    image: "/img/Deafspace.png",
     description:
       "App that allows deaf individuals to easily order sign language interpreters.",
     fullDescription:
@@ -69,7 +86,7 @@ export const projectsData = [
     links: { demo: "#", github: "#", figma: "#" },
   },
   {
-    id: 5,
+    id: 6,
     title: "Kiddora",
     category: "UI/UX",
     image: "/img/Kiddora.png",
@@ -84,7 +101,7 @@ export const projectsData = [
     links: { demo: "#", github: "#", figma: "#" },
   },
   {
-    id: 6,
+    id: 7,
     title: "Furever Pet Care",
     category: "UI/UX",
     image: "/img/Furever.png",
@@ -99,7 +116,7 @@ export const projectsData = [
     links: { demo: "#", github: "#", figma: "#" },
   },
   {
-    id: 7,
+    id: 8,
     title: "Infotional",
     category: "UI/UX",
     image: "/img/Infotional.png",
@@ -114,10 +131,10 @@ export const projectsData = [
     links: { demo: "#", github: "#", figma: "#" },
   },
   {
-    id: 8,
+    id: 9,
     title: "LittleSteps",
     category: "Front End",
-    image: "/img/LittleKids.png",
+    image: "/img/LittleSteps.png",
     description:
       "App that helps parents find trusted babysitters, ensuring quality care.",
     fullDescription:
@@ -133,7 +150,7 @@ export const projectsData = [
     },
   },
   {
-    id: 9,
+    id: 10,
     title: "WeCare",
     category: "UI/UX",
     image: "/img/WeCare.png",
@@ -148,7 +165,7 @@ export const projectsData = [
     links: { demo: "#", github: "#", figma: "#" },
   },
   {
-    id: 10,
+    id: 11,
     title: "Bundaku",
     category: "UI/UX",
     image: "/img/Bundaku.png",
@@ -163,7 +180,7 @@ export const projectsData = [
     links: { demo: "#", github: "#", figma: "#" },
   },
   {
-    id: 11,
+    id: 12,
     title: "Legana",
     category: "UI/UX",
     image: "/img/Legana.png",
@@ -178,10 +195,10 @@ export const projectsData = [
     links: { demo: "#", github: "#", figma: "#" },
   },
   {
-    id: 12,
+    id: 13,
     title: "Sehat Mental App",
     category: "UI/UX",
-    image: "/img/Sehatmental.png",
+    image: "/img/SehatMental.png",
     description:
       "An app that provides mental health resources, self-assessment tools, and access to professional help.",
     fullDescription:
@@ -189,21 +206,6 @@ export const projectsData = [
     tech: ["Figma", "User Testing"],
     detailTech: ["Figma", "Prototyping", "User Testing"],
     role: "UI/UX Designer",
-    year: "2025",
-    links: { demo: "#", github: "#", figma: "#" },
-  },
-  {
-    id: 13,
-    title: "Detection License Plate",
-    category: "Data",
-    image: "/img/plate.avif",
-    description:
-      "Using a YOLOv8 model to detect vehicle license plates and EasyOCR to read the plate text.",
-    fullDescription:
-      "Automated number plate recognition (ANPR). YOLOv8 detects plates in real-time. EasyOCR extracts alphanumeric characters for parking/traffic monitoring.",
-    tech: ["Python", "YOLOv8"],
-    detailTech: ["Python", "YOLOv8", "EasyOCR", "Computer Vision"],
-    role: "AI Engineer",
     year: "2025",
     links: { demo: "#", github: "#", figma: "#" },
   },
@@ -281,5 +283,54 @@ export const projectsData = [
       github: "https://github.com/Ndonnnnn7/garasipapaV2",
       figma: "#",
     },
+  },
+  {
+    id: 18,
+    title: "Wilson's Data Science Portfolio",
+    category: "Front End",
+    image: "/img/Wilson.png",
+    description:
+      "A personal data science portfolio showcasing Wilson's projects, professional experience, technical skills, and work in analytics and machine learning.",
+    fullDescription:
+      "A responsive data science portfolio developed to present Wilson's professional profile, technical expertise, and selected projects in data analytics and machine learning. The website organizes his experience and project work into an accessible digital portfolio, allowing recruiters, collaborators, and visitors to quickly understand his capabilities and explore his work.",
+    tech: ["React", "Vercel"],
+    detailTech: ["React", "Responsive Design", "Vercel"],
+    role: "Front End Developer",
+    year: "2026",
+    links: {
+      demo: "https://wilsongregory.vercel.app/",
+    },
+  },
+  {
+    id: 19,
+    title: "Linneke's Portfolio",
+    category: "Front End",
+    image: "/img/Linneke.png",
+    description:
+      "A personal portfolio website for Linneke, showcasing her experience, skills, and projects in data science and artificial intelligence.",
+    fullDescription:
+      "A modern personal portfolio website designed to showcase Linneke's professional background, technical skills, experience, and selected projects in data science and artificial intelligence. The website presents her work through a clean and responsive interface, making it easy for visitors and potential employers to explore her profile, achievements, and areas of expertise.",
+    tech: ["React", "Vercel"],
+    detailTech: ["React", "Responsive Design", "Vercel"],
+    role: "Front End Developer",
+    year: "2026",
+    links: {
+      demo: "https://marialinneke.vercel.app/home",
+    },
+  },
+    {
+    id: 20,
+    title: "Detection License Plate",
+    category: "Data",
+    image: "/img/Plate.png",
+    description:
+      "Using a YOLOv8 model to detect vehicle license plates and EasyOCR to read the plate text.",
+    fullDescription:
+      "Automated number plate recognition (ANPR). YOLOv8 detects plates in real-time. EasyOCR extracts alphanumeric characters for parking/traffic monitoring.",
+    tech: ["Python", "YOLOv8"],
+    detailTech: ["Python", "YOLOv8", "EasyOCR", "Computer Vision"],
+    role: "AI Engineer",
+    year: "2025",
+    links: { demo: "#", github: "#", figma: "#" },
   },
 ];
