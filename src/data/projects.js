@@ -1,5 +1,5 @@
 export const projectsData = [
-    {
+  {
     id: 1,
     title: "Pupuk Indonesia",
     category: "Front End",
@@ -74,7 +74,7 @@ export const projectsData = [
     id: 5,
     title: "DeafSpace",
     category: "UI/UX",
-    image: "/img/Deafspace.png",
+    image: "/img/DeafSpace.png",
     description:
       "App that allows deaf individuals to easily order sign language interpreters.",
     fullDescription:
@@ -198,7 +198,7 @@ export const projectsData = [
     id: 13,
     title: "Sehat Mental App",
     category: "UI/UX",
-    image: "/img/SehatMental.png",
+    image: "/img/Sehatmental.png",
     description:
       "An app that provides mental health resources, self-assessment tools, and access to professional help.",
     fullDescription:
@@ -318,7 +318,7 @@ export const projectsData = [
       demo: "https://marialinneke.vercel.app/home",
     },
   },
-    {
+  {
     id: 20,
     title: "Detection License Plate",
     category: "Data",
