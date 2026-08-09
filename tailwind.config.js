@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: "class",
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -7,16 +8,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#8FE8F6",
-        primaryInk: "#087F90",
-        secondary: "#C8F7D7",
-        secondaryInk: "#24724D",
-        tertiary: "#DBF156",
-        canvas: "#FFFFFF",
-        surface: "#FFFFFF",
-        ink: "#0B1214",
-        muted: "#657275",
-        line: "#DCEAEA",
+        primary: "rgb(var(--color-primary-rgb) / <alpha-value>)",
+        primaryInk: "rgb(var(--color-primary-ink-rgb) / <alpha-value>)",
+        secondary: "rgb(var(--color-secondary-rgb) / <alpha-value>)",
+        secondaryInk: "rgb(var(--color-secondary-ink-rgb) / <alpha-value>)",
+        tertiary: "rgb(var(--color-tertiary-rgb) / <alpha-value>)",
+        canvas: "rgb(var(--color-canvas-rgb) / <alpha-value>)",
+        surface: "rgb(var(--color-surface-rgb) / <alpha-value>)",
+        ink: "rgb(var(--color-ink-rgb) / <alpha-value>)",
+        muted: "rgb(var(--color-muted-rgb) / <alpha-value>)",
+        line: "rgb(var(--color-line-rgb) / <alpha-value>)",
+        accentInk: "rgb(var(--color-accent-ink-rgb) / <alpha-value>)",
       },
       fontFamily: {
         display: ["Archivo", "sans-serif"],
@@ -24,7 +26,7 @@ export default {
         mono: ["IBM Plex Mono", "monospace"],
       },
       backgroundImage: {
-        "gradient-brand": "linear-gradient(135deg, #8FE8F6, #C8F7D7 52%, #8FE8F6)",
+        "gradient-brand": "linear-gradient(135deg, var(--color-primary), var(--color-secondary) 52%, var(--color-primary))",
       }
     },
   },

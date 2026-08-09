@@ -5,17 +5,31 @@
 :root {
   color-scheme: light;
   --color-primary: #8fe8f6;
+  --color-primary-rgb: 143 232 246;
   --color-primary-ink: #087f90;
+  --color-primary-ink-rgb: 8 127 144;
   --color-secondary: #c8f7d7;
+  --color-secondary-rgb: 200 247 215;
   --color-secondary-ink: #24724d;
+  --color-secondary-ink-rgb: 36 114 77;
   --color-tertiary: #dbf156;
+  --color-tertiary-rgb: 219 241 86;
   --color-tertiary-ink: #667500;
+  --color-tertiary-ink-rgb: 102 117 0;
   --color-canvas: #ffffff;
+  --color-canvas-rgb: 255 255 255;
   --color-surface: #ffffff;
+  --color-surface-rgb: 255 255 255;
   --color-surface-soft: #f8fcfb;
+  --color-surface-soft-rgb: 248 252 251;
   --color-ink: #0b1214;
+  --color-ink-rgb: 11 18 20;
   --color-muted: #657275;
+  --color-muted-rgb: 101 114 117;
   --color-line: #dceaea;
+  --color-line-rgb: 220 234 234;
+  --color-accent-ink: #0b1214;
+  --color-accent-ink-rgb: 11 18 20;
   --shadow-sm: 0 4px 14px rgba(11, 18, 20, 0.05);
   --shadow-md: 0 14px 36px rgba(11, 18, 20, 0.08);
   --shadow-lg: 0 28px 70px rgba(11, 18, 20, 0.1);
@@ -27,11 +41,49 @@
   text-rendering: optimizeLegibility;
 }
 
+:root.dark {
+  color-scheme: dark;
+  --color-primary: #8fe8f6;
+  --color-primary-rgb: 143 232 246;
+  --color-primary-ink: #a9f2fc;
+  --color-primary-ink-rgb: 169 242 252;
+  --color-secondary: #183d32;
+  --color-secondary-rgb: 24 61 50;
+  --color-secondary-ink: #a9e6c1;
+  --color-secondary-ink-rgb: 169 230 193;
+  --color-tertiary: #bfd63c;
+  --color-tertiary-rgb: 191 214 60;
+  --color-tertiary-ink: #ddf37a;
+  --color-tertiary-ink-rgb: 221 243 122;
+  --color-canvas: #071012;
+  --color-canvas-rgb: 7 16 18;
+  --color-surface: #0e1a1d;
+  --color-surface-rgb: 14 26 29;
+  --color-surface-soft: #132326;
+  --color-surface-soft-rgb: 19 35 38;
+  --color-ink: #edf6f7;
+  --color-ink-rgb: 237 246 247;
+  --color-muted: #9baeb2;
+  --color-muted-rgb: 155 174 178;
+  --color-line: #2a4146;
+  --color-line-rgb: 42 65 70;
+  --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 14px 36px rgba(0, 0, 0, 0.28);
+  --shadow-lg: 0 28px 70px rgba(0, 0, 0, 0.34);
+  --focus-ring: 0 0 0 4px rgba(143, 232, 246, 0.34);
+}
+
 @layer base {
   html {
     scroll-behavior: auto;
     scrollbar-gutter: stable;
     background: var(--color-canvas);
+  }
+
+  html,
+  body,
+  #root {
+    transition: background-color 250ms ease-out, color 250ms ease-out;
   }
 
   body {
@@ -73,7 +125,7 @@
 
   ::selection {
     background: var(--color-primary);
-    color: var(--color-ink);
+    color: var(--color-accent-ink);
   }
 }
 
@@ -97,7 +149,7 @@
   color: var(--color-ink);
 }
 
-/* Light-system bridge for the portfolio's expressive utility markup. */
+/* Theme bridge for legacy expressive utility markup. */
 .theme-section [class~="text-white"] {
   color: var(--color-ink);
 }
@@ -117,7 +169,7 @@
 
 .theme-section [class~="text-white/5"],
 .theme-section [class~="text-white/[0.03]"] {
-  color: rgba(11, 18, 20, 0.055);
+  color: rgb(var(--color-ink-rgb) / 0.055);
 }
 
 .theme-section [class~="text-[#8FE8F6]"] {
@@ -131,7 +183,19 @@
 .theme-section [class~="bg-white/5"],
 .theme-section [class~="bg-white/10"],
 .theme-section [class~="bg-white/[0.03]"] {
-  background-color: rgba(143, 232, 246, 0.13);
+  background-color: rgb(var(--color-primary-rgb) / 0.13);
+}
+
+.theme-section [class~="bg-white/35"] {
+  background-color: rgb(var(--color-surface-rgb) / 0.35);
+}
+
+.theme-section [class~="bg-white/90"] {
+  background-color: rgb(var(--color-surface-rgb) / 0.9);
+}
+
+.theme-section [class~="bg-white/95"] {
+  background-color: rgb(var(--color-surface-rgb) / 0.95);
 }
 
 .theme-section [class~="bg-[#8FE8F6]"] {
@@ -155,7 +219,7 @@
 }
 
 .theme-section [stroke^="rgba(255,255,255"] {
-  stroke: rgba(11, 18, 20, 0.12);
+  stroke: rgb(var(--color-ink-rgb) / 0.12);
 }
 
 @keyframes marquee {

@@ -1,14 +1,14 @@
 # Brandon Portfolio Design System
 
-This file is the single source of truth for the portfolio UI. The former dark, gold, pink, and neon theme is retired. The interface is light-only.
+This file is the single source of truth for the portfolio UI. The portfolio supports coordinated light and dark themes built from the same cyan-and-green identity.
 
 ## Direction
 
 - Style: vibrant, block-based portfolio with editorial typography and restrained technical details.
 - Principles: visual-first, highly legible, accessible, responsive, and energetic without visual noise.
-- Theme: light mode only. Do not add `dark:` utilities or system-theme detection.
+- Theme: user-selectable light and dark modes. Persist an explicit choice and use the system preference only on the first visit.
 
-## Color tokens
+## Light color tokens
 
 | Token | Value | Usage |
 | --- | --- | --- |
@@ -23,6 +23,23 @@ This file is the single source of truth for the portfolio UI. The former dark, g
 | `--color-line` | `#DCEAEA` | Dividers and card borders |
 
 For accent-colored text on white, use the brighter accessible derived inks `#087F90` (primary), `#24724D` (secondary), and `#667500` (tertiary). Cyan `#8FE8F6` is the sole primary accent for actions, active states, section markers, progress indicators, and focus styling. Lime is optional decoration only.
+
+## Dark color tokens
+
+| Token | Value | Usage |
+| --- | --- | --- |
+| `--color-primary` | `#8FE8F6` | Shared cyan actions, active controls, and focus styling |
+| `--color-primary-ink` | `#A9F2FC` | Accessible cyan text on dark surfaces |
+| `--color-secondary` | `#183D32` | Supporting dark green panels and hover states |
+| `--color-secondary-ink` | `#A9E6C1` | Accessible green text on dark surfaces |
+| `--color-canvas` | `#071012` | Dark page and section background |
+| `--color-surface` | `#0E1A1D` | Cards, navbar, and raised content |
+| `--color-surface-soft` | `#132326` | Quiet dark panels and alternating rows |
+| `--color-ink` | `#EDF6F7` | Primary dark-theme text, borders, and icons |
+| `--color-muted` | `#9BAEB2` | Secondary dark-theme copy |
+| `--color-line` | `#2A4146` | Visible dark-theme dividers and card borders |
+
+Use fixed dark ink `#0B1214` on solid cyan controls in both themes. Do not place light theme ink directly on dark surfaces or light text directly on cyan actions.
 
 ## Typography
 
@@ -42,7 +59,8 @@ For accent-colored text on white, use the brighter accessible derived inks `#087
 
 ## Surfaces, borders, and shadows
 
-- Cards use white or `surface-soft`, a visible `line` border, and dark ink.
+- Cards use `surface` or `surface-soft`, a visible `line` border, and the active `ink` token.
+- Section backgrounds use a clean solid `canvas` with restrained ambient color glows; do not use decorative grid textures.
 - Radius scale: 8px, 16px, 24px. Sharp corners are allowed for intentional brutalist blocks.
 - Shadows: `0 4px 14px rgba(11,18,20,.05)`, `0 14px 36px rgba(11,18,20,.08)`, `0 28px 70px rgba(11,18,20,.10)`.
 - Decorative offset shadows should use primary, secondary, or tertiary at 45–70% opacity.
@@ -65,14 +83,15 @@ For accent-colored text on white, use the brighter accessible derived inks `#087
 ### Navigation
 
 - White at 92–96% opacity with backdrop blur after scrolling.
-- Active item uses primary cyan with ink text.
-- Mobile drawer uses canvas, visible line dividers, and the same light token set.
+- Active items use primary cyan with fixed dark accent ink for reliable contrast.
+- Mobile drawer uses the active canvas and visible theme-aware line dividers.
 
 ## Motion and accessibility
 
 - Standard transition: 200–300ms with ease-out.
 - Keep continuous decorative animation minimal.
 - Respect `prefers-reduced-motion` globally.
+- Theme changes use a short 200-300ms color transition and must not animate layout.
 - Text contrast target: WCAG AA, 4.5:1 for normal text and 3:1 for large text.
 - Color must not be the sole state indicator.
 - Images require meaningful alt text; controls require labels; focus must remain visible.
@@ -83,7 +102,9 @@ Verify at 375px, 768px, 1024px, and 1440px. No horizontal scroll, clipped headin
 
 ## Retired patterns
 
-- Dark mode, dark-theme detection, and `dark:` variants.
+- Forced light mode and theme resets during application startup.
+- Uncoordinated per-component dark colors that bypass the shared tokens.
 - Gold `#D6B25E`, pink `#FF3355`, neon lime `#CCFF00`, purple, rust, and black panel backgrounds.
 - Low-contrast gray-on-dark copy and invisible translucent borders.
+- Decorative grid textures behind sections or page content.
 - Infinite decorative motion when reduced motion is requested.

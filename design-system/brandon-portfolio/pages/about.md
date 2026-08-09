@@ -17,10 +17,10 @@ This section extends the master design system with a portrait-led editorial prof
 
 ## Color
 
-- Primary and interactive accent: `#8FE8F6`.
-- Supporting card accent: `#C8F7D7`.
-- Canvas and cards remain white with `#DCEAEA` borders.
-- Use `#087F90` for small cyan text that needs accessible contrast.
+- Use the active theme tokens for canvas and card surfaces; the master palette remains authoritative.
+- Cyan highlights use `accentInk` for text and icons so their foreground stays dark and crisp in both themes.
+- Green icon tiles use `secondaryInk`; supporting copy uses at least `ink/70` on dark surfaces.
+- In dark mode, major About cards may use a subtle `primary/25` to `primary/30` border to separate them from the canvas without adding visual noise.
 - Never apply grayscale, desaturation, or color filters to the profile image.
 
 ## Motion and performance

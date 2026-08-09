@@ -76,7 +76,6 @@ const Skills = () => {
       <div className="pointer-events-none absolute inset-0 opacity-70">
         <div className="absolute -left-28 top-20 h-80 w-80 rounded-full bg-secondary/35 blur-[110px]" />
         <div className="absolute -right-20 bottom-16 h-80 w-80 rounded-full bg-primary/25 blur-[110px]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(11,18,20,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(11,18,20,0.025)_1px,transparent_1px)] bg-[size:4rem_4rem]" />
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-[1800px] px-5 md:px-12">
@@ -90,14 +89,14 @@ const Skills = () => {
               <h2 className="max-w-[10ch] text-[clamp(3.3rem,8vw,8.5rem)] font-black uppercase leading-[0.82] tracking-[-0.07em]">
                 The tools
                 <br />
-                I reach <span className="relative inline-block px-2 md:px-4">
+                I reach <span className="relative inline-block px-2 text-accentInk md:px-4">
                   <span className="absolute inset-x-0 bottom-[0.03em] top-[0.08em] -z-10 -rotate-1 bg-primary" />
                   for.
                 </span>
               </h2>
             </div>
             <div className="lg:col-span-3 lg:pb-2">
-              <p className="border-l-2 border-primary pl-5 text-base leading-relaxed text-muted md:text-lg">
+              <p className="border-l-2 border-primary pl-5 text-base leading-relaxed text-ink/75 md:text-lg">
                 A focused toolkit spanning interface design, front-end engineering, and the workflow that connects both.
               </p>
               <div className="mt-6 flex gap-2">
@@ -109,8 +108,8 @@ const Skills = () => {
         <div className="mt-10 grid gap-8 xl:grid-cols-[minmax(20rem,0.8fr)_minmax(0,1.55fr)] xl:gap-12 md:mt-14">
           <FadeUp className="min-w-0">
             <div className="overflow-hidden rounded-3xl border border-line bg-white shadow-[0_14px_36px_rgba(11,18,20,0.06)]">
-              <div className="border-b border-line bg-[#F8FCFB] p-5 md:p-7">
-                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-[#087F90]">Filter by discipline</span>
+              <div className="border-b border-line bg-surface-soft p-5 md:p-7">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-primaryInk">Filter by discipline</span>
                 <p className="mt-2 text-sm leading-relaxed text-muted">Hover or focus a description. Tap to keep a category selected.</p>
               </div>
 
@@ -131,19 +130,19 @@ const Skills = () => {
                       onClick={() => handleCategoryClick(category.id)}
                       className={`group grid w-full grid-cols-[auto_1fr_auto] gap-4 p-5 text-left transition-[background-color,color] duration-200 md:p-7 ${
                         index < categories.length - 1 ? "border-b border-line" : ""
-                      } ${isActive ? "bg-primary/25" : "bg-white hover:bg-[#F8FCFB]"}`}
+                      } ${isActive ? "bg-primary/25" : "bg-white hover:bg-surface-soft"}`}
                     >
-                      <span className={`pt-1 font-mono text-[10px] font-bold tracking-[0.16em] ${isActive ? "text-[#087F90]" : "text-muted"}`}>
+                      <span className={`pt-1 font-mono text-[10px] font-bold tracking-[0.16em] ${isActive ? "text-primaryInk" : "text-muted"}`}>
                         {category.index}
                       </span>
                       <span className="min-w-0">
-                        <span className={`block text-2xl font-black uppercase tracking-[-0.04em] transition-colors duration-200 md:text-3xl ${isActive ? "text-[#087F90]" : "text-ink"}`}>
+                        <span className={`block text-2xl font-black uppercase tracking-[-0.04em] transition-colors duration-200 md:text-3xl ${isActive ? "text-primaryInk" : "text-ink"}`}>
                           {category.title}
                         </span>
                         <span className="mt-3 block text-sm leading-relaxed text-muted md:text-base">{category.description}</span>
                       </span>
                       <span className={`grid h-9 min-w-9 place-items-center rounded-full border px-2 font-mono text-[10px] font-bold transition-colors duration-200 ${
-                        isActive ? "border-[#087F90] bg-primary text-ink" : "border-line bg-[#F8FCFB] text-muted"
+                        isActive ? "border-primaryInk bg-primary text-accentInk" : "border-line bg-surface-soft text-muted"
                       }`}>
                         {String(count).padStart(2, "0")}
                       </span>
@@ -170,7 +169,7 @@ const Skills = () => {
                   >
                     <div className="flex items-start justify-between gap-4">
                       <span className={`grid h-14 w-14 place-items-center rounded-2xl border transition-colors duration-200 ${
-                        isFocused ? "border-[#087F90] bg-primary" : "border-line bg-[#F8FCFB] group-hover:border-primary group-hover:bg-primary/25"
+                        isFocused ? "border-accentInk bg-primary text-accentInk" : "border-line bg-surface-soft group-hover:border-primary group-hover:bg-primary/25"
                       }`}>
                         <Icon className="h-7 w-7" aria-hidden="true" />
                       </span>
@@ -178,7 +177,7 @@ const Skills = () => {
                     </div>
                     <div className="mt-8">
                       <p className="text-lg font-black uppercase tracking-[-0.03em] md:text-xl">{tool.name}</p>
-                      <p className="mt-1 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-[#087F90]">{tool.category}</p>
+                      <p className="mt-1 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-primaryInk">{tool.category}</p>
                     </div>
                   </article>
                 );
@@ -187,12 +186,12 @@ const Skills = () => {
 
             <div className="mt-5 grid overflow-hidden rounded-3xl border border-line bg-white sm:grid-cols-[auto_1fr]">
               <div className="flex min-h-28 items-center bg-primary px-6 py-5 md:px-8">
-                <span className="text-5xl font-black tracking-[-0.07em] text-ink md:text-6xl">
+                <span className="text-5xl font-black tracking-[-0.07em] text-accentInk md:text-6xl">
                   {activeDetails ? activeDetails.index : "ALL"}
                 </span>
               </div>
               <div className="p-5 md:p-7">
-                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#087F90]">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-primaryInk">
                   {activeDetails ? `${activeDetails.title} in focus` : "Complete toolkit"}
                 </span>
                 <p className="mt-2 max-w-2xl leading-relaxed text-muted">

@@ -71,9 +71,6 @@ const techChipVariants = {
   hover: (techIndex) => ({
     y: techIndex % 2 === 0 ? -4 : -2,
     scale: 1.04,
-    borderColor: "rgba(102, 117, 0, 0.48)",
-    color: "#667500",
-    backgroundColor: "rgba(219, 241, 86, 0.3)",
     transition: {
       duration: 0.24,
       delay: techIndex * 0.03,
@@ -172,7 +169,7 @@ const ProjectCard = ({ project, index, onSelect, mobile = false }) => {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: animationIndex * 0.05 + 0.08 }}
-          className="mb-2 min-h-[3.8rem] text-[clamp(1.8rem,2.2vw,2.5rem)] font-black uppercase leading-[1] tracking-tighter text-ink transition-colors duration-300 group-hover:text-[#8FE8F6]"
+          className="mb-2 min-h-[3.8rem] text-[clamp(1.8rem,2.2vw,2.5rem)] font-black uppercase leading-[1] tracking-tighter text-ink transition-colors duration-300 group-hover:text-primaryInk"
         >
           {project.title}
         </Motion.h3>
@@ -197,12 +194,12 @@ const ProjectCard = ({ project, index, onSelect, mobile = false }) => {
                 key={`${project.id}-${techIndex}`}
                 custom={techIndex}
                 variants={techChipVariants}
-                className="relative overflow-hidden rounded-full border border-line px-2 py-1 font-mono text-[8px] uppercase tracking-[0.1em] text-ink/50"
+                className="relative overflow-hidden rounded-full border border-line px-2 py-1 font-mono text-[8px] uppercase tracking-[0.1em] text-ink/50 transition-colors duration-200 group-hover:border-accentInk/50 group-hover:bg-primary group-hover:text-accentInk"
               >
                 <Motion.span
                   custom={techIndex}
                   variants={techGlowVariants}
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-[#8FE8F6]/35 to-transparent"
+                  className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-white/55 to-transparent"
                 />
                 <span className="relative z-10">{tech}</span>
               </Motion.span>
@@ -213,7 +210,7 @@ const ProjectCard = ({ project, index, onSelect, mobile = false }) => {
             variants={arrowVariants}
             className="flex h-6 w-6 items-center justify-center rounded-full border border-line transition-colors duration-300 group-hover:border-primary group-hover:bg-primary"
           >
-            <span className="font-mono text-[10px] text-ink/50 transition-all duration-300 group-hover:text-ink">
+            <span className="font-mono text-[10px] text-ink/50 transition-all duration-300 group-hover:text-accentInk">
               -&gt;
             </span>
           </Motion.div>
@@ -268,14 +265,9 @@ const Projects = () => {
       className="theme-section relative w-full overflow-hidden bg-canvas py-24 font-sans text-ink selection:bg-primary selection:text-ink md:py-40"
     >
       <div
-        className="absolute inset-0 z-0 pointer-events-none opacity-[0.04]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(11,18,20,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(11,18,20,0.5) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }}
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{ background: "radial-gradient(circle at 50% 50%, transparent 0%, var(--color-canvas) 100%)" }}
       />
-      <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_50%_50%,transparent_0%,#FFFFFF_100%)]" />
 
       <Motion.div
         style={{ y: watermarkY }}
@@ -319,7 +311,7 @@ const Projects = () => {
                       onClick={() => selectCategory(category)}
                       className={`relative overflow-hidden rounded-full border px-4 py-2 font-mono text-[10px] uppercase tracking-[0.2em] transition-all duration-300 md:text-xs ${
                         isActive
-                          ? "border-[#8FE8F6] text-black"
+                          ? "border-primary text-accentInk"
                           : "border-line bg-transparent text-ink/50"
                       }`}
                     >
@@ -380,7 +372,7 @@ const Projects = () => {
               type="button"
               onClick={showNextMobileProject}
               disabled={filteredProjects.length <= 1}
-              className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-ink bg-primary text-ink transition-colors duration-200 hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-ink bg-primary text-accentInk transition-colors duration-200 hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-40"
               aria-label="Show next project"
             >
               <ArrowRight aria-hidden="true" className="h-4 w-4" />

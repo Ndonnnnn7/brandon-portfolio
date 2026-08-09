@@ -1,6 +1,6 @@
 # Navigation Override
 
-This component follows the global white-and-cyan portfolio system. Rules here refine the navbar structure without replacing the palette in `MASTER.md`.
+This component follows the global cyan portfolio system in both light and dark modes. Rules here refine the navbar structure without replacing the palettes in `MASTER.md`.
 
 ## Structure
 
@@ -8,17 +8,19 @@ This component follows the global white-and-cyan portfolio system. Rules here re
 - Use 24px phone padding and 48px padding from tablet widths upward.
 - Below 1024px, replace desktop links with a square 44px control and a full-viewport navigation panel.
 - Use five single-column editorial rows, small numbered indexes, and a bottom CTA/status block.
-- Use a clean white canvas with no grid, watermark, image, gradient, or other background decoration.
+- Use the active theme canvas with no grid, watermark, image, gradient, or other background decoration.
 - Use 80px rows and fluid 42-76px labels, increasing to at least 96px rows at tablet widths.
 
 ## Color and states
 
-- Use `canvas` (`#FFFFFF`) for the menu and open header background.
-- Use `primary` (`#8FE8F6`) for the close control, CTA, and bottom rule.
-- Use `primaryInk` (`#087F90`) for numbered indexes and focus outlines.
-- Use `ink` (`#0B1214`) for the active label, logo, borders, and icons.
-- Use `muted` (`#657275`) for inactive labels and metadata.
-- Use `line` (`#DCEAEA`) for row dividers.
+- Use the active `canvas` token for the menu and open header background.
+- Use `primary` for the close control, CTA, active pill, and bottom rule.
+- Use `primaryInk` for numbered indexes and focus outlines.
+- Use `ink` for the logo, borders, and icons; use fixed accent ink on solid cyan controls.
+- Use `muted` for inactive labels and metadata.
+- Use `line` for row dividers.
+- Provide a 44px circular Sun/Moon toggle in the persistent header on desktop and mobile.
+- The toggle updates its accessible label, uses the shared focus ring, and persists the selected theme.
 
 ## Accessibility and motion
 

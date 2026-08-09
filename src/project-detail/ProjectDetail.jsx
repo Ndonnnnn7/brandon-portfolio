@@ -6,16 +6,59 @@ import {
   ArrowRight,
   BriefcaseBusiness,
   CalendarDays,
+  Eye,
   ExternalLink,
   Github,
   Layers3,
   MoveUpRight,
+  PenTool,
+  Plug,
+  ScanSearch,
+  ScanText,
+  Smartphone,
+  Users,
 } from "lucide-react";
+import {
+  SiFigma,
+  SiFirebase,
+  SiJetpackcompose,
+  SiKotlin,
+  SiOpenai,
+  SiPython,
+  SiReact,
+  SiTailwindcss,
+  SiThreedotjs,
+  SiVercel,
+} from "react-icons/si";
 import { projectsData } from "../data/projects";
 
 const visibleProjects = projectsData.filter(
   (item) => item.showInGrid !== false,
 );
+
+const technologyIcons = {
+  api: Plug,
+  "api integration": Plug,
+  "computer vision": Eye,
+  easyocr: ScanText,
+  figma: SiFigma,
+  firebase: SiFirebase,
+  "jetpack compose": SiJetpackcompose,
+  kotlin: SiKotlin,
+  "openai api": SiOpenai,
+  prototyping: PenTool,
+  python: SiPython,
+  react: SiReact,
+  "responsive design": Smartphone,
+  tailwindcss: SiTailwindcss,
+  "three.js": SiThreedotjs,
+  "user testing": Users,
+  vercel: SiVercel,
+  yolov8: ScanSearch,
+};
+
+const getTechnologyIcon = (technology) =>
+  technologyIcons[technology.toLowerCase()] ?? Layers3;
 
 const FadeUp = ({ children, delay = 0, className = "" }) => {
   const shouldReduceMotion = useReducedMotion();
@@ -50,11 +93,6 @@ const ProjectDetail = () => {
   const projectIndex = visibleProjects.findIndex(
     (item) => item.id === project?.id,
   );
-  const nextProject =
-    projectIndex >= 0
-      ? visibleProjects[(projectIndex + 1) % visibleProjects.length]
-      : null;
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
@@ -72,7 +110,7 @@ const ProjectDetail = () => {
           <button
             type="button"
             onClick={() => navigate("/#projects")}
-            className="mt-8 inline-flex min-h-12 items-center gap-3 rounded-full border-2 border-ink bg-primary px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.16em] text-ink transition-colors duration-200 hover:bg-secondary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primaryInk"
+            className="mt-8 inline-flex min-h-12 items-center gap-3 rounded-full border-2 border-ink bg-primary px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.16em] text-accentInk transition-colors duration-200 hover:bg-secondary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primaryInk"
           >
             <ArrowLeft aria-hidden="true" className="h-4 w-4" />
             Back to projects
@@ -89,6 +127,14 @@ const ProjectDetail = () => {
   const techList = project.detailTech?.length
     ? project.detailTech
     : (project.tech ?? []);
+  const technologyGridColumns =
+    techList.length >= 4
+      ? "lg:grid-cols-4"
+      : techList.length === 3
+        ? "lg:grid-cols-3"
+        : techList.length === 2
+          ? "lg:grid-cols-2"
+          : "lg:grid-cols-1";
   const actionLinks = [
     {
       key: "demo",
@@ -115,15 +161,6 @@ const ProjectDetail = () => {
 
   return (
     <article className="theme-section relative min-h-screen overflow-hidden bg-canvas pb-24 text-ink selection:bg-primary selection:text-ink md:pb-36">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.055]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(11,18,20,0.45) 1px, transparent 1px), linear-gradient(90deg, rgba(11,18,20,0.45) 1px, transparent 1px)",
-          backgroundSize: "48px 48px",
-        }}
-      />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-40 top-20 h-[32rem] w-[32rem] rounded-full bg-primary/25 blur-3xl"
@@ -165,7 +202,7 @@ const ProjectDetail = () => {
         <section className="mx-auto w-full max-w-[1320px] px-6 pb-12 pt-10 md:px-10 md:pb-20 md:pt-16">
           <FadeUp>
             <div className="mb-8 flex flex-wrap items-center gap-3 font-mono text-[10px] font-bold uppercase tracking-[0.2em] md:text-xs">
-              <span className="rounded-full border border-primaryInk bg-primary px-4 py-2 text-ink">
+              <span className="rounded-full border border-primaryInk bg-primary px-4 py-2 text-accentInk">
                 {project.category}
               </span>
               <span className="rounded-full border border-line bg-white px-4 py-2 text-muted">
@@ -207,10 +244,10 @@ const ProjectDetail = () => {
                         href={href}
                         target="_blank"
                         rel="noreferrer"
-                        className={`inline-flex min-h-12 items-center justify-between gap-4 rounded-full border-2 border-ink px-5 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-ink transition-[background-color,border-color,box-shadow] duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primaryInk ${
+                        className={`inline-flex min-h-12 items-center justify-between gap-4 rounded-full border-2 border-ink px-5 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.16em] transition-[background-color,border-color,box-shadow] duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primaryInk ${
                           primary
-                            ? "bg-primary hover:bg-secondary hover:shadow-[5px_5px_0_var(--color-ink)]"
-                            : "bg-white hover:border-primaryInk hover:bg-primary/20"
+                            ? "bg-primary text-accentInk hover:bg-secondary hover:shadow-[5px_5px_0_var(--color-ink)]"
+                            : "bg-white text-ink hover:border-primaryInk hover:bg-primary/20"
                         }`}
                       >
                         {label}
@@ -242,9 +279,6 @@ const ProjectDetail = () => {
                 <span className="truncate px-3">
                   {project.title} / Main preview
                 </span>
-                <span className="hidden text-primaryInk sm:inline">
-                  Project frame
-                </span>
               </div>
 
               <div className="relative aspect-[4/3] w-full bg-surface-soft md:aspect-[16/9]">
@@ -270,8 +304,6 @@ const ProjectDetail = () => {
               </div>
 
               <div className="flex items-center justify-between gap-4 border-t border-line bg-white px-4 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-muted md:px-6">
-                <span>Viewport / Responsive</span>
-                <span className="text-primaryInk">Status / Selected</span>
               </div>
             </div>
           </section>
@@ -281,19 +313,19 @@ const ProjectDetail = () => {
           <FadeUp>
             <div className="overflow-hidden rounded-3xl border-2 border-ink bg-white shadow-[10px_10px_0_var(--color-secondary)] md:shadow-[14px_14px_0_var(--color-secondary)]">
               <div className="grid lg:grid-cols-[0.8fr_1.2fr]">
-                <div className="relative flex min-h-[22rem] flex-col justify-between overflow-hidden bg-primary p-7 md:min-h-[27rem] md:p-10 lg:min-h-[34rem] lg:border-r-2 lg:border-ink lg:p-12">
+                <div className="relative flex min-h-[22rem] flex-col justify-between overflow-hidden bg-primary p-7 text-accentInk md:min-h-[27rem] md:p-10 lg:min-h-[34rem] lg:border-r-2 lg:border-ink lg:p-12">
                   <div className="relative z-10 flex items-center justify-between gap-4">
                     <span className="rounded-full border border-ink bg-white px-4 py-2 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-ink md:text-xs">
-                      01 / The brief
+                      About
                     </span>
-                    <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink/60 md:text-xs">
+                    <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accentInk/60 md:text-xs">
                       Archive {projectNumber}
                     </span>
                   </div>
 
                   <div className="relative z-10 max-w-lg">
-                    <span className="mb-6 block h-2 w-20 rounded-full bg-ink" />
-                    <h2 className="font-display text-[clamp(3rem,6vw,5.5rem)] font-black uppercase leading-[0.86] tracking-[-0.055em] text-ink">
+                    <span className="mb-6 block h-2 w-20 rounded-full bg-accentInk" />
+                    <h2 className="font-display text-[clamp(3rem,6vw,5.5rem)] font-black uppercase leading-[0.86] tracking-[-0.055em] text-accentInk">
                       Behind
                       <br />
                       the build.
@@ -302,7 +334,7 @@ const ProjectDetail = () => {
 
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute -bottom-16 -right-3 font-display text-[13rem] font-black leading-none tracking-[-0.08em] text-ink/[0.07] md:text-[18rem]"
+                    className="pointer-events-none absolute -bottom-16 -right-3 font-display text-[13rem] font-black leading-none tracking-[-0.08em] text-accentInk/[0.07] md:text-[18rem]"
                   >
                     01
                   </span>
@@ -313,7 +345,7 @@ const ProjectDetail = () => {
                     <div className="mb-8 flex items-center gap-4">
                       <span className="h-3 w-3 rounded-full border border-primaryInk bg-primary" />
                       <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-primaryInk md:text-xs">
-                        Context / Overview
+                        Description
                       </span>
                       <span className="h-px flex-1 bg-line" />
                     </div>
@@ -321,22 +353,6 @@ const ProjectDetail = () => {
                     <p className="max-w-[66ch] text-lg font-medium leading-[1.7] text-ink md:text-xl lg:text-[1.4rem]">
                       {project.fullDescription || project.description}
                     </p>
-                  </div>
-
-                  <div className="mt-12 flex items-center gap-4 border-t border-line pt-6 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-muted md:text-xs">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-secondary text-secondaryInk">
-                      <BriefcaseBusiness
-                        aria-hidden="true"
-                        className="h-4 w-4"
-                      />
-                    </span>
-                    <span>
-                      Contribution
-                      <br />
-                      <strong className="font-bold text-ink">
-                        {project.role}
-                      </strong>
-                    </span>
                   </div>
                 </div>
               </div>
@@ -348,22 +364,19 @@ const ProjectDetail = () => {
           <FadeUp className="mb-8 flex items-end justify-between gap-6">
             <div>
               <span className="font-mono text-xs font-bold uppercase tracking-[0.22em] text-primaryInk">
-                02 / Project DNA
+                Project
               </span>
               <h2 className="mt-4 font-display text-4xl font-black uppercase tracking-tighter md:text-6xl">
                 The details.
               </h2>
             </div>
-            <span className="hidden font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-muted md:inline">
-              System / Overview
-            </span>
           </FadeUp>
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-12">
             <FadeUp className="lg:col-span-7">
-              <div className="flex h-full min-h-72 flex-col justify-between rounded-3xl border-2 border-ink bg-primary p-7 shadow-[8px_8px_0_var(--color-ink)] md:p-10">
+              <div className="flex h-full min-h-72 flex-col justify-between rounded-3xl border-2 border-ink bg-primary p-7 text-accentInk shadow-[8px_8px_0_var(--color-ink)] md:p-10">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-ink/65 md:text-xs">
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-accentInk/65 md:text-xs">
                     Role / Responsibility
                   </span>
                   <BriefcaseBusiness aria-hidden="true" className="h-6 w-6" />
@@ -392,32 +405,59 @@ const ProjectDetail = () => {
             </FadeUp>
 
             <FadeUp delay={0.1} className="md:col-span-2 lg:col-span-12">
-              <div className="rounded-3xl border border-line bg-white p-7 shadow-[var(--shadow-md)] md:p-10">
-                <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+              <div className="overflow-hidden rounded-3xl border border-line bg-white shadow-[var(--shadow-md)] dark:border-primary/25">
+                <div className="flex flex-col gap-5 border-b border-line bg-surface-soft p-6 sm:flex-row sm:items-center sm:justify-between md:p-8">
                   <div className="flex items-center gap-4">
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary text-ink">
-                      <Layers3 aria-hidden="true" className="h-5 w-5" />
-                    </span>
                     <div>
-                      <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-muted md:text-xs">
+                      <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-primaryInk md:text-xs">
                         Tools & technologies
                       </p>
-                      <p className="mt-1 text-sm font-medium text-ink">
+                      <p className="mt-1 text-sm font-medium text-ink md:text-base">
                         The stack behind the experience.
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-2 md:max-w-2xl md:justify-end">
-                    {techList.map((tech) => (
-                      <span
+                  <span className="w-fit rounded-full border border-line bg-white px-4 py-2 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-muted">
+                    {String(techList.length).padStart(2, "0")} tools
+                  </span>
+                </div>
+
+                <div
+                  className={`grid gap-px bg-line sm:grid-cols-2 ${technologyGridColumns}`}
+                  aria-label={`${project.title} technology stack`}
+                >
+                  {techList.map((tech, index) => {
+                    const TechnologyIcon = getTechnologyIcon(tech);
+
+                    return (
+                      <div
                         key={tech}
-                        className="rounded-full border border-line bg-surface-soft px-4 py-2 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-ink transition-colors duration-200 hover:border-primaryInk hover:bg-primary/20 md:text-xs"
+                        className="group flex min-h-40 flex-col justify-between bg-white p-5 transition-colors duration-200 hover:bg-primary/15 md:min-h-44 md:p-6"
                       >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
+                        <div className="flex items-start justify-between gap-4">
+                          <span className="grid h-14 w-14 place-items-center rounded-2xl border border-line bg-surface-soft text-ink transition-colors duration-200 group-hover:border-accentInk/50 group-hover:bg-primary group-hover:text-accentInk">
+                            <TechnologyIcon
+                              aria-hidden="true"
+                              className="h-6 w-6"
+                            />
+                          </span>
+                          <span className="font-mono text-[10px] font-bold tracking-[0.16em] text-muted">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                        </div>
+
+                        <div className="mt-8">
+                          <p className="font-display text-xl font-black uppercase leading-tight tracking-[-0.035em] text-ink md:text-2xl">
+                            {tech}
+                          </p>
+                          <p className="mt-2 font-mono text-[9px] font-bold uppercase tracking-[0.18em] text-primaryInk">
+                            Project toolkit
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </FadeUp>

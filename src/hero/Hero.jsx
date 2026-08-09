@@ -61,15 +61,6 @@ const Hero = () => {
               'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.85\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")',
           }}
         />
-        <div
-          className="absolute inset-0 z-[1] pointer-events-none opacity-10"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(11,18,20,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(11,18,20,0.08) 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-          }}
-        />
-
         <Motion.div
           className="absolute top-[20%] left-[10%] w-[300px] h-[300px] border border-[#8FE8F6]/30 rounded-full z-0 mix-blend-screen hidden md:block pointer-events-none"
           style={{ x: floatX1, y: floatY1 }}
@@ -106,8 +97,8 @@ const Hero = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <div className="mx-auto w-full max-w-[360px] rounded-3xl border border-black bg-white p-5 text-black md:mx-0 md:max-w-sm md:-rotate-2 md:p-6">
-                <div className="flex justify-between items-center mb-4 border-b border-black/10 pb-2">
+              <div className="mx-auto w-full max-w-[360px] rounded-3xl border border-ink bg-surface p-5 text-ink md:mx-0 md:max-w-sm md:-rotate-2 md:p-6">
+                <div className="flex justify-between items-center mb-4 border-b border-line pb-2">
                   <span className="font-mono text-[10px] font-bold">STATUS</span>
                   <div className="flex items-center gap-2">
                     <span className="relative flex h-2 w-2">
@@ -120,7 +111,7 @@ const Hero = () => {
                 <h3 className="font-bold text-xl md:text-2xl leading-none uppercase tracking-tight mb-2">
                   Designer by eye. Developer by hand.
                 </h3>
-                <p className="text-sm font-medium text-black/70 leading-relaxed">
+                <p className="text-sm font-medium text-muted leading-relaxed">
                  Designing with intent. Building with precision. Turning complex problems into experiences that feel effortless.
                 </p>
               </div>

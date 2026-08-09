@@ -55,6 +55,7 @@ const storyChapters = [
     title: "Starting with people",
     icon: Palette,
     tone: "bg-primary",
+    iconTone: "text-accentInk",
     text: "I am an Informatics Engineering student at Brawijaya University with a strong interest in design, particularly UI/UX design. I am passionate about creating intuitive, user-centered, and visually engaging digital experiences.",
   },
   {
@@ -63,14 +64,16 @@ const storyChapters = [
     title: "Turning ideas into products",
     icon: Code2,
     tone: "bg-secondary",
+    iconTone: "text-secondaryInk",
     text: "Beyond designing interfaces, I enjoy bringing my ideas to life by implementing them as a Front-End Developer, turning concepts and prototypes into functional, responsive, and interactive applications. I continuously strive to improve both my technical and creative skills, ensuring that every project I work on is not only aesthetically pleasing but also highly usable.",
   },
   {
     id: "03",
-    label: "Compete",
+    label: "Complete",
     title: "Growing through challenge",
     icon: Trophy,
     tone: "bg-primary",
+    iconTone: "text-accentInk",
     text: "I am also highly enthusiastic about participating in competitions, as they challenge me to think critically, innovate, and push my limits. These experiences motivate me to grow, achieve excellence, and strive to win in every opportunity I pursue.",
   },
 ];
@@ -114,7 +117,6 @@ const About = () => {
       <div className="pointer-events-none absolute inset-0 opacity-60">
         <div className="absolute -left-24 top-40 h-80 w-80 rounded-full bg-secondary/35 blur-[110px]" />
         <div className="absolute -right-24 bottom-28 h-80 w-80 rounded-full bg-primary/25 blur-[110px]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(11,18,20,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(11,18,20,0.025)_1px,transparent_1px)] bg-[size:4rem_4rem]" />
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-[1600px] px-5 md:px-12">
@@ -122,19 +124,19 @@ const About = () => {
 
           <div className="mb-10 grid items-end gap-8 md:mb-16 xl:grid-cols-12 xl:gap-12">
             <div className="xl:col-span-9">
-              <p className="mb-5 max-w-xl text-sm font-semibold uppercase tracking-[0.16em] text-muted md:text-base">
+              <p className="mb-5 max-w-xl text-sm font-semibold uppercase tracking-[0.16em] text-ink/75 md:text-base">
                 Informatics student · UI/UX designer · Front-end developer
               </p>
               <h2 className="max-w-[12ch] text-[clamp(3rem,8.5vw,8.5rem)] font-black uppercase leading-[0.82] tracking-[-0.07em]">
                 Design. Build.
                 <br />
-                <span className="relative inline-block px-3 md:px-5">
+                <span className="relative inline-block px-3 text-accentInk md:px-5">
                   <span className="absolute inset-x-0 bottom-[0.04em] top-[0.08em] -z-10 -rotate-1 bg-primary" />
-                  Compete.
+                  Complete.
                 </span>
               </h2>
             </div>
-            <p className="max-w-md border-l-2 border-primary pl-5 text-base leading-relaxed text-muted md:text-lg xl:col-span-3 xl:mb-2">
+            <p className="max-w-md border-l-2 border-primary pl-5 text-base leading-relaxed text-ink/75 md:text-lg xl:col-span-3 xl:mb-2">
               I combine empathy, visual thinking, and code, then keep raising the
               standard through every challenge I take on.
             </p>
@@ -143,11 +145,11 @@ const About = () => {
 
         <div className="grid min-w-0 gap-6 xl:grid-cols-12 xl:gap-8">
           <FadeUp className="min-w-0 xl:col-span-5">
-            <figure className="overflow-hidden rounded-[2rem] border border-line bg-white shadow-[0_22px_70px_rgba(11,18,20,0.09)]">
+            <figure className="overflow-hidden rounded-[2rem] border border-line bg-white shadow-[0_22px_70px_rgba(11,18,20,0.09)] dark:border-primary/30 dark:shadow-[0_24px_70px_rgba(0,0,0,0.32)]">
               <div className="relative min-h-[30rem] overflow-hidden bg-primary sm:min-h-[40rem] xl:min-h-[48rem]">
                 <div className="absolute -right-12 top-20 h-52 w-52 rotate-12 rounded-[3rem] bg-secondary/90 sm:h-72 sm:w-72" />
                 <div className="absolute -left-16 bottom-28 h-48 w-48 -rotate-12 rounded-full border-[2rem] border-white/35 sm:h-64 sm:w-64" />
-                <div className="absolute inset-x-0 bottom-0 z-10 text-center text-[clamp(5rem,13vw,11rem)] font-black uppercase leading-none tracking-[-0.08em] text-white/45">
+                <div className="absolute inset-x-0 bottom-0 z-10 text-center text-[clamp(5rem,13vw,11rem)] font-black uppercase leading-none tracking-[-0.08em] text-accentInk/30">
                   Brandon
                 </div>
                 <img
@@ -163,12 +165,12 @@ const About = () => {
                   <p className="text-2xl font-black uppercase tracking-[-0.04em] md:text-3xl">
                     Brandon Geraldo Adji
                   </p>
-                  <p className="mt-1 text-sm text-muted">
+                  <p className="mt-1 text-sm text-ink/70">
                     Designing with intent. Building with precision.
                   </p>
                 </div>
-                <div className="flex items-center gap-2 font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-muted sm:justify-end">
-                  <MapPin className="h-4 w-4 text-[#087F90]" />
+                <div className="flex items-center gap-2 font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-ink/70 sm:justify-end">
+                  <MapPin className="h-4 w-4 text-primaryInk" />
                   Malang, Indonesia
                 </div>
               </figcaption>
@@ -176,10 +178,10 @@ const About = () => {
           </FadeUp>
 
           <FadeUp delay={0.06} className="min-w-0 xl:col-span-7">
-            <div className="flex h-full flex-col overflow-hidden rounded-[2rem] border border-line bg-white shadow-[0_22px_70px_rgba(11,18,20,0.07)]">
+            <div className="flex h-full flex-col overflow-hidden rounded-[2rem] border border-line bg-white shadow-[0_22px_70px_rgba(11,18,20,0.07)] dark:border-primary/30 dark:shadow-[0_24px_70px_rgba(0,0,0,0.32)]">
               <div className="flex flex-col gap-4 border-b border-line bg-surface-soft p-5 sm:flex-row sm:items-end sm:justify-between md:p-8">
                 <div>
-                  <span className="font-mono text-[9px] font-bold uppercase tracking-[0.24em] text-[#087F90]">
+                  <span className="font-mono text-[9px] font-bold uppercase tracking-[0.24em] text-primaryInk">
                     Description
                   </span>
                   <h3 className="mt-3 text-3xl font-black uppercase tracking-[-0.05em] md:text-5xl">
@@ -202,7 +204,7 @@ const About = () => {
                     >
                       <div className="flex items-center gap-3 sm:block">
                         <span
-                          className={`${chapter.tone} grid h-12 w-12 place-items-center rounded-2xl text-ink transition-transform duration-200 group-hover:-rotate-3`}
+                          className={`${chapter.tone} ${chapter.iconTone} grid h-12 w-12 place-items-center rounded-2xl transition-transform duration-200 group-hover:-rotate-3`}
                         >
                           <Icon className="h-5 w-5" aria-hidden="true" />
                         </span>
@@ -211,7 +213,7 @@ const About = () => {
                         <h4 className="text-xl font-black uppercase tracking-[-0.03em] md:text-2xl">
                           {chapter.title}
                         </h4>
-                        <p className="mt-3 text-[0.95rem] leading-[1.8] text-muted md:text-base xl:text-[1.02rem]">
+                        <p className="mt-3 text-[0.95rem] leading-[1.8] text-ink/75 md:text-base xl:text-[1.02rem]">
                           {chapter.text}
                         </p>
                       </div>
@@ -225,7 +227,7 @@ const About = () => {
 
         <FadeUp
           delay={0.08}
-          className="mt-6 grid overflow-hidden rounded-[2rem] border border-line bg-white sm:grid-cols-3 md:mt-8"
+          className="mt-6 grid overflow-hidden rounded-[2rem] border border-line bg-white sm:grid-cols-3 md:mt-8 dark:border-primary/25"
         >
           {focusAreas.map((area, index) => {
             const Icon = area.icon;
@@ -238,14 +240,14 @@ const About = () => {
                     : ""
                 }`}
               >
-                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-line bg-surface-soft transition-colors duration-200 group-hover:border-primary group-hover:bg-primary">
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-line bg-surface-soft transition-colors duration-200 group-hover:border-primary group-hover:bg-primary group-hover:text-accentInk">
                   <Icon className="h-5 w-5" aria-hidden="true" />
                 </span>
                 <div className="min-w-0">
                   <p className="mt-1 text-lg font-black uppercase tracking-[-0.03em]">
                     {area.title}
                   </p>
-                  <p className="text-sm text-muted">{area.note}</p>
+                  <p className="text-sm text-ink/70">{area.note}</p>
                 </div>
               </div>
             );
@@ -254,17 +256,17 @@ const About = () => {
 
         <div id="pathway" className="mt-24 md:mt-40">
           <FadeUp className="mx-auto max-w-3xl text-center">
-            <span className="inline-flex items-center gap-3 font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-[#087F90]">
+            <span className="inline-flex items-center gap-3 font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-primaryInk">
             </span>
             <h3 className="mt-5 text-[clamp(3rem,7vw,7rem)] font-black uppercase leading-[0.86] tracking-[-0.07em]">
               Learning by
               <br />
-              <span className="relative inline-block px-3 md:px-5">
+              <span className="relative inline-block px-3 text-accentInk md:px-5">
                 <span className="absolute inset-x-0 bottom-[0.05em] top-[0.1em] -z-10 -rotate-1 bg-primary" />
                 building.
               </span>
             </h3>
-            <p className="mx-auto mt-7 max-w-xl text-base leading-relaxed text-muted md:text-lg">
+            <p className="mx-auto mt-7 max-w-xl text-base leading-relaxed text-ink/70 md:text-lg">
               A path from analytical thinking to product design and
               production-ready front-end work.
             </p>
@@ -273,7 +275,7 @@ const About = () => {
           <ol className="relative mx-auto mt-20 hidden max-w-6xl lg:block">
             <div
               aria-hidden="true"
-              className="absolute bottom-36 left-1/2 top-36 -translate-x-1/2 border-l border-dashed border-[#087F90]/45"
+              className="absolute bottom-36 left-1/2 top-36 -translate-x-1/2 border-l border-dashed border-primaryInk/45"
             />
             {educationData.map((item, index) => {
               const Icon = item.icon;
@@ -288,7 +290,7 @@ const About = () => {
                         {item.id}
                       </span>
                       <div className="relative">
-                        <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#087F90]">
+                        <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-primaryInk">
                           {item.id} // {item.type}
                         </span>
                         <div className="mt-8 flex items-center gap-4">
@@ -322,8 +324,8 @@ const About = () => {
                       aria-hidden="true"
                       className="absolute left-0 right-0 top-1/2 h-px bg-line"
                     />
-                    <span className="relative grid h-[4.5rem] w-[4.5rem] place-items-center rounded-full border border-dashed border-[#087F90] bg-white shadow-[0_8px_24px_rgba(11,18,20,0.08)]">
-                      <span className="grid h-11 w-11 place-items-center rounded-full border-4 border-white bg-primary text-ink shadow-[0_0_0_1px_#DCEAEA]">
+                    <span className="relative grid h-[4.5rem] w-[4.5rem] place-items-center rounded-full border border-dashed border-primaryInk bg-white shadow-[var(--shadow-sm)]">
+                      <span className="grid h-11 w-11 place-items-center rounded-full border-4 border-surface bg-primary text-accentInk shadow-[0_0_0_1px_var(--color-line)]">
                         <Icon className="h-5 w-5" aria-hidden="true" />
                       </span>
                     </span>
@@ -334,7 +336,7 @@ const About = () => {
                       <h4 className="mt-5 text-3xl font-black uppercase tracking-[-0.04em]">
                         {item.role}
                       </h4>
-                      <p className="mt-4 max-w-md text-base leading-[1.75] text-muted">
+                      <p className="mt-4 max-w-md text-base leading-[1.75] text-ink/75">
                         {item.description}
                       </p>
                     </article>
@@ -347,12 +349,12 @@ const About = () => {
           <ol className="relative mt-14 space-y-6 pl-12 lg:hidden">
             <div
               aria-hidden="true"
-              className="absolute bottom-8 left-[1.35rem] top-8 border-l border-dashed border-[#087F90]/45"
+              className="absolute bottom-8 left-[1.35rem] top-8 border-l border-dashed border-primaryInk/45"
             />
             {educationData.map((item, index) => {
               return (
                 <li key={item.id} className="relative">
-                  <span className="absolute -left-12 top-7 z-10 grid h-11 w-11 place-items-center overflow-hidden rounded-full border-4 border-white bg-white p-1 shadow-[0_0_0_1px_#DCEAEA]">
+                  <span className="absolute -left-12 top-7 z-10 grid h-11 w-11 place-items-center overflow-hidden rounded-full border-4 border-surface bg-white p-1 shadow-[0_0_0_1px_var(--color-line)]">
                     <img
                       src={item.logo}
                       alt={item.logoAlt}
@@ -364,7 +366,7 @@ const About = () => {
                   <FadeUp delay={index * 0.06}>
                     <article className="overflow-hidden rounded-3xl border border-line bg-white shadow-[0_14px_36px_rgba(11,18,20,0.06)]">
                       <div className="flex items-center justify-between gap-4 border-b border-line bg-surface-soft px-5 py-4 md:px-7">
-                        <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[#087F90]">
+                        <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-primaryInk">
                           {item.id} / {item.type}
                         </span>
                         <span className="font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-muted">
@@ -387,7 +389,7 @@ const About = () => {
                           <h4 className="mt-3 text-xl font-black uppercase tracking-[-0.03em] md:text-2xl">
                             {item.role}
                           </h4>
-                          <p className="mt-4 leading-relaxed text-muted">
+                          <p className="mt-4 leading-relaxed text-ink/75">
                             {item.description}
                           </p>
                         </div>

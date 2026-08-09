@@ -84,7 +84,7 @@ const Contact = () => {
             <div className="absolute bottom-0 right-0 h-2 w-32 bg-[#8FE8F6]" />
 
             <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center">
-              <span className="mb-6 inline-flex items-center rounded-full border border-[#8FE8F6]/40 bg-[#8FE8F6] px-4 py-2 font-mono text-[10px] font-black uppercase tracking-[0.24em] text-black">
+              <span className="mb-6 inline-flex items-center rounded-full border border-[#8FE8F6]/40 bg-[#8FE8F6] px-4 py-2 font-mono text-[10px] font-black uppercase tracking-[0.24em] text-accentInk">
                 Available for collaboration // {time || "MLG_IDN"}
               </span>
 
@@ -100,7 +100,7 @@ const Contact = () => {
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <a
                   href="mailto:brandon.geraldo28@gmail.com"
-                  className="group inline-flex h-12 items-center justify-center gap-2 rounded-full border-2 border-ink bg-white px-6 text-sm font-black uppercase text-black shadow-[6px_6px_0px_rgba(143,232,246,0.5)] transition hover:border-[#8FE8F6] hover:bg-[#8FE8F6]"
+                  className="group inline-flex h-12 items-center justify-center gap-2 rounded-full border-2 border-ink bg-surface px-6 text-sm font-black uppercase text-ink shadow-[6px_6px_0px_rgba(143,232,246,0.5)] transition hover:border-[#8FE8F6] hover:bg-[#8FE8F6] hover:text-accentInk"
                 >
                   Start a Project
                   <ArrowUpRight className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
@@ -108,7 +108,7 @@ const Contact = () => {
                 <button
                   type="button"
                   onClick={handleCopyEmail}
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full border-2 border-line bg-white px-6 font-mono text-[10px] font-black uppercase tracking-widest text-ink/80 transition hover:border-[#8FE8F6] hover:text-[#8FE8F6]"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full border-2 border-line bg-surface px-6 font-mono text-[10px] font-black uppercase tracking-widest text-ink/80 transition hover:border-[#8FE8F6] hover:text-[#8FE8F6]"
                 >
                   {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                   {copied ? "Email copied" : "Copy email"}
@@ -121,7 +121,7 @@ const Contact = () => {
         <FadeUp delay={0.12} className="grid gap-10 px-1 py-14 md:grid-cols-[1.1fr_1fr_1fr_1.2fr_0.9fr] md:gap-8 md:px-0 md:py-20">
           <div>
             <a href="#home" className="mb-6 inline-flex items-center gap-3">
-              <span className="grid h-12 w-12 place-items-center rounded-full border-2 border-black bg-white text-xl font-black italic tracking-tighter text-black shadow-[5px_5px_0px_rgba(143,232,246,0.7)]">
+              <span className="grid h-12 w-12 place-items-center rounded-full border-2 border-ink bg-surface text-xl font-black italic tracking-tighter text-ink shadow-[5px_5px_0px_rgba(143,232,246,0.7)]">
                 B.
               </span>
               <span className="text-2xl font-black uppercase italic tracking-tighter text-ink">Brandon</span>
@@ -198,7 +198,7 @@ const Contact = () => {
                   rel="noreferrer"
                   aria-label={social.label}
                   title={social.label}
-                  className="grid h-10 w-10 place-items-center rounded-full border border-line bg-white text-muted transition hover:border-[#8FE8F6] hover:bg-[#8FE8F6] hover:text-black"
+                  className="grid h-10 w-10 place-items-center rounded-full border border-line bg-surface text-muted transition hover:border-[#8FE8F6] hover:bg-[#8FE8F6] hover:text-accentInk"
                 >
                   <social.icon className="h-4 w-4" />
                 </a>

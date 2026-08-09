@@ -18,7 +18,8 @@ This section extends the master design system with an interactive category-and-t
 
 ## Color and surface
 
-- Primary focus and active state: `#8FE8F6`.
-- Supporting ambient accent: `#C8F7D7`.
-- Keep the canvas and tool cards white with `#DCEAEA` dividers.
-- Use `#087F90` for accessible accent text on white.
+- Use the active theme tokens for canvas, tool cards, dividers, and supporting accents.
+- Text placed over the solid cyan highlight uses fixed `accentInk` in both themes.
+- Focused tool icons, their borders, and the active category number also use `accentInk` whenever their surface becomes solid cyan.
+- Supporting headline copy uses at least `ink/75` on dark surfaces.
+- Accent-colored text on neutral surfaces uses the theme-aware `primaryInk` token.

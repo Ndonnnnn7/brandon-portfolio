@@ -16,6 +16,7 @@ The Projects section follows the global light portfolio system with the shared 2
 - Use `canvas` and `surface` for card backgrounds.
 - Use `line` for default borders and `primary` for hover borders and active filters.
 - Use `primaryInk` for small cyan-accented text to preserve contrast.
+- On card hover, technology chips use a solid `primary` surface with fixed `accentInk` text and border; do not reintroduce retired lime or olive hover colors.
 - Use the `primary` token for the outlined `WORKS.` display heading stroke.
 
 ## Media

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion as Motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, ArrowUpRight, Menu, X } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Menu, Moon, Sun, X } from "lucide-react";
+import { useTheme } from "../theme/useTheme";
 
 const NAV_LINKS = [
   { id: 1, link: "home", label: "Home", index: "01" },
@@ -19,6 +20,7 @@ const Navbar = () => {
   const programmaticScrollRef = useRef(false);
   const scrollUnlockTimerRef = useRef(null);
   const shouldReduceMotion = useReducedMotion();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     let animationFrame = null;
@@ -178,8 +180,8 @@ const Navbar = () => {
           menuOpen
             ? "border-line bg-canvas py-4 shadow-none"
             : scrolled
-            ? "border-line bg-white/95 py-4 shadow-[0_8px_30px_rgba(11,18,20,0.06)]"
-            : "border-transparent bg-white/90 py-6"
+            ? "border-line bg-surface/95 py-4 shadow-[var(--shadow-sm)]"
+            : "border-transparent bg-surface/90 py-6"
         }`}
       >
         <div className="mx-auto flex w-full max-w-[1800px] items-center justify-between px-6 md:px-12">
@@ -190,13 +192,13 @@ const Navbar = () => {
             aria-label="Brandon portfolio home"
           >
             <span
-              className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-ink text-xl font-black leading-none text-white transition-colors duration-200"
+              className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-ink text-xl font-black leading-none text-canvas transition-colors duration-200"
             >
               B
             </span>
             <span className={`${menuOpen ? "hidden" : "hidden sm:flex"} flex-col`}>
               <span className="text-lg font-black uppercase leading-none tracking-tighter text-ink">Brandon</span>
-              <span className="mt-1 font-mono text-[8px] font-bold uppercase tracking-[0.2em] text-[#087F90]">Profile</span>
+              <span className="mt-1 font-mono text-[8px] font-bold uppercase tracking-[0.2em] text-primaryInk">Profile</span>
             </span>
           </a>
 
@@ -212,8 +214,8 @@ const Navbar = () => {
                     aria-current={isActive ? "page" : undefined}
                     className={`relative isolate flex items-center gap-3 rounded-full border-2 px-4 py-2 font-mono text-[10px] font-bold uppercase tracking-widest transition-colors duration-200 ${
                       isActive
-                        ? "border-transparent text-ink"
-                        : "border-transparent bg-transparent text-muted hover:border-line hover:bg-white/70 hover:text-ink"
+                        ? "border-transparent text-accentInk"
+                        : "border-transparent bg-transparent text-muted hover:border-line hover:bg-surface/70 hover:text-ink"
                     }`}
                   >
                     {isActive && (
@@ -228,7 +230,7 @@ const Navbar = () => {
                         aria-hidden="true"
                       />
                     )}
-                    <span className={`relative z-10 ${isActive ? "text-ink/55" : "text-muted/60"}`}>{index}</span>
+                    <span className={`relative z-10 ${isActive ? "text-accentInk/55" : "text-muted/60"}`}>{index}</span>
                     <span className="relative z-10">{label}</span>
                   </a>
                 </li>
@@ -237,14 +239,29 @@ const Navbar = () => {
           </ul>
 
           <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="grid h-11 w-11 place-items-center rounded-full border border-line bg-surface/90 text-ink shadow-[var(--shadow-sm)] transition-colors duration-200 hover:border-primaryInk hover:bg-primary/20 focus-visible:outline-primaryInk"
+              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+              aria-pressed={theme === "dark"}
+              title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            >
+              {theme === "dark" ? (
+                <Sun className="h-4.5 w-4.5" aria-hidden="true" />
+              ) : (
+                <Moon className="h-4.5 w-4.5" aria-hidden="true" />
+              )}
+            </button>
+
             <a
               href="#contact"
               onClick={(event) => handleNavClick(event, "contact")}
               aria-current={activeSection === "contact" ? "page" : undefined}
               className={`hidden h-9 items-center gap-3 rounded-full border-2 px-6 font-mono text-[10px] font-bold uppercase tracking-widest transition-colors duration-200 lg:flex ${
                 activeSection === "contact"
-                  ? "border-primary bg-primary text-ink"
-                  : "border-ink bg-white/35 text-ink hover:bg-primary"
+                  ? "border-primary bg-primary text-accentInk"
+                  : "border-ink bg-surface/35 text-ink hover:bg-primary hover:text-accentInk"
               }`}
             >
               Contact me
@@ -257,8 +274,8 @@ const Navbar = () => {
               onClick={() => setMenuOpen((current) => !current)}
               className={`relative z-[70] grid h-11 w-11 place-items-center rounded-full border-2 transition-colors duration-200 lg:hidden ${
                 menuOpen
-                  ? "border-ink bg-primary text-ink focus-visible:outline-primaryInk focus-visible:shadow-[0_0_0_4px_rgba(143,232,246,0.5)]"
-                  : "border-ink/20 bg-white text-ink hover:border-ink hover:bg-primary"
+                  ? "border-ink bg-primary text-accentInk focus-visible:outline-primaryInk focus-visible:shadow-[0_0_0_4px_rgba(143,232,246,0.5)]"
+                  : "border-ink/20 bg-surface text-ink hover:border-ink hover:bg-primary hover:text-accentInk"
               }`}
               aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
               aria-expanded={menuOpen}
@@ -328,7 +345,7 @@ const Navbar = () => {
                 href="#contact"
                 onClick={(event) => handleNavClick(event, "contact")}
                 aria-label="Contact me"
-                className="flex min-h-[70px] w-full items-center justify-center gap-1 rounded-full bg-primary px-5 text-center text-xl font-black uppercase tracking-tighter text-ink transition-colors duration-200 hover:bg-secondary focus-visible:outline-primaryInk focus-visible:shadow-[0_0_0_4px_rgba(143,232,246,0.5)]"
+                className="flex min-h-[70px] w-full items-center justify-center gap-1 rounded-full bg-primary px-5 text-center text-xl font-black uppercase tracking-tighter text-accentInk transition-colors duration-200 hover:bg-secondary focus-visible:outline-primaryInk focus-visible:shadow-[0_0_0_4px_rgba(143,232,246,0.5)]"
               >
                 Contactme
                 <ArrowRight className="h-5 w-5" aria-hidden="true" />

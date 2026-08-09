@@ -74,7 +74,7 @@ export const projectsData = [
     id: 5,
     title: "DeafSpace",
     category: "UI/UX",
-    image: "/img/DeafSpace.png",
+    image: "/img/Deaf.png",
     description:
       "App that allows deaf individuals to easily order sign language interpreters.",
     fullDescription:
@@ -198,7 +198,7 @@ export const projectsData = [
     id: 13,
     title: "Sehat Mental App",
     category: "UI/UX",
-    image: "/img/Sehatmental.png",
+    image: "/img/Sehat.png",
     description:
       "An app that provides mental health resources, self-assessment tools, and access to professional help.",
     fullDescription:
@@ -286,7 +286,7 @@ export const projectsData = [
   },
   {
     id: 18,
-    title: "Wilson's Data Science Portfolio",
+    title: "Wilson's Portfolio",
     category: "Front End",
     image: "/img/Wilson.png",
     description:

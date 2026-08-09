@@ -185,13 +185,13 @@ const Achievements = () => {
                   whileInView={{ opacity: 1, y: 0, rotate: 2 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.7, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
-                  className="transform rounded-3xl border-2 border-black bg-white p-6 text-black shadow-[8px_8px_0px_rgba(143,232,246,0.5)] md:rotate-2"
+                  className="transform rounded-3xl border-2 border-ink bg-surface p-6 text-ink shadow-[8px_8px_0px_rgba(143,232,246,0.5)] md:rotate-2"
                 >
-                  <div className="flex justify-between items-center border-b border-black/20 pb-2 mb-4">
+                  <div className="flex justify-between items-center border-b border-line pb-2 mb-4">
                      <span className="font-mono text-[10px] font-bold uppercase">Total Awards</span>
                      <span className="font-black text-2xl text-[#8FE8F6]">{competitions.length}</span>
                   </div>
-                  <div className="flex justify-between items-center border-b border-black/20 pb-2">
+                  <div className="flex justify-between items-center border-b border-line pb-2">
                      <span className="font-mono text-[10px] font-bold uppercase">Licenses</span>
                      <span className="font-black text-2xl">{certifications.length}</span>
                   </div>
@@ -334,7 +334,7 @@ const Achievements = () => {
                 type="button"
                 onClick={() => scrollCertificates(-1)}
                 disabled={certificateRange.start === 0}
-                className="absolute -left-11 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-line bg-white text-ink shadow-[0_4px_14px_rgba(11,18,20,0.08)] transition-colors duration-200 hover:border-primary hover:bg-primary disabled:cursor-not-allowed disabled:opacity-35 md:grid lg:-left-14"
+                className="absolute -left-11 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-line bg-white text-ink shadow-[0_4px_14px_rgba(11,18,20,0.08)] transition-colors duration-200 hover:border-primary hover:bg-primary hover:text-accentInk disabled:cursor-not-allowed disabled:opacity-35 md:grid lg:-left-14"
                 aria-label="Show previous certificates"
               >
                 <ChevronLeft className="h-5 w-5" aria-hidden="true" />
@@ -416,7 +416,7 @@ const Achievements = () => {
                 type="button"
                 onClick={() => scrollCertificates(1)}
                 disabled={certificateRange.end >= certifications.length}
-                className="absolute -right-11 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-line bg-white text-ink shadow-[0_4px_14px_rgba(11,18,20,0.08)] transition-colors duration-200 hover:border-primary hover:bg-primary disabled:cursor-not-allowed disabled:opacity-35 md:grid lg:-right-14"
+                className="absolute -right-11 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-line bg-white text-ink shadow-[0_4px_14px_rgba(11,18,20,0.08)] transition-colors duration-200 hover:border-primary hover:bg-primary hover:text-accentInk disabled:cursor-not-allowed disabled:opacity-35 md:grid lg:-right-14"
                 aria-label="Show next certificates"
               >
                 <ChevronRight className="h-5 w-5" aria-hidden="true" />
@@ -428,7 +428,7 @@ const Achievements = () => {
                 type="button"
                 onClick={() => scrollCertificates(-1)}
                 disabled={certificateRange.start === 0}
-                className="grid h-11 w-11 place-items-center rounded-full border border-line bg-white text-ink transition-colors duration-200 hover:border-primary hover:bg-primary disabled:cursor-not-allowed disabled:opacity-35 md:hidden"
+                className="grid h-11 w-11 place-items-center rounded-full border border-line bg-white text-ink transition-colors duration-200 hover:border-primary hover:bg-primary hover:text-accentInk disabled:cursor-not-allowed disabled:opacity-35 md:hidden"
                 aria-label="Show previous certificates"
               >
                 <ChevronLeft className="h-5 w-5" aria-hidden="true" />
@@ -442,7 +442,7 @@ const Achievements = () => {
                 type="button"
                 onClick={() => scrollCertificates(1)}
                 disabled={certificateRange.end >= certifications.length}
-                className="grid h-11 w-11 place-items-center rounded-full border border-line bg-white text-ink transition-colors duration-200 hover:border-primary hover:bg-primary disabled:cursor-not-allowed disabled:opacity-35 md:hidden"
+                className="grid h-11 w-11 place-items-center rounded-full border border-line bg-white text-ink transition-colors duration-200 hover:border-primary hover:bg-primary hover:text-accentInk disabled:cursor-not-allowed disabled:opacity-35 md:hidden"
                 aria-label="Show next certificates"
               >
                 <ChevronRight className="h-5 w-5" aria-hidden="true" />
