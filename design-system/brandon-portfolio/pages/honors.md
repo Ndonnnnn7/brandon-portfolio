@@ -25,6 +25,7 @@ The Honors section uses the global 24px card radius and pill-shaped compact cont
 ## Credential gallery
 
 - Present credentials as an image-led horizontal gallery using local `public/img/Certif*` assets.
+- Scale the credential headline from `1.75rem` on small phones to `5rem` on desktop; long words must remain fully visible at 320–414px widths.
 - Show one card on phones, two on tablets, and three on desktops with snap scrolling and labeled previous/next controls.
 - Each card includes a verified badge, issuer, credential title, issue date, credential ID, and visible credential link.
 - Use `surface-soft` for the gallery shell, `surface` for cards, `line` for borders, `primary` for hover emphasis, and `primaryInk` for small accented text.

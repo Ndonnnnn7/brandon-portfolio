@@ -482,10 +482,10 @@ const Achievements = () => {
             />
 
             <div className="relative grid gap-8 border-b border-line pb-10 lg:grid-cols-12 lg:items-end">
-              <div className="lg:col-span-8">
+              <div className="min-w-0 lg:col-span-8">
                 <h3
                   id="credentials-heading"
-                  className="mt-4 max-w-[13ch] text-[clamp(2.8rem,5vw,5rem)] font-black uppercase leading-[0.92] tracking-[-0.055em] text-ink"
+                  className="mt-4 max-w-full text-[clamp(1.75rem,8.5vw,5rem)] font-black uppercase leading-[0.92] tracking-[-0.05em] text-ink sm:max-w-[13ch]"
                 >
                   Proof that keeps compounding.
                 </h3>
