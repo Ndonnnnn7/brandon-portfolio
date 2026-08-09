@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { AnimatePresence, motion as Motion, useScroll, useTransform } from "framer-motion";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { projectsData } from "../data/projects";
 
@@ -111,8 +112,120 @@ const arrowVariants = {
   },
 };
 
+const ProjectCard = ({ project, index, onSelect, mobile = false }) => {
+  const cardTech = project.tech?.length
+    ? project.tech
+    : (project.detailTech?.slice(0, 3) ?? []);
+  const imageSrc = project.image || "";
+  const animationIndex = mobile ? 0 : index;
+
+  return (
+    <Motion.article
+      layout={!mobile}
+      custom={animationIndex}
+      variants={cardVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      whileHover={mobile ? undefined : "hover"}
+      onClick={onSelect}
+      className="group relative flex cursor-pointer flex-col overflow-hidden rounded-3xl border border-line bg-white transition-[border-color,box-shadow] duration-300 hover:border-primary/60 hover:shadow-[0_14px_36px_rgba(11,18,20,0.08)]"
+    >
+      <div className="flex items-center justify-between border-b border-line bg-white px-4 py-2 transition-colors duration-300 group-hover:border-primary/60">
+        <span className="rounded-full border border-line px-2 py-1 font-mono text-[8px] uppercase tracking-[0.2em] text-ink/50 transition-colors duration-300 group-hover:border-primary/60 group-hover:text-primaryInk">
+          {project.category}
+        </span>
+        <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-[#8FE8F6]">
+          ID-{String(project.id).padStart(3, "0")}
+        </span>
+      </div>
+
+      <div className="relative aspect-video w-full overflow-hidden border-b border-line bg-surface-soft transition-colors duration-300 group-hover:border-primary/60">
+        {imageSrc ? (
+          <Motion.img
+            src={imageSrc}
+            alt={project.title}
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-contain object-center transition-transform duration-500 ease-out group-hover:scale-[1.035]"
+            initial={{ opacity: 0.92 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.45, delay: animationIndex * 0.05 }}
+          />
+        ) : (
+          <div className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center">
+            <span className="rounded-full border border-primary/60 bg-primary/15 px-3 py-1 font-mono text-[8px] font-bold uppercase tracking-[0.2em] text-primaryInk">
+              Local image pending
+            </span>
+            <span className="text-2xl font-black uppercase tracking-tighter text-ink/20">
+              {project.title}
+            </span>
+          </div>
+        )}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -translate-x-[140%] bg-gradient-to-r from-transparent via-white/15 to-transparent opacity-0 transition-all duration-700 group-hover:translate-x-[320%] group-hover:opacity-100" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      </div>
+
+      <div className="relative flex min-h-[208px] w-full flex-col bg-white p-6">
+        <Motion.h3
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: animationIndex * 0.05 + 0.08 }}
+          className="mb-2 min-h-[3.8rem] text-[clamp(1.8rem,2.2vw,2.5rem)] font-black uppercase leading-[1] tracking-tighter text-ink transition-colors duration-300 group-hover:text-[#8FE8F6]"
+        >
+          {project.title}
+        </Motion.h3>
+
+        <Motion.p
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: animationIndex * 0.05 + 0.14 }}
+          className="mb-6 min-h-[2.6rem] line-clamp-2 font-mono text-[9px] uppercase leading-relaxed text-gray-500 md:text-[10px]"
+        >
+          {project.description}
+        </Motion.p>
+
+        <div className="mt-auto flex items-end justify-between gap-4">
+          <Motion.div
+            custom={animationIndex}
+            variants={techListVariants}
+            className="flex flex-wrap gap-2"
+          >
+            {cardTech.map((tech, techIndex) => (
+              <Motion.span
+                key={`${project.id}-${techIndex}`}
+                custom={techIndex}
+                variants={techChipVariants}
+                className="relative overflow-hidden rounded-full border border-line px-2 py-1 font-mono text-[8px] uppercase tracking-[0.1em] text-ink/50"
+              >
+                <Motion.span
+                  custom={techIndex}
+                  variants={techGlowVariants}
+                  className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-[#8FE8F6]/35 to-transparent"
+                />
+                <span className="relative z-10">{tech}</span>
+              </Motion.span>
+            ))}
+          </Motion.div>
+
+          <Motion.div
+            variants={arrowVariants}
+            className="flex h-6 w-6 items-center justify-center rounded-full border border-line transition-colors duration-300 group-hover:border-primary group-hover:bg-primary"
+          >
+            <span className="font-mono text-[10px] text-ink/50 transition-all duration-300 group-hover:text-ink">
+              -&gt;
+            </span>
+          </Motion.div>
+        </div>
+      </div>
+    </Motion.article>
+  );
+};
+
 const Projects = () => {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [mobileProjectIndex, setMobileProjectIndex] = useState(0);
   const navigate = useNavigate();
   const sectionRef = useRef(null);
 
@@ -129,6 +242,24 @@ const Projects = () => {
     activeCategory === "All"
       ? visibleProjects
       : visibleProjects.filter((project) => project.category === activeCategory);
+  const mobileProject = filteredProjects[mobileProjectIndex] ?? filteredProjects[0];
+
+  const selectCategory = (category) => {
+    setActiveCategory(category);
+    setMobileProjectIndex(0);
+  };
+
+  const showPreviousMobileProject = () => {
+    setMobileProjectIndex((currentIndex) =>
+      (currentIndex - 1 + filteredProjects.length) % filteredProjects.length,
+    );
+  };
+
+  const showNextMobileProject = () => {
+    setMobileProjectIndex((currentIndex) =>
+      (currentIndex + 1) % filteredProjects.length,
+    );
+  };
 
   return (
     <section
@@ -185,7 +316,7 @@ const Projects = () => {
                   return (
                     <button
                       key={category}
-                      onClick={() => setActiveCategory(category)}
+                      onClick={() => selectCategory(category)}
                       className={`relative overflow-hidden rounded-full border px-4 py-2 font-mono text-[10px] uppercase tracking-[0.2em] transition-all duration-300 md:text-xs ${
                         isActive
                           ? "border-[#8FE8F6] text-black"
@@ -208,116 +339,65 @@ const Projects = () => {
           </Motion.div>
         </FadeUp>
 
-        <Motion.div layout className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
+        <div className="md:hidden">
+          <AnimatePresence mode="wait">
+            {mobileProject && (
+              <ProjectCard
+                key={`${activeCategory}-mobile-${mobileProject.id}`}
+                project={mobileProject}
+                index={0}
+                mobile
+                onSelect={() => navigate(`/project/${mobileProject.id}`)}
+              />
+            )}
+          </AnimatePresence>
+
+          <div
+            className="relative z-20 mx-auto mt-4 flex w-fit items-center gap-2 rounded-full border border-line bg-white p-2 shadow-[var(--shadow-md)]"
+            aria-label="Mobile project carousel controls"
+          >
+            <button
+              type="button"
+              onClick={showPreviousMobileProject}
+              disabled={filteredProjects.length <= 1}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-white text-ink transition-colors duration-200 hover:border-primaryInk hover:bg-primary/20 disabled:cursor-not-allowed disabled:opacity-40"
+              aria-label="Show previous project"
+            >
+              <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+            </button>
+
+            <p
+              className="min-w-16 text-center font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-muted"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              <span className="text-ink">{String(mobileProjectIndex + 1).padStart(2, "0")}</span>
+              {" / "}
+              {String(filteredProjects.length).padStart(2, "0")}
+            </p>
+
+            <button
+              type="button"
+              onClick={showNextMobileProject}
+              disabled={filteredProjects.length <= 1}
+              className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-ink bg-primary text-ink transition-colors duration-200 hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-40"
+              aria-label="Show next project"
+            >
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+
+        <Motion.div layout className="hidden gap-x-8 gap-y-10 md:grid md:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, index) => {
-              const cardTech = project.tech?.length ? project.tech : (project.detailTech?.slice(0, 3) ?? []);
-              const imageSrc = project.image || "";
-
-              return (
-              <Motion.article
-                layout
+            {filteredProjects.map((project, index) => (
+              <ProjectCard
                 key={`${activeCategory}-${project.id}`}
-                custom={index}
-                variants={cardVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                whileHover="hover"
-                onClick={() => navigate(`/project/${project.id}`)}
-                className="group relative flex cursor-pointer flex-col overflow-hidden rounded-3xl border border-line bg-white transition-[border-color,box-shadow] duration-300 hover:border-primary/60 hover:shadow-[0_14px_36px_rgba(11,18,20,0.08)]"
-              >
-                <div className="flex items-center justify-between border-b border-line bg-white px-4 py-2 transition-colors duration-300 group-hover:border-primary/60">
-                  <span className="rounded-full border border-line px-2 py-1 font-mono text-[8px] uppercase tracking-[0.2em] text-ink/50 transition-colors duration-300 group-hover:border-primary/60 group-hover:text-primaryInk">
-                    {project.category}
-                  </span>
-                  <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-[#8FE8F6]">
-                    ID-{String(project.id).padStart(3, "0")}
-                  </span>
-                </div>
-
-                <div className="relative aspect-video w-full overflow-hidden border-b border-line bg-surface-soft transition-colors duration-300 group-hover:border-primary/60">
-                  {imageSrc ? (
-                    <Motion.img
-                      src={imageSrc}
-                      alt={project.title}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-full w-full object-contain object-center transition-transform duration-500 ease-out group-hover:scale-[1.035]"
-                      initial={{ opacity: 0.92 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.45, delay: index * 0.05 }}
-                    />
-                  ) : (
-                    <div className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center">
-                      <span className="rounded-full border border-primary/60 bg-primary/15 px-3 py-1 font-mono text-[8px] font-bold uppercase tracking-[0.2em] text-primaryInk">
-                        Local image pending
-                      </span>
-                      <span className="text-2xl font-black uppercase tracking-tighter text-ink/20">
-                        {project.title}
-                      </span>
-                    </div>
-                  )}
-                  <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -translate-x-[140%] bg-gradient-to-r from-transparent via-white/15 to-transparent opacity-0 transition-all duration-700 group-hover:translate-x-[320%] group-hover:opacity-100" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                </div>
-
-                <div className="relative flex min-h-[208px] w-full flex-col bg-white p-6">
-                  <Motion.h3
-                    initial={{ opacity: 0, y: 14 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: index * 0.05 + 0.08 }}
-                    className="mb-2 min-h-[3.8rem] text-[clamp(1.8rem,2.2vw,2.5rem)] font-black uppercase leading-[1] tracking-tighter text-ink transition-colors duration-300 group-hover:text-[#8FE8F6]"
-                  >
-                    {project.title}
-                  </Motion.h3>
-
-                  <Motion.p
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: index * 0.05 + 0.14 }}
-                    className="mb-6 min-h-[2.6rem] line-clamp-2 font-mono text-[9px] uppercase leading-relaxed text-gray-500 md:text-[10px]"
-                  >
-                    {project.description}
-                  </Motion.p>
-
-                  <div className="mt-auto flex items-end justify-between gap-4">
-                    <Motion.div
-                      custom={index}
-                      variants={techListVariants}
-                      className="flex flex-wrap gap-2"
-                    >
-                      {cardTech.map((tech, techIndex) => (
-                        <Motion.span
-                          key={`${project.id}-${techIndex}`}
-                          custom={techIndex}
-                          variants={techChipVariants}
-                          className="relative overflow-hidden rounded-full border border-line px-2 py-1 font-mono text-[8px] uppercase tracking-[0.1em] text-ink/50"
-                        >
-                          <Motion.span
-                            custom={techIndex}
-                            variants={techGlowVariants}
-                            className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-[#8FE8F6]/35 to-transparent"
-                          />
-                          <span className="relative z-10">{tech}</span>
-                        </Motion.span>
-                      ))}
-                    </Motion.div>
-
-                    <Motion.div
-                      variants={arrowVariants}
-                      className="flex h-6 w-6 items-center justify-center rounded-full border border-line transition-colors duration-300 group-hover:border-primary group-hover:bg-primary"
-                    >
-                      <span className="font-mono text-[10px] text-ink/50 transition-all duration-300 group-hover:text-ink">
-                        -&gt;
-                      </span>
-                    </Motion.div>
-                  </div>
-                </div>
-              </Motion.article>
-              );
-            })}
+                project={project}
+                index={index}
+                onSelect={() => navigate(`/project/${project.id}`)}
+              />
+            ))}
           </AnimatePresence>
         </Motion.div>
 
