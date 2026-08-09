@@ -76,8 +76,14 @@
 @layer base {
   html {
     scroll-behavior: auto;
-    scrollbar-gutter: stable;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
     background: var(--color-canvas);
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
   }
 
   html,
@@ -93,8 +99,8 @@
     background: var(--color-canvas);
     color: var(--color-ink);
     font-family: "Space Grotesk", system-ui, sans-serif;
-    scrollbar-width: auto;
-    scrollbar-color: var(--color-primary) var(--color-canvas);
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
   h1,

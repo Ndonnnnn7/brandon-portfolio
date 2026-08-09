@@ -36,7 +36,7 @@ const educationData = [
     logoAlt: "Universitas Brawijaya logo",
   },
   {
-    year: "2026—Present",
+    year: "Mar 2026 - Jul 2026",
     title: "DOT INDONESIA",
     role: "Front-End Developer Intern",
     description:

@@ -35,7 +35,7 @@ const navLinks = [
   { label: "Contact", href: "#contact" },
 ];
 
-const services = ["UI/UX Design", "React Interface", "Design System", "Portfolio Build"];
+const services = ["UI/UX Design", "Front End Developer"];
 
 const socials = [
   { label: "GitHub", icon: Github, href: "https://github.com/Ndonnnnn7" },
@@ -127,7 +127,7 @@ const Contact = () => {
               <span className="text-2xl font-black uppercase italic tracking-tighter text-ink">Brandon</span>
             </a>
             <p className="max-w-[220px] font-mono text-[10px] font-black uppercase leading-relaxed tracking-widest text-muted">
-              Front-end developer crafting clean interfaces with motion, clarity, and impact.
+              a developer crafting clean interfaces with motion, clarity, and impact.
             </p>
           </div>
 
@@ -209,7 +209,7 @@ const Contact = () => {
 
         <FadeUp delay={0.18}>
           <div className="flex flex-col items-center justify-between gap-4 border-t border-line pt-8 text-center font-mono text-[10px] font-black uppercase tracking-widest text-muted md:flex-row md:text-left">
-            <span>(C) 2026 Brandon Geraldo Adji. All rights reserved.</span>
+            <span>(C) 2025 Brandon Geraldo Adji. All rights reserved.</span>
             <button
               type="button"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}

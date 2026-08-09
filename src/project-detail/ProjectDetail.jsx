@@ -208,9 +208,6 @@ const ProjectDetail = () => {
               <span className="rounded-full border border-line bg-white px-4 py-2 text-muted">
                 Project year {project.year}
               </span>
-              <span className="ml-auto hidden text-primaryInk md:inline">
-                Archive / {projectNumber}
-              </span>
             </div>
           </FadeUp>
 
@@ -318,9 +315,6 @@ const ProjectDetail = () => {
                     <span className="rounded-full border border-ink bg-white px-4 py-2 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-ink md:text-xs">
                       About
                     </span>
-                    <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accentInk/60 md:text-xs">
-                      Archive {projectNumber}
-                    </span>
                   </div>
 
                   <div className="relative z-10 max-w-lg">
@@ -363,11 +357,8 @@ const ProjectDetail = () => {
         <section className="mx-auto w-full max-w-[1320px] px-6 pb-24 md:px-10 md:pb-36">
           <FadeUp className="mb-8 flex items-end justify-between gap-6">
             <div>
-              <span className="font-mono text-xs font-bold uppercase tracking-[0.22em] text-primaryInk">
-                Project
-              </span>
               <h2 className="mt-4 font-display text-4xl font-black uppercase tracking-tighter md:text-6xl">
-                The details.
+                Detail
               </h2>
             </div>
           </FadeUp>
