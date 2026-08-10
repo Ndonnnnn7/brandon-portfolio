@@ -98,16 +98,6 @@ const Hero = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
             >
               <div className="mx-auto w-full max-w-[360px] rounded-3xl border border-ink bg-surface p-5 text-ink md:mx-0 md:max-w-sm md:-rotate-2 md:p-6">
-                <div className="flex justify-between items-center mb-4 border-b border-line pb-2">
-                  <span className="font-mono text-[10px] font-bold">STATUS</span>
-                  <div className="flex items-center gap-2">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#8FE8F6] opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[#8FE8F6]"></span>
-                    </span>
-                    <span className="font-mono text-[10px] font-bold text-[#8FE8F6]">AVAILABLE</span>
-                  </div>
-                </div>
                 <h3 className="font-bold text-xl md:text-2xl leading-none uppercase tracking-tight mb-2">
                   Designer by eye. Developer by hand.
                 </h3>

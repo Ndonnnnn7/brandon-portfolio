@@ -551,14 +551,6 @@ const Achievements = () => {
                         loading="lazy"
                         decoding="async"
                       />
-
-                      <span className="absolute left-4 top-4 rounded-full border border-line bg-white/95 px-3 py-1.5 font-mono text-[9px] font-bold uppercase tracking-wider text-muted shadow-[var(--shadow-sm)] backdrop-blur-sm">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                      <span className="absolute right-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-line bg-white/95 px-3 py-1.5 font-mono text-[9px] font-bold uppercase tracking-wider text-secondaryInk shadow-[var(--shadow-sm)] backdrop-blur-sm">
-                        <Check className="h-3 w-3" aria-hidden="true" />
-                        Verified
-                      </span>
                     </div>
 
                     <div className="flex flex-1 flex-col p-5 md:p-6">

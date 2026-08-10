@@ -18,6 +18,23 @@ export const projectsData = [
   },
   {
     id: 2,
+    title: "PAMAFIX",
+    category: "Front End",
+    image: "/img/Pama.png",
+    description:
+    "A web-based payment and invoice management platform for PT Pamapersada Nusantara, designed to streamline supplier billing and finance workflows.",
+    fullDescription:
+    "A web-based payment management system developed for PT Pamapersada Nusantara to support supplier billing and internal finance operations. PAMAFIX enables finance users and suppliers to manage invoice-related processes through a centralized digital platform, helping streamline transaction workflows, improve efficiency, and provide a more structured experience for managing payment-related activities.",
+    tech: ["React", "API"],
+    detailTech: ["React", "API Integration", "Responsive Design"],
+    role: "Front End Developer",
+    year: "2026",
+    links: {
+    demo: "https://pamafix-qa.pamapersada.com/",
+    },
+  },
+  {
+    id: 3,
     title: "InterStellar",
     category: "Front End",
     image: "/img/Interstellar1.png",
@@ -36,7 +53,7 @@ export const projectsData = [
     },
   },
   {
-    id: 3,
+    id: 4,
     title: "Masakin Application",
     category: "Front End",
     image: "/img/Masakin.png",
@@ -52,7 +69,7 @@ export const projectsData = [
     links: { demo: "#", github: "#", figma: "#" },
   },
   {
-    id: 4,
+    id: 5,
     title: "Hack.id",
     category: "Front End",
     image: "/img/Hackid.png",
@@ -71,7 +88,7 @@ export const projectsData = [
     },
   },
   {
-    id: 5,
+    id: 6,
     title: "DeafSpace",
     category: "UI/UX",
     image: "/img/Deaf.png",
@@ -86,7 +103,7 @@ export const projectsData = [
     links: { demo: "#", github: "#", figma: "#" },
   },
   {
-    id: 6,
+    id: 7,
     title: "Kiddora",
     category: "UI/UX",
     image: "/img/Kiddora.png",
@@ -101,7 +118,7 @@ export const projectsData = [
     links: { demo: "#", github: "#", figma: "#" },
   },
   {
-    id: 7,
+    id: 8,
     title: "Furever Pet Care",
     category: "UI/UX",
     image: "/img/Furever.png",
@@ -116,7 +133,7 @@ export const projectsData = [
     links: { demo: "#", github: "#", figma: "#" },
   },
   {
-    id: 8,
+    id: 9,
     title: "Infotional",
     category: "UI/UX",
     image: "/img/Infotional.png",
@@ -131,7 +148,7 @@ export const projectsData = [
     links: { demo: "#", github: "#", figma: "#" },
   },
   {
-    id: 9,
+    id: 10,
     title: "LittleSteps",
     category: "Front End",
     image: "/img/LittleSteps.png",
@@ -150,7 +167,7 @@ export const projectsData = [
     },
   },
   {
-    id: 10,
+    id: 11,
     title: "WeCare",
     category: "UI/UX",
     image: "/img/WeCare.png",
@@ -165,7 +182,7 @@ export const projectsData = [
     links: { demo: "#", github: "#", figma: "#" },
   },
   {
-    id: 11,
+    id: 12,
     title: "Bundaku",
     category: "UI/UX",
     image: "/img/Bundaku.png",
@@ -180,7 +197,7 @@ export const projectsData = [
     links: { demo: "#", github: "#", figma: "#" },
   },
   {
-    id: 12,
+    id: 13,
     title: "Legana",
     category: "UI/UX",
     image: "/img/Legana.png",
@@ -195,7 +212,7 @@ export const projectsData = [
     links: { demo: "#", github: "#", figma: "#" },
   },
   {
-    id: 13,
+    id: 14,
     title: "Sehat Mental App",
     category: "UI/UX",
     image: "/img/Sehat.png",
@@ -210,7 +227,7 @@ export const projectsData = [
     links: { demo: "#", github: "#", figma: "#" },
   },
   {
-    id: 14,
+    id: 15,
     title: "Senggreng Website",
     category: "Front End",
     image: "/img/DesaSenggreng1.png",
@@ -229,7 +246,7 @@ export const projectsData = [
     },
   },
   {
-    id: 15,
+    id: 16,
     title: "Zagrex Website",
     category: "UI/UX",
     image: "/img/Zagrex.png",
@@ -247,7 +264,7 @@ export const projectsData = [
     },
   },
   {
-    id: 16,
+    id: 17,
     title: "Khas Sneakers",
     category: "Front End",
     image: "/img/KhasSneakers.png",
@@ -266,7 +283,7 @@ export const projectsData = [
     },
   },
   {
-    id: 17,
+    id: 18,
     title: "Garasi Papa",
     category: "Front End",
     image: "/img/GarasiPapa.png",
@@ -285,7 +302,7 @@ export const projectsData = [
     },
   },
   {
-    id: 18,
+    id: 19,
     title: "Wilson's Portfolio",
     category: "Front End",
     image: "/img/Wilson.png",
@@ -302,7 +319,7 @@ export const projectsData = [
     },
   },
   {
-    id: 19,
+    id: 20,
     title: "Linneke's Portfolio",
     category: "Front End",
     image: "/img/Linneke.png",
@@ -319,7 +336,7 @@ export const projectsData = [
     },
   },
   {
-    id: 20,
+    id: 21,
     title: "Detection License Plate",
     category: "Data",
     image: "/img/Plate.png",
