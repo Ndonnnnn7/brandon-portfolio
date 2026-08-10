@@ -617,7 +617,7 @@ const Achievements = () => {
                 className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted"
                 aria-live="polite"
               >
-                Showing {certificateRange.start + 1}–{certificateRange.end} / {certifications.length}
+                Showing {certificateRange.end} / {certifications.length}
               </p>
 
               <button

@@ -12,7 +12,6 @@ const getInitialTheme = () => {
   if (typeof window !== "undefined") {
     const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
     if (storedTheme === "light" || storedTheme === "dark") return storedTheme;
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) return "dark";
   }
 
   return "light";
